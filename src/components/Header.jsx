@@ -17,11 +17,22 @@ const Header = () => {
     setIsAboutDropdownOpen(!isAboutDropdownOpen);
   };
 
-  const isActive = (path) => {
-    if (path === "/" && location.pathname === "/") return true;
-    if (path === "/about" && location.pathname.startsWith("/about"))
-      return true;
-    if (path !== "/" && location.pathname === path) return true;
+  // Updated isActive function to check for About pages
+  const isActive = (item) => {
+    // For regular menu items with direct links
+    if (item.link) {
+      if (item.link === "/" && location.pathname === "/") return true;
+      if (item.link !== "/" && location.pathname === item.link) return true;
+    }
+
+    // Special case for About dropdown
+    if (item.hasDropdown && item.name === "About") {
+      // Check if current path matches any About dropdown link
+      return item.dropdownItems.some(
+        (dropdownItem) => location.pathname === dropdownItem.link
+      );
+    }
+
     return false;
   };
 
@@ -85,7 +96,7 @@ const Header = () => {
               <li
                 key={index}
                 className={`relative ${
-                  isActive(item.link) ? "border-b-4 border-yellow-400" : ""
+                  isActive(item) ? "border-b-4 border-yellow-400" : ""
                 }`}
                 onMouseEnter={() =>
                   item.hasDropdown && setIsAboutDropdownOpen(true)
@@ -118,7 +129,7 @@ const Header = () => {
                               <li key={dropdownIndex}>
                                 <Link
                                   to={dropdownItem.link}
-                                  className="block px-4 py-2 text-red-primary text-red-50 hover:bg-red-800 transition-colors duration-300"
+                                  className="block px-4 py-2 text-red-50 hover:bg-red-800 transition-colors duration-300"
                                   onClick={() => setIsAboutDropdownOpen(false)}
                                 >
                                   {dropdownItem.name}
@@ -154,7 +165,9 @@ const Header = () => {
                   {item.hasDropdown ? (
                     <div>
                       <button
-                        className="font-bold py-4 pl-3 flex justify-between items-center w-full hover:bg-gray-50 transition-colors duration-300"
+                        className={`font-bold py-4 pl-3 flex justify-between items-center w-full hover:bg-gray-50 transition-colors duration-300 ${
+                          isActive(item) ? "text-red-700" : ""
+                        }`}
                         onClick={() => toggleAboutDropdown()}
                       >
                         {item.name}
@@ -166,13 +179,17 @@ const Header = () => {
                       </button>
 
                       {isAboutDropdownOpen && (
-                        <ul className="bg-gray-50">
+                        <ul className="bg-white">
                           {item.dropdownItems.map(
                             (dropdownItem, dropdownIndex) => (
                               <li key={dropdownIndex}>
                                 <Link
                                   to={dropdownItem.link}
-                                  className="block py-3 pl-8 hover:bg-gray-100 transition-colors duration-300"
+                                  className={`block py-3 pl-8 hover:bg-gray-100 transition-colors duration-300 ${
+                                    location.pathname === dropdownItem.link
+                                      ? "font-bold text-red-700"
+                                      : ""
+                                  }`}
                                   onClick={() => {
                                     setIsAboutDropdownOpen(false);
                                     setIsMenuOpen(false);
@@ -189,7 +206,9 @@ const Header = () => {
                   ) : (
                     <Link
                       to={item.link}
-                      className="font-bold py-4 pl-3 block hover:bg-gray-50 transition-colors duration-300"
+                      className={`font-bold py-4 pl-3 block hover:bg-gray-50 transition-colors duration-300 ${
+                        isActive(item) ? "text-red-700" : ""
+                      }`}
                       onClick={() => setIsMenuOpen(false)}
                     >
                       {item.name}
