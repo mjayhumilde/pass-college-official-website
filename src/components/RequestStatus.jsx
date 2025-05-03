@@ -1,34 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { requestDocs } from "../data/requestDocs/request";
 
 const PendingRequestsSection = () => {
-  // In a real application, this data would come from your API
-  const [pendingRequests, setPendingRequests] = useState([
-    {
-      id: "REQ-2025-001",
-      documentType: "Transcript",
-      requestDate: "2025-03-28",
-      status: "Processing",
-      estimatedCompletion: "2025-04-03",
-      urgency: "Normal",
-    },
-    {
-      id: "REQ-2025-002",
-      documentType: "Certificate of Enrollment",
-      requestDate: "2025-03-30",
-      status: "Pending Approval",
-      estimatedCompletion: "2025-04-02",
-      urgency: "Urgent",
-    },
-    {
-      id: "REQ-2025-003",
-      documentType: "Recommendation Letter",
-      requestDate: "2025-03-25",
-      status: "Ready for Pickup",
-      estimatedCompletion: "2025-04-01",
-      urgency: "Normal",
-    },
-  ]);
-
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
 
@@ -45,21 +18,17 @@ const PendingRequestsSection = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 0);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
 
   // Function to get filtered requests based on active tab
   const getFilteredRequests = () => {
-    if (activeTab === "all") return pendingRequests;
-    if (activeTab === "processing")
-      return pendingRequests.filter((req) => req.status === "Processing");
-    if (activeTab === "pending")
-      return pendingRequests.filter((req) => req.status === "Pending Approval");
+    if (activeTab === "all") return requestDocs;
     if (activeTab === "ready")
-      return pendingRequests.filter((req) => req.status === "Ready for Pickup");
-    return pendingRequests;
+      return requestDocs.filter((req) => req.status === "Ready for Pickup");
+    return requestDocs;
   };
 
   // Status badge component
@@ -70,9 +39,6 @@ const PendingRequestsSection = () => {
       case "Processing":
         color = "bg-blue-100 text-blue-800";
         break;
-      case "Pending Approval":
-        color = "bg-yellow-100 text-yellow-800";
-        break;
       case "Ready for Pickup":
         color = "bg-green-100 text-green-800";
         break;
@@ -82,20 +48,6 @@ const PendingRequestsSection = () => {
 
     return (
       <span className={`px-2 py-1 text-xs font-medium ${color}`}>{status}</span>
-    );
-  };
-
-  // Urgency badge component
-  const UrgencyBadge = ({ urgency }) => {
-    const color =
-      urgency === "Urgent"
-        ? "bg-red-100 text-red-800"
-        : "bg-gray-100 text-gray-800";
-
-    return (
-      <span className={`px-2 py-1 text-xs font-medium ${color}`}>
-        {urgency}
-      </span>
     );
   };
 
@@ -139,26 +91,7 @@ const PendingRequestsSection = () => {
           >
             All Requests
           </button>
-          <button
-            onClick={() => setActiveTab("processing")}
-            className={`px-1 py-3 text-sm font-medium border-b-2 ${
-              activeTab === "processing"
-                ? `${styles.primaryBorder} ${styles.primaryText}`
-                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-            }`}
-          >
-            Processing
-          </button>
-          <button
-            onClick={() => setActiveTab("pending")}
-            className={`px-1 py-3 text-sm font-medium border-b-2 ${
-              activeTab === "pending"
-                ? `${styles.primaryBorder} ${styles.primaryText}`
-                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-            }`}
-          >
-            Pending Approval
-          </button>
+
           <button
             onClick={() => setActiveTab("ready")}
             className={`px-1 py-3 text-sm font-medium border-b-2 ${
@@ -239,18 +172,13 @@ const PendingRequestsSection = () => {
                     {request.estimatedCompletion}
                   </span>
                 </div>
-                <div className="text-right sm:text-left">
-                  <button className={`${styles.primaryText} hover:underline`}>
-                    View Details
-                  </button>
-                </div>
               </div>
             </div>
           ))}
         </div>
       )}
-      {/* 
-      <div className="mt-6 text-center">
+
+      {/* <div className="mt-6 text-center">
         <button
           className={`${styles.primaryBg} text-white py-2 px-6 ${styles.primaryHover} transition duration-300`}
         >
