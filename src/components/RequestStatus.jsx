@@ -70,7 +70,7 @@ const PendingRequestsSection = () => {
   const filteredRequests = getFilteredRequests();
 
   return (
-    <div className=" bg-white shadow-md p-6 max-w-4xl mx-auto">
+    <div className=" bg-white shadow-md p-6 max-w-4xl mx-auto container">
       {/* <h2 className="text-2xl font-bold text-gray-800 mb-6">
         Your Document Requests
       </h2> */}

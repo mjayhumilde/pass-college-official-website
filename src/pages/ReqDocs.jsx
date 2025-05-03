@@ -28,12 +28,12 @@ const ReqDocs = () => {
             </p>
           </div>
           <h2 className="text-3xl font-bold text-red-950">
-            School Document Request{" "}
+            School Document Request
           </h2>
 
           <form
             onSubmit={handleSubmit(onSubmitForm)}
-            className="space-y-4 p-5 w-[500px]"
+            className="space-y-4 p-5 sm:w-full md:w-[500px]"
           >
             <div className=" flex flex-col items-start w-full space-y-1">
               <label className="font-bold text-red-950">Full Name</label>
