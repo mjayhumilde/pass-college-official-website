@@ -1,28 +1,41 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
 import passLogo from "../assets/images/image.png";
 import BtnPriRed from "./BtnPriRed";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
   const location = useLocation();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Function to check if nav item is active
+  const toggleAboutDropdown = () => {
+    setIsAboutDropdownOpen(!isAboutDropdownOpen);
+  };
+
   const isActive = (path) => {
     if (path === "/" && location.pathname === "/") return true;
+    if (path === "/about" && location.pathname.startsWith("/about"))
+      return true;
     if (path !== "/" && location.pathname === path) return true;
     return false;
   };
 
-  // Menu items without dropdown indicators
   const menuItems = [
     { name: "Home", link: "/" },
-    { name: "About", link: "/about" },
+    {
+      name: "About",
+      hasDropdown: true,
+      dropdownItems: [
+        { name: "Who we are", link: "/about/who-we-are" },
+        { name: "Our History & Tradition", link: "/about/history-tradition" },
+        { name: "Our College Programs", link: "/about/college-programs" },
+      ],
+    },
     { name: "Announcements", link: "/announcements" },
     { name: "News & Events", link: "/news-events" },
     { name: "Uniforms", link: "/uniforms" },
@@ -32,10 +45,8 @@ const Header = () => {
 
   return (
     <header className="shadow-md w-full fixed top-0 left-0 right-0 z-50 text-red-50">
-      {/* Top header with logo and search */}
       <div className="bg-red-primary md:bg-white py-1 px-4 md:px-8">
         <div className="container mx-auto flex justify-between items-center">
-          {/* Logo */}
           <div className="flex items-center">
             <Link
               to="/"
@@ -52,12 +63,10 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Login */}
           <div className="hidden md:flex items-center">
             <BtnPriRed text={"Login"} />
           </div>
 
-          {/* Mobile menu button */}
           <button
             className="md:hidden text-white"
             onClick={toggleMenu}
@@ -78,13 +87,57 @@ const Header = () => {
                 className={`relative ${
                   isActive(item.link) ? "border-b-4 border-yellow-400" : ""
                 }`}
+                onMouseEnter={() =>
+                  item.hasDropdown && setIsAboutDropdownOpen(true)
+                }
+                onMouseLeave={() =>
+                  item.hasDropdown && setIsAboutDropdownOpen(false)
+                }
               >
-                <Link
-                  to={item.link}
-                  className="text-white flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
-                >
-                  {item.name}
-                </Link>
+                {item.hasDropdown ? (
+                  <div className="relative">
+                    <button
+                      onClick={toggleAboutDropdown}
+                      className="text-red-50 flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
+                      aria-expanded={isAboutDropdownOpen}
+                      aria-haspopup="true"
+                    >
+                      {item.name}
+                      {isAboutDropdownOpen ? (
+                        <ChevronUp size={18} className="ml-1" />
+                      ) : (
+                        <ChevronDown size={18} className="ml-1" />
+                      )}
+                    </button>
+
+                    {isAboutDropdownOpen && (
+                      <div className="absolute top-full left-0 bg-red-primary shadow-lg w-48 z-10">
+                        <ul className="py-1">
+                          {item.dropdownItems.map(
+                            (dropdownItem, dropdownIndex) => (
+                              <li key={dropdownIndex}>
+                                <Link
+                                  to={dropdownItem.link}
+                                  className="block px-4 py-2 text-red-primary text-red-50 hover:bg-red-800 transition-colors duration-300"
+                                  onClick={() => setIsAboutDropdownOpen(false)}
+                                >
+                                  {dropdownItem.name}
+                                </Link>
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    to={item.link}
+                    className="text-white flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
+                  >
+                    {item.name}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>
@@ -98,13 +151,50 @@ const Header = () => {
             <ul className="flex flex-col">
               {menuItems.map((item, index) => (
                 <li key={index} className="border-b border-gray-200">
-                  <Link
-                    to={item.link}
-                    className="font-bold py-4 pl-3 block hover:bg-gray-50 transition-colors duration-300"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
+                  {item.hasDropdown ? (
+                    <div>
+                      <button
+                        className="font-bold py-4 pl-3 flex justify-between items-center w-full hover:bg-gray-50 transition-colors duration-300"
+                        onClick={() => toggleAboutDropdown()}
+                      >
+                        {item.name}
+                        {isAboutDropdownOpen ? (
+                          <ChevronUp size={18} />
+                        ) : (
+                          <ChevronDown size={18} />
+                        )}
+                      </button>
+
+                      {isAboutDropdownOpen && (
+                        <ul className="bg-gray-50">
+                          {item.dropdownItems.map(
+                            (dropdownItem, dropdownIndex) => (
+                              <li key={dropdownIndex}>
+                                <Link
+                                  to={dropdownItem.link}
+                                  className="block py-3 pl-8 hover:bg-gray-100 transition-colors duration-300"
+                                  onClick={() => {
+                                    setIsAboutDropdownOpen(false);
+                                    setIsMenuOpen(false);
+                                  }}
+                                >
+                                  {dropdownItem.name}
+                                </Link>
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      )}
+                    </div>
+                  ) : (
+                    <Link
+                      to={item.link}
+                      className="font-bold py-4 pl-3 block hover:bg-gray-50 transition-colors duration-300"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
