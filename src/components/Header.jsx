@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import useAuthStore from "../store/useAuthStore";
+
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
+import { Menu, X, ChevronDown, ChevronUp, User, Bell } from "lucide-react";
 import passLogo from "../assets/images/image.png";
 import BtnPriRed from "./BtnPriRed";
 
@@ -8,6 +10,11 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
   const location = useLocation();
+
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const userRole = useAuthStore((state) => state.userRole);
+
+  console.log({ isAuthenticated, userRole });
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -17,17 +24,13 @@ const Header = () => {
     setIsAboutDropdownOpen(!isAboutDropdownOpen);
   };
 
-  // Updated isActive function to check for About pages
   const isActive = (item) => {
-    // For regular menu items with direct links
     if (item.link) {
       if (item.link === "/" && location.pathname === "/") return true;
       if (item.link !== "/" && location.pathname === item.link) return true;
     }
 
-    // Special case for About dropdown
     if (item.hasDropdown && item.name === "About") {
-      // Check if current path matches any About dropdown link
       return item.dropdownItems.some(
         (dropdownItem) => location.pathname === dropdownItem.link
       );
@@ -75,7 +78,24 @@ const Header = () => {
           </div>
 
           <div className="hidden md:flex items-center">
-            <BtnPriRed text={"Login"} />
+            {isAuthenticated ? (
+              <div className="flex justify-center items-center space-x-2 ">
+                <div className="p-1 bg-red-primary rounded-full">
+                  <User
+                    className=" hover:cursor-pointer text-red-50"
+                    size={37}
+                  />
+                </div>
+                <div className="relative hover:cursor-pointer">
+                  <Bell className="text-red-primary" size={30} />
+                  <div className="bg-red-primary px-2 -top-2 absolute -right-3 rounded-full text-red-50 text-[15px] font-bold">
+                    0
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <BtnPriRed text={"Login"} />
+            )}
           </div>
 
           <button
@@ -92,65 +112,141 @@ const Header = () => {
       <nav className="hidden md:block bg-red-primary">
         <div className="container mx-auto">
           <ul className="flex justify-center items-center">
-            {menuItems.map((item, index) => (
-              <li
-                key={index}
-                className={`relative ${
-                  isActive(item) ? "border-b-4 border-yellow-400" : ""
-                }`}
-                onMouseEnter={() =>
-                  item.hasDropdown && setIsAboutDropdownOpen(true)
-                }
-                onMouseLeave={() =>
-                  item.hasDropdown && setIsAboutDropdownOpen(false)
-                }
-              >
-                {item.hasDropdown ? (
-                  <div className="relative">
-                    <button
-                      onClick={toggleAboutDropdown}
-                      className="text-red-50 flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
-                      aria-expanded={isAboutDropdownOpen}
-                      aria-haspopup="true"
+            {menuItems.map((item, index) => {
+              if (!isAuthenticated) {
+                if (
+                  item.name === "Announcements" ||
+                  item.name === "ReqDocs" ||
+                  item.name === "Uniforms"
+                ) {
+                  null;
+                } else {
+                  return (
+                    <li
+                      key={index}
+                      className={`relative ${
+                        isActive(item) ? "border-b-4 border-yellow-400" : ""
+                      }`}
+                      onMouseEnter={() =>
+                        item.hasDropdown && setIsAboutDropdownOpen(true)
+                      }
+                      onMouseLeave={() =>
+                        item.hasDropdown && setIsAboutDropdownOpen(false)
+                      }
                     >
-                      {item.name}
-                      {isAboutDropdownOpen ? (
-                        <ChevronUp size={18} className="ml-1" />
-                      ) : (
-                        <ChevronDown size={18} className="ml-1" />
-                      )}
-                    </button>
+                      {item.hasDropdown ? (
+                        <div className="relative">
+                          <button
+                            onClick={toggleAboutDropdown}
+                            className="text-red-50 flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
+                            aria-expanded={isAboutDropdownOpen}
+                            aria-haspopup="true"
+                          >
+                            {item.name}
+                            {isAboutDropdownOpen ? (
+                              <ChevronUp size={18} className="ml-1" />
+                            ) : (
+                              <ChevronDown size={18} className="ml-1" />
+                            )}
+                          </button>
 
-                    {isAboutDropdownOpen && (
-                      <div className="absolute top-full left-0 bg-red-primary shadow-lg w-48 z-10">
-                        <ul className="py-1">
-                          {item.dropdownItems.map(
-                            (dropdownItem, dropdownIndex) => (
-                              <li key={dropdownIndex}>
-                                <Link
-                                  to={dropdownItem.link}
-                                  className="block px-4 py-2 text-red-50 hover:bg-red-800 transition-colors duration-300"
-                                  onClick={() => setIsAboutDropdownOpen(false)}
-                                >
-                                  {dropdownItem.name}
-                                </Link>
-                              </li>
-                            )
+                          {isAboutDropdownOpen && (
+                            <div className="absolute top-full left-0 bg-red-primary shadow-lg w-48 z-10">
+                              <ul className="py-1">
+                                {item.dropdownItems.map(
+                                  (dropdownItem, dropdownIndex) => (
+                                    <li key={dropdownIndex}>
+                                      <Link
+                                        to={dropdownItem.link}
+                                        className="block px-4 py-2 text-red-50 hover:bg-red-800 transition-colors duration-300"
+                                        onClick={() =>
+                                          setIsAboutDropdownOpen(false)
+                                        }
+                                      >
+                                        {dropdownItem.name}
+                                      </Link>
+                                    </li>
+                                  )
+                                )}
+                              </ul>
+                            </div>
                           )}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <Link
-                    to={item.link}
-                    className="text-white flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
+                        </div>
+                      ) : (
+                        <Link
+                          to={item.link}
+                          className="text-white flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
+                        >
+                          {item.name}
+                        </Link>
+                      )}
+                    </li>
+                  );
+                }
+              } else {
+                return (
+                  <li
+                    key={index}
+                    className={`relative ${
+                      isActive(item) ? "border-b-4 border-yellow-400" : ""
+                    }`}
+                    onMouseEnter={() =>
+                      item.hasDropdown && setIsAboutDropdownOpen(true)
+                    }
+                    onMouseLeave={() =>
+                      item.hasDropdown && setIsAboutDropdownOpen(false)
+                    }
                   >
-                    {item.name}
-                  </Link>
-                )}
-              </li>
-            ))}
+                    {item.hasDropdown ? (
+                      <div className="relative">
+                        <button
+                          onClick={toggleAboutDropdown}
+                          className="text-red-50 flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
+                          aria-expanded={isAboutDropdownOpen}
+                          aria-haspopup="true"
+                        >
+                          {item.name}
+                          {isAboutDropdownOpen ? (
+                            <ChevronUp size={18} className="ml-1" />
+                          ) : (
+                            <ChevronDown size={18} className="ml-1" />
+                          )}
+                        </button>
+
+                        {isAboutDropdownOpen && (
+                          <div className="absolute top-full left-0 bg-red-primary shadow-lg w-48 z-10">
+                            <ul className="py-1">
+                              {item.dropdownItems.map(
+                                (dropdownItem, dropdownIndex) => (
+                                  <li key={dropdownIndex}>
+                                    <Link
+                                      to={dropdownItem.link}
+                                      className="block px-4 py-2 text-red-50 hover:bg-red-800 transition-colors duration-300"
+                                      onClick={() =>
+                                        setIsAboutDropdownOpen(false)
+                                      }
+                                    >
+                                      {dropdownItem.name}
+                                    </Link>
+                                  </li>
+                                )
+                              )}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <Link
+                        to={item.link}
+                        className="text-white flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
+                      >
+                        {item.name}
+                      </Link>
+                    )}
+                  </li>
+                );
+              }
+            })}
           </ul>
         </div>
       </nav>
@@ -220,9 +316,17 @@ const Header = () => {
 
             {/* Mobile Login */}
             <div className="mt-4">
-              <button className="w-full px-6 py-2 border border-red-primary text-red-primary font-bold hover:bg-red-primary hover:text-white transition-colors duration-300">
-                Login
-              </button>
+              {isAuthenticated ? (
+                <div className="flex justify-center items-center">
+                  <div className="bg-red-primary p-2 rounded-full">
+                    <User size={70} className="text-red-50" />
+                  </div>
+                </div>
+              ) : (
+                <button className="w-full px-6 py-2 border border-red-primary text-red-primary font-bold hover:bg-red-primary hover:text-white transition-colors duration-300">
+                  Login
+                </button>
+              )}
             </div>
           </nav>
         </div>
