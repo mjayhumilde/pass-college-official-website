@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import useAuthStore from "../store/useAuthStore";
+import useNotificationStore from "../store/useNotificationStore";
 
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown, ChevronUp, User, Bell } from "lucide-react";
@@ -12,6 +13,7 @@ const Header = () => {
   const location = useLocation();
 
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const { notifications } = useNotificationStore();
   // const userRole = useAuthStore((state) => state.userRole);
 
   // console.log({ isAuthenticated, userRole });
@@ -92,7 +94,10 @@ const Header = () => {
                   <div className="relative hover:cursor-pointer">
                     <Bell className="text-red-primary" size={30} />
                     <div className="bg-red-primary px-2 -top-2 absolute -right-3 rounded-full text-red-50 text-[15px] font-bold">
-                      0
+                      {
+                        notifications.filter((n) => n.status === "unread")
+                          .length
+                      }
                     </div>
                   </div>
                 </Link>
@@ -103,11 +108,11 @@ const Header = () => {
           </div>
 
           <div className=" md:hidden flex justify-center items-center space-x-6">
-            <Link to={"/notification"}>
+            <Link to={"/notifications"}>
               <div className="relative hover:cursor-pointer">
                 <Bell className="text-red-50" size={24} />
                 <div className="bg-white px-2 -top-3 absolute -right-3 rounded-full text-red-primary text-[15px] font-bold">
-                  0
+                  {notifications.filter((n) => n.status === "unread").length}
                 </div>
               </div>
             </Link>

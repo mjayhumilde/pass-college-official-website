@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import useNotificationStore from "../store/useNotificationStore";
 import {
   Bell,
   Megaphone,
@@ -15,101 +16,18 @@ import {
 export default function NotificationPage() {
   // State for notifications and active tab
   const [activeTab, setActiveTab] = useState("all");
-  const [notifications, setNotifications] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [notificationsPerPage] = useState(5);
+
+  const { notifications, markAsRead, deleteNotification } =
+    useNotificationStore();
 
   // Sample notification data - in a real app this would come from an API
   useEffect(() => {
     // Simulate API fetch
     setTimeout(() => {
-      setNotifications([
-        {
-          id: 1,
-          type: "announcement",
-          title: "School Closure Due to Weather",
-          content:
-            "School will be closed tomorrow due to severe weather conditions.",
-          date: "2025-05-03",
-          status: "unread",
-        },
-        {
-          id: 2,
-          type: "career",
-          title: "Teaching Position Available",
-          content: "We're hiring Math teachers. Apply before May 15.",
-          date: "2025-05-02",
-          status: "read",
-        },
-        {
-          id: 3,
-          type: "news",
-          title: "Students Win Science Competition",
-          content:
-            "Our students took first place in the regional science fair.",
-          date: "2025-05-01",
-          status: "unread",
-        },
-        {
-          id: 4,
-          type: "event",
-          title: "Annual Sports Day",
-          content:
-            "Annual sports day scheduled for May 20. All students must participate.",
-          date: "2025-04-30",
-          status: "read",
-        },
-        {
-          id: 5,
-          type: "uniform",
-          title: "Summer Uniform Update",
-          content: "Summer uniforms are now available at the school store.",
-          date: "2025-04-29",
-          status: "unread",
-        },
-        {
-          id: 6,
-          type: "document",
-          title: "Transcript Request Processing",
-          content:
-            "Your request for transcripts has been approved and is being processed.",
-          date: "2025-04-28",
-          status: "read",
-        },
-        {
-          id: 7,
-          type: "announcement",
-          title: "New Curriculum Announcement",
-          content: "We're updating our curriculum for the next academic year.",
-          date: "2025-04-27",
-          status: "unread",
-        },
-        {
-          id: 8,
-          type: "news",
-          title: "School Ranked Top 10",
-          content: "Our school has been ranked in the top 10 in the state.",
-          date: "2025-04-26",
-          status: "read",
-        },
-        {
-          id: 9,
-          type: "document",
-          title: "Certificate Request Completed",
-          content: "Your requested certificates are ready for pickup.",
-          date: "2025-04-25",
-          status: "unread",
-        },
-        {
-          id: 10,
-          type: "event",
-          title: "Parent-Teacher Conference",
-          content: "Parent-teacher conferences scheduled for next week.",
-          date: "2025-04-24",
-          status: "read",
-        },
-      ]);
       setLoading(false);
     }, 1000);
   }, []);
@@ -130,24 +48,6 @@ export default function NotificationPage() {
   const totalPages = Math.ceil(
     filteredNotifications.length / notificationsPerPage
   );
-
-  // Mark a notification as read
-  const markAsRead = (id) => {
-    setNotifications(
-      notifications.map((notification) =>
-        notification.id === id
-          ? { ...notification, status: "read" }
-          : notification
-      )
-    );
-  };
-
-  // Delete a notification
-  const deleteNotification = (id) => {
-    setNotifications(
-      notifications.filter((notification) => notification.id !== id)
-    );
-  };
 
   // Get icon based on notification type
   const getIcon = (type) => {
@@ -187,7 +87,7 @@ export default function NotificationPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 sm:p-6 md:p-8">
+    <main className="min-h-screen bg-gray-50 p-4 sm:p-6 md:p-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
@@ -395,6 +295,6 @@ export default function NotificationPage() {
           )}
         </div>
       </div>
-    </div>
+    </main>
   );
 }
