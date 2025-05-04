@@ -6,14 +6,11 @@ import Events from "./pages/Events";
 import Uniform from "./pages/Uniform";
 import ReqDocs from "./pages/ReqDocs";
 import Careers from "./pages/Careers";
-import Contacts from "./pages/Contacts";
 import Layout from "./components/Layout";
 import WhoWeAre from "./pages/AboutPages/WhoWeAre";
 import HistoryAndTradition from "./pages/AboutPages/HistoryAndTradition";
-import PassianLeadership from "./pages/AboutPages/PassianLeadership";
-import Scholarship from "./pages/AboutPages/Scholarship";
-import WhatWeValue from "./pages/AboutPages/WhatWeValue";
 import CollegePrograms from "./pages/AboutPages/CollegePrograms";
+import Profile from "./pages/Profile";
 
 const App = () => {
   return (
@@ -25,9 +22,6 @@ const App = () => {
           <Route path="about" element={<About />}>
             <Route path="who-we-are" element={<WhoWeAre />} />
             <Route path="history-tradition" element={<HistoryAndTradition />} />
-            <Route path="passian-leadership" element={<PassianLeadership />} />
-            <Route path="scholarship" element={<Scholarship />} />
-            <Route path="what-we-value" element={<WhatWeValue />} />
             <Route path="college-programs" element={<CollegePrograms />} />
           </Route>
           <Route path="announcements" element={<Announce />} />
@@ -35,6 +29,7 @@ const App = () => {
           <Route path="uniforms" element={<Uniform />} />
           <Route path="reqdocs" element={<ReqDocs />} />
           <Route path="careers" element={<Careers />} />
+          <Route path="profile" element={<Profile />} />
 
           {/* <Route path="/profile" element={}/>
         <Route path="/signup" element={}/>

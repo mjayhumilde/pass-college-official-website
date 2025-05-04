@@ -12,9 +12,9 @@ const Header = () => {
   const location = useLocation();
 
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const userRole = useAuthStore((state) => state.userRole);
+  // const userRole = useAuthStore((state) => state.userRole);
 
-  console.log({ isAuthenticated, userRole });
+  // console.log({ isAuthenticated, userRole });
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -80,12 +80,14 @@ const Header = () => {
           <div className="hidden md:flex items-center">
             {isAuthenticated ? (
               <div className="flex justify-center items-center space-x-2 ">
-                <div className="p-1 bg-red-primary rounded-full">
-                  <User
-                    className=" hover:cursor-pointer text-red-50"
-                    size={37}
-                  />
-                </div>
+                <Link to={"/profile"}>
+                  <div className="p-1 bg-red-primary rounded-full">
+                    <User
+                      className=" hover:cursor-pointer text-red-50"
+                      size={37}
+                    />
+                  </div>
+                </Link>
                 <div className="relative hover:cursor-pointer">
                   <Bell className="text-red-primary" size={30} />
                   <div className="bg-red-primary px-2 -top-2 absolute -right-3 rounded-full text-red-50 text-[15px] font-bold">
