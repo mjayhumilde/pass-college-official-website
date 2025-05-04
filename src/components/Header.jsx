@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import useAuthStore from "../store/useAuthStore";
 import useNotificationStore from "../store/useNotificationStore";
 
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, ChevronDown, ChevronUp, User, Bell } from "lucide-react";
-import passLogo from "../assets/images/image.png";
+import passLogo from "../assets/images/pass_log-removebg-preview.png";
 import BtnPriRed from "./BtnPriRed";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const { notifications } = useNotificationStore();
@@ -103,7 +104,7 @@ const Header = () => {
                 </Link>
               </div>
             ) : (
-              <BtnPriRed text={"Login"} />
+              <BtnPriRed text={"Login"} navi={"login"} />
             )}
           </div>
 
@@ -348,7 +349,13 @@ const Header = () => {
                   </Link>
                 </div>
               ) : (
-                <button className="w-full px-6 py-2 border border-red-primary text-red-primary font-bold hover:bg-red-primary hover:text-white transition-colors duration-300">
+                <button
+                  onClick={() => {
+                    navigate("login");
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full px-6 py-2 border border-red-primary text-red-primary font-bold hover:bg-red-primary hover:text-white transition-colors duration-300"
+                >
                   Login
                 </button>
               )}
