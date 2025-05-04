@@ -88,12 +88,14 @@ const Header = () => {
                     />
                   </div>
                 </Link>
-                <div className="relative hover:cursor-pointer">
-                  <Bell className="text-red-primary" size={30} />
-                  <div className="bg-red-primary px-2 -top-2 absolute -right-3 rounded-full text-red-50 text-[15px] font-bold">
-                    0
+                <Link to={"/notifications"}>
+                  <div className="relative hover:cursor-pointer">
+                    <Bell className="text-red-primary" size={30} />
+                    <div className="bg-red-primary px-2 -top-2 absolute -right-3 rounded-full text-red-50 text-[15px] font-bold">
+                      0
+                    </div>
                   </div>
-                </div>
+                </Link>
               </div>
             ) : (
               <BtnPriRed text={"Login"} />
@@ -101,12 +103,14 @@ const Header = () => {
           </div>
 
           <div className=" md:hidden flex justify-center items-center space-x-6">
-            <div className="relative hover:cursor-pointer">
-              <Bell className="text-red-50" size={24} />
-              <div className="bg-white px-2 -top-3 absolute -right-3 rounded-full text-red-primary text-[15px] font-bold">
-                0
+            <Link to={"/notification"}>
+              <div className="relative hover:cursor-pointer">
+                <Bell className="text-red-50" size={24} />
+                <div className="bg-white px-2 -top-3 absolute -right-3 rounded-full text-red-primary text-[15px] font-bold">
+                  0
+                </div>
               </div>
-            </div>
+            </Link>
             <button
               className=" text-white"
               onClick={toggleMenu}

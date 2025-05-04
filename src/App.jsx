@@ -11,6 +11,7 @@ import WhoWeAre from "./pages/AboutPages/WhoWeAre";
 import HistoryAndTradition from "./pages/AboutPages/HistoryAndTradition";
 import CollegePrograms from "./pages/AboutPages/CollegePrograms";
 import Profile from "./pages/Profile";
+import Notification from "./pages/Notification";
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="reqdocs" element={<ReqDocs />} />
           <Route path="careers" element={<Careers />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="notifications" element={<Notification />} />
 
           {/* <Route path="/profile" element={}/>
         <Route path="/signup" element={}/>
