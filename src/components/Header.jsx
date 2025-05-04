@@ -100,13 +100,21 @@ const Header = () => {
             )}
           </div>
 
-          <button
-            className="md:hidden text-white"
-            onClick={toggleMenu}
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className=" md:hidden flex justify-center items-center space-x-6">
+            <div className="relative hover:cursor-pointer">
+              <Bell className="text-red-50" size={24} />
+              <div className="bg-white px-2 -top-3 absolute -right-3 rounded-full text-red-primary text-[15px] font-bold">
+                0
+              </div>
+            </div>
+            <button
+              className=" text-white"
+              onClick={toggleMenu}
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -319,10 +327,16 @@ const Header = () => {
             {/* Mobile Login */}
             <div className="mt-4">
               {isAuthenticated ? (
-                <div className="flex justify-center items-center">
-                  <div className="bg-red-primary p-2 rounded-full">
+                <div className="flex justify-center items-center relative z-50">
+                  <Link
+                    to="/profile"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                    }}
+                    className="bg-red-primary p-2 rounded-full block"
+                  >
                     <User size={70} className="text-red-50" />
-                  </div>
+                  </Link>
                 </div>
               ) : (
                 <button className="w-full px-6 py-2 border border-red-primary text-red-primary font-bold hover:bg-red-primary hover:text-white transition-colors duration-300">
