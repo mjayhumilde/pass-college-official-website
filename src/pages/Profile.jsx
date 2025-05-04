@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Edit, Camera } from "lucide-react";
+import { Edit, Camera, LogOutIcon } from "lucide-react";
 
 const Profile = () => {
   // State for student data
@@ -264,13 +264,20 @@ const Profile = () => {
               </div>
 
               <div className="pt-2 flex justify-center items-center">
-                <button className="bg-red-primary text-white w-full mx-5 md:mx-9 py-2  hover:bg-opacity-90 transition">
+                <button className="bg-red-primary text-white w-full mx-5 md:mx-9 py-2  hover:bg-opacity-90 transition hover:cursor-pointer">
                   Update Password
                 </button>
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <div className="mx-auto container mt-10 mb-5 flex justify-center">
+        <button className="bg-red-primary px-8 py-2 text-red-50">
+          <span className="flex font-bold">
+            <LogOutIcon /> LOG OUT
+          </span>
+        </button>
       </div>
     </div>
   );
