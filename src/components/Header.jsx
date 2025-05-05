@@ -17,8 +17,6 @@ const Header = () => {
   const userRole = useAuthStore((state) => state.userRole);
   const { notifications } = useNotificationStore();
 
-  // console.log({ isAuthenticated, userRole });
-
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -42,6 +40,23 @@ const Header = () => {
     return false;
   };
 
+  // Helper function to determine if a menu item should be visible based on auth status and role
+  const shouldShowMenuItem = (itemName) => {
+    if (!isAuthenticated) {
+      // When not authenticated, only show Home, About, News & Events, and Careers
+      return ["Home", "About", "News & Events", "Careers"].includes(itemName);
+    } else if (userRole === "teacher") {
+      // For teachers, show Accounts and Request but hide ReqDocs
+      return itemName !== "ReqDocs";
+    } else if (userRole === "user") {
+      // For regular users, show ReqDocs but hide Accounts and Request
+      return !["Accounts", "Request"].includes(itemName);
+    } else {
+      // For other roles (admin, etc.)
+      return true; // Show all menu items
+    }
+  };
+
   const menuItems = [
     { name: "Home", link: "/" },
     {
@@ -59,7 +74,13 @@ const Header = () => {
     { name: "ReqDocs", link: "/reqdocs" },
     { name: "Careers", link: "/careers" },
     { name: "Accounts", link: "/accounts" },
+    { name: "Request", link: "/request" },
   ];
+
+  // Filter menu items based on authentication and user role
+  const filteredMenuItems = menuItems.filter((item) =>
+    shouldShowMenuItem(item.name)
+  );
 
   return (
     <header className="shadow-md w-full fixed top-0 left-0 right-0 z-50 text-red-50">
@@ -92,17 +113,17 @@ const Header = () => {
                     />
                   </div>
                 </Link>
-                <Link to={"/notifications"}>
-                  <div className="relative hover:cursor-pointer">
-                    <Bell className="text-red-primary" size={30} />
-                    <div className="bg-red-primary px-2 -top-2 absolute -right-3 rounded-full text-red-50 text-[15px] font-bold">
-                      {
-                        notifications.filter((n) => n.status === "unread")
-                          .length
-                      }
-                    </div>
+                <div
+                  className="relative hover:cursor-pointer"
+                  onClick={() => {
+                    navigate("notifications");
+                  }}
+                >
+                  <Bell className="text-red-primary" size={30} />
+                  <div className="bg-red-primary px-2 -top-2 absolute -right-3 rounded-full text-red-50 text-[15px] font-bold">
+                    {notifications.filter((n) => n.status === "unread").length}
                   </div>
-                </Link>
+                </div>
               </div>
             ) : (
               <BtnPriRed text={"Login"} navi={"login"} />
@@ -110,14 +131,19 @@ const Header = () => {
           </div>
 
           <div className=" md:hidden flex justify-center items-center space-x-6">
-            <Link to={"/notifications"}>
-              <div className="relative hover:cursor-pointer">
-                <Bell className="text-red-50" size={24} />
-                <div className="bg-white px-2 -top-3 absolute -right-3 rounded-full text-red-primary text-[15px] font-bold">
-                  {notifications.filter((n) => n.status === "unread").length}
-                </div>
+            <div
+              className="relative hover:cursor-pointer"
+              onClick={() => {
+                navigate("notifications");
+                isMenuOpen(false);
+              }}
+            >
+              <Bell className="text-red-50" size={24} />
+              <div className="bg-white px-2 -top-3 absolute -right-3 rounded-full text-red-primary text-[15px] font-bold">
+                {notifications.filter((n) => n.status === "unread").length}
               </div>
-            </Link>
+            </div>
+
             <button
               className=" text-white"
               onClick={toggleMenu}
@@ -133,209 +159,65 @@ const Header = () => {
       <nav className="hidden md:block bg-red-primary">
         <div className="container mx-auto">
           <ul className="flex justify-center items-center">
-            {menuItems.map((item, index) => {
-              if (!isAuthenticated) {
-                if (
-                  item.name === "Announcements" ||
-                  item.name === "ReqDocs" ||
-                  item.name === "Uniforms" ||
-                  item.name === "Accounts"
-                ) {
-                  null;
-                } else {
-                  return (
-                    <li
-                      key={index}
-                      className={`relative ${
-                        isActive(item) ? "border-b-4 border-yellow-400" : ""
-                      }`}
-                      onMouseEnter={() =>
-                        item.hasDropdown && setIsAboutDropdownOpen(true)
-                      }
-                      onMouseLeave={() =>
-                        item.hasDropdown && setIsAboutDropdownOpen(false)
-                      }
-                    >
-                      {item.hasDropdown ? (
-                        <div className="relative">
-                          <button
-                            onClick={toggleAboutDropdown}
-                            className="text-red-50 flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
-                            aria-expanded={isAboutDropdownOpen}
-                            aria-haspopup="true"
-                          >
-                            {item.name}
-                            {isAboutDropdownOpen ? (
-                              <ChevronUp size={18} className="ml-1" />
-                            ) : (
-                              <ChevronDown size={18} className="ml-1" />
-                            )}
-                          </button>
-
-                          {isAboutDropdownOpen && (
-                            <div className="absolute top-full left-0 bg-red-primary shadow-lg w-48 z-10">
-                              <ul className="py-1">
-                                {item.dropdownItems.map(
-                                  (dropdownItem, dropdownIndex) => (
-                                    <li key={dropdownIndex}>
-                                      <Link
-                                        to={dropdownItem.link}
-                                        className="block px-4 py-2 text-red-50 hover:bg-red-800 transition-colors duration-300"
-                                        onClick={() =>
-                                          setIsAboutDropdownOpen(false)
-                                        }
-                                      >
-                                        {dropdownItem.name}
-                                      </Link>
-                                    </li>
-                                  )
-                                )}
-                              </ul>
-                            </div>
-                          )}
-                        </div>
-                      ) : (
-                        <Link
-                          to={item.link}
-                          className="text-white flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
-                        >
-                          {item.name}
-                        </Link>
-                      )}
-                    </li>
-                  );
+            {filteredMenuItems.map((item, index) => (
+              <li
+                key={index}
+                className={`relative ${
+                  isActive(item) ? "border-b-4 border-yellow-400" : ""
+                }`}
+                onMouseEnter={() =>
+                  item.hasDropdown && setIsAboutDropdownOpen(true)
                 }
-              } else {
-                if (userRole === "teacher") {
-                  return (
-                    <li
-                      key={index}
-                      className={`relative ${
-                        isActive(item) ? "border-b-4 border-yellow-400" : ""
-                      }`}
-                      onMouseEnter={() =>
-                        item.hasDropdown && setIsAboutDropdownOpen(true)
-                      }
-                      onMouseLeave={() =>
-                        item.hasDropdown && setIsAboutDropdownOpen(false)
-                      }
-                    >
-                      {item.hasDropdown ? (
-                        <div className="relative">
-                          <button
-                            onClick={toggleAboutDropdown}
-                            className="text-red-50 flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
-                            aria-expanded={isAboutDropdownOpen}
-                            aria-haspopup="true"
-                          >
-                            {item.name}
-                            {isAboutDropdownOpen ? (
-                              <ChevronUp size={18} className="ml-1" />
-                            ) : (
-                              <ChevronDown size={18} className="ml-1" />
-                            )}
-                          </button>
-
-                          {isAboutDropdownOpen && (
-                            <div className="absolute top-full left-0 bg-red-primary shadow-lg w-48 z-10">
-                              <ul className="py-1">
-                                {item.dropdownItems.map(
-                                  (dropdownItem, dropdownIndex) => (
-                                    <li key={dropdownIndex}>
-                                      <Link
-                                        to={dropdownItem.link}
-                                        className="block px-4 py-2 text-red-50 hover:bg-red-800 transition-colors duration-300"
-                                        onClick={() =>
-                                          setIsAboutDropdownOpen(false)
-                                        }
-                                      >
-                                        {dropdownItem.name}
-                                      </Link>
-                                    </li>
-                                  )
-                                )}
-                              </ul>
-                            </div>
-                          )}
-                        </div>
-                      ) : (
-                        <Link
-                          to={item.link}
-                          className="text-white flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
-                        >
-                          {item.name}
-                        </Link>
-                      )}
-                    </li>
-                  );
+                onMouseLeave={() =>
+                  item.hasDropdown && setIsAboutDropdownOpen(false)
                 }
-                if (item.name === "Accounts" && userRole != "teacher") {
-                  null;
-                } else {
-                  return (
-                    <li
-                      key={index}
-                      className={`relative ${
-                        isActive(item) ? "border-b-4 border-yellow-400" : ""
-                      }`}
-                      onMouseEnter={() =>
-                        item.hasDropdown && setIsAboutDropdownOpen(true)
-                      }
-                      onMouseLeave={() =>
-                        item.hasDropdown && setIsAboutDropdownOpen(false)
-                      }
+              >
+                {item.hasDropdown ? (
+                  <div className="relative">
+                    <button
+                      onClick={toggleAboutDropdown}
+                      className="text-red-50 flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
+                      aria-expanded={isAboutDropdownOpen}
+                      aria-haspopup="true"
                     >
-                      {item.hasDropdown ? (
-                        <div className="relative">
-                          <button
-                            onClick={toggleAboutDropdown}
-                            className="text-red-50 flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
-                            aria-expanded={isAboutDropdownOpen}
-                            aria-haspopup="true"
-                          >
-                            {item.name}
-                            {isAboutDropdownOpen ? (
-                              <ChevronUp size={18} className="ml-1" />
-                            ) : (
-                              <ChevronDown size={18} className="ml-1" />
-                            )}
-                          </button>
-
-                          {isAboutDropdownOpen && (
-                            <div className="absolute top-full left-0 bg-red-primary shadow-lg w-48 z-10">
-                              <ul className="py-1">
-                                {item.dropdownItems.map(
-                                  (dropdownItem, dropdownIndex) => (
-                                    <li key={dropdownIndex}>
-                                      <Link
-                                        to={dropdownItem.link}
-                                        className="block px-4 py-2 text-red-50 hover:bg-red-800 transition-colors duration-300"
-                                        onClick={() =>
-                                          setIsAboutDropdownOpen(false)
-                                        }
-                                      >
-                                        {dropdownItem.name}
-                                      </Link>
-                                    </li>
-                                  )
-                                )}
-                              </ul>
-                            </div>
-                          )}
-                        </div>
+                      {item.name}
+                      {isAboutDropdownOpen ? (
+                        <ChevronUp size={18} className="ml-1" />
                       ) : (
-                        <Link
-                          to={item.link}
-                          className="text-white flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
-                        >
-                          {item.name}
-                        </Link>
+                        <ChevronDown size={18} className="ml-1" />
                       )}
-                    </li>
-                  );
-                }
-              }
-            })}
+                    </button>
+
+                    {isAboutDropdownOpen && (
+                      <div className="absolute top-full left-0 bg-red-primary shadow-lg w-48 z-10">
+                        <ul className="py-1">
+                          {item.dropdownItems.map(
+                            (dropdownItem, dropdownIndex) => (
+                              <li key={dropdownIndex}>
+                                <Link
+                                  to={dropdownItem.link}
+                                  className="block px-4 py-2 text-red-50 hover:bg-red-800 transition-colors duration-300"
+                                  onClick={() => setIsAboutDropdownOpen(false)}
+                                >
+                                  {dropdownItem.name}
+                                </Link>
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    to={item.link}
+                    className="text-white flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
+                  >
+                    {item.name}
+                  </Link>
+                )}
+              </li>
+            ))}
           </ul>
         </div>
       </nav>
@@ -345,7 +227,7 @@ const Header = () => {
         <div className="md:hidden py-4 px-4 bg-white text-red-primary">
           <nav>
             <ul className="flex flex-col">
-              {menuItems.map((item, index) => (
+              {filteredMenuItems.map((item, index) => (
                 <li key={index} className="border-b border-gray-200">
                   {item.hasDropdown ? (
                     <div>

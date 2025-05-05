@@ -13,6 +13,8 @@ import CollegePrograms from "./pages/AboutPages/CollegePrograms";
 import Profile from "./pages/Profile";
 import Notification from "./pages/Notification";
 import Login from "./pages/Login";
+import Accounts from "./pages/Accounts";
+import Request from "./pages/Request";
 
 const App = () => {
   return (
@@ -34,6 +36,8 @@ const App = () => {
           <Route path="profile" element={<Profile />} />
           <Route path="notifications" element={<Notification />} />
           <Route path="login" element={<Login />} />
+          <Route path="accounts" element={<Accounts />} />
+          <Route path="request" element={<Request />} />
 
           {/* <Route path="/profile" element={}/>
         <Route path="/signup" element={}/>
