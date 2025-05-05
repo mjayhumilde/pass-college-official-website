@@ -58,6 +58,20 @@ rgb(255 207 80)
     border-bottom: 10px solid var(--color-border-b);
   }
 
+  :root {
+    --color-primary: rgb(128 0 0);
+  }
+  .ring-red-primary:focus {
+    --tw-ring-color: var(--color-primary);
+  }
+  .hover-bg-red-primary:hover {
+    background-color: rgb(100 0 0);
+  }
+
+  .border-red-primary {
+    border-color: var(--color-primary);
+  }
+
   .btn-primary-white {
     background-color: var(--color-primary);
     color: var(--color-background);

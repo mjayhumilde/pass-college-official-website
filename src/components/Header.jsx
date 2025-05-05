@@ -135,7 +135,7 @@ const Header = () => {
               className="relative hover:cursor-pointer"
               onClick={() => {
                 navigate("notifications");
-                isMenuOpen(false);
+                setIsMenuOpen(false);
               }}
             >
               <Bell className="text-red-50" size={24} />

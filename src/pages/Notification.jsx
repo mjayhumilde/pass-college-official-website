@@ -91,7 +91,7 @@ export default function NotificationPage() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl md:text-3xl font-bold text-red-800">
+          <h1 className="text-2xl md:text-3xl font-bold text-red-primary">
             Notifications
           </h1>
           <div className="flex items-center space-x-2">
