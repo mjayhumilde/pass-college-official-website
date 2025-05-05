@@ -14,8 +14,8 @@ const Header = () => {
   const navigate = useNavigate();
 
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const userRole = useAuthStore((state) => state.userRole);
   const { notifications } = useNotificationStore();
-  // const userRole = useAuthStore((state) => state.userRole);
 
   // console.log({ isAuthenticated, userRole });
 
@@ -58,6 +58,7 @@ const Header = () => {
     { name: "Uniforms", link: "/uniforms" },
     { name: "ReqDocs", link: "/reqdocs" },
     { name: "Careers", link: "/careers" },
+    { name: "Accounts", link: "/accounts" },
   ];
 
   return (
@@ -137,7 +138,8 @@ const Header = () => {
                 if (
                   item.name === "Announcements" ||
                   item.name === "ReqDocs" ||
-                  item.name === "Uniforms"
+                  item.name === "Uniforms" ||
+                  item.name === "Accounts"
                 ) {
                   null;
                 } else {
@@ -204,67 +206,134 @@ const Header = () => {
                   );
                 }
               } else {
-                return (
-                  <li
-                    key={index}
-                    className={`relative ${
-                      isActive(item) ? "border-b-4 border-yellow-400" : ""
-                    }`}
-                    onMouseEnter={() =>
-                      item.hasDropdown && setIsAboutDropdownOpen(true)
-                    }
-                    onMouseLeave={() =>
-                      item.hasDropdown && setIsAboutDropdownOpen(false)
-                    }
-                  >
-                    {item.hasDropdown ? (
-                      <div className="relative">
-                        <button
-                          onClick={toggleAboutDropdown}
-                          className="text-red-50 flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
-                          aria-expanded={isAboutDropdownOpen}
-                          aria-haspopup="true"
+                if (userRole === "teacher") {
+                  return (
+                    <li
+                      key={index}
+                      className={`relative ${
+                        isActive(item) ? "border-b-4 border-yellow-400" : ""
+                      }`}
+                      onMouseEnter={() =>
+                        item.hasDropdown && setIsAboutDropdownOpen(true)
+                      }
+                      onMouseLeave={() =>
+                        item.hasDropdown && setIsAboutDropdownOpen(false)
+                      }
+                    >
+                      {item.hasDropdown ? (
+                        <div className="relative">
+                          <button
+                            onClick={toggleAboutDropdown}
+                            className="text-red-50 flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
+                            aria-expanded={isAboutDropdownOpen}
+                            aria-haspopup="true"
+                          >
+                            {item.name}
+                            {isAboutDropdownOpen ? (
+                              <ChevronUp size={18} className="ml-1" />
+                            ) : (
+                              <ChevronDown size={18} className="ml-1" />
+                            )}
+                          </button>
+
+                          {isAboutDropdownOpen && (
+                            <div className="absolute top-full left-0 bg-red-primary shadow-lg w-48 z-10">
+                              <ul className="py-1">
+                                {item.dropdownItems.map(
+                                  (dropdownItem, dropdownIndex) => (
+                                    <li key={dropdownIndex}>
+                                      <Link
+                                        to={dropdownItem.link}
+                                        className="block px-4 py-2 text-red-50 hover:bg-red-800 transition-colors duration-300"
+                                        onClick={() =>
+                                          setIsAboutDropdownOpen(false)
+                                        }
+                                      >
+                                        {dropdownItem.name}
+                                      </Link>
+                                    </li>
+                                  )
+                                )}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <Link
+                          to={item.link}
+                          className="text-white flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
                         >
                           {item.name}
-                          {isAboutDropdownOpen ? (
-                            <ChevronUp size={18} className="ml-1" />
-                          ) : (
-                            <ChevronDown size={18} className="ml-1" />
-                          )}
-                        </button>
+                        </Link>
+                      )}
+                    </li>
+                  );
+                }
+                if (item.name === "Accounts" && userRole != "teacher") {
+                  null;
+                } else {
+                  return (
+                    <li
+                      key={index}
+                      className={`relative ${
+                        isActive(item) ? "border-b-4 border-yellow-400" : ""
+                      }`}
+                      onMouseEnter={() =>
+                        item.hasDropdown && setIsAboutDropdownOpen(true)
+                      }
+                      onMouseLeave={() =>
+                        item.hasDropdown && setIsAboutDropdownOpen(false)
+                      }
+                    >
+                      {item.hasDropdown ? (
+                        <div className="relative">
+                          <button
+                            onClick={toggleAboutDropdown}
+                            className="text-red-50 flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
+                            aria-expanded={isAboutDropdownOpen}
+                            aria-haspopup="true"
+                          >
+                            {item.name}
+                            {isAboutDropdownOpen ? (
+                              <ChevronUp size={18} className="ml-1" />
+                            ) : (
+                              <ChevronDown size={18} className="ml-1" />
+                            )}
+                          </button>
 
-                        {isAboutDropdownOpen && (
-                          <div className="absolute top-full left-0 bg-red-primary shadow-lg w-48 z-10">
-                            <ul className="py-1">
-                              {item.dropdownItems.map(
-                                (dropdownItem, dropdownIndex) => (
-                                  <li key={dropdownIndex}>
-                                    <Link
-                                      to={dropdownItem.link}
-                                      className="block px-4 py-2 text-red-50 hover:bg-red-800 transition-colors duration-300"
-                                      onClick={() =>
-                                        setIsAboutDropdownOpen(false)
-                                      }
-                                    >
-                                      {dropdownItem.name}
-                                    </Link>
-                                  </li>
-                                )
-                              )}
-                            </ul>
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      <Link
-                        to={item.link}
-                        className="text-white flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
-                      >
-                        {item.name}
-                      </Link>
-                    )}
-                  </li>
-                );
+                          {isAboutDropdownOpen && (
+                            <div className="absolute top-full left-0 bg-red-primary shadow-lg w-48 z-10">
+                              <ul className="py-1">
+                                {item.dropdownItems.map(
+                                  (dropdownItem, dropdownIndex) => (
+                                    <li key={dropdownIndex}>
+                                      <Link
+                                        to={dropdownItem.link}
+                                        className="block px-4 py-2 text-red-50 hover:bg-red-800 transition-colors duration-300"
+                                        onClick={() =>
+                                          setIsAboutDropdownOpen(false)
+                                        }
+                                      >
+                                        {dropdownItem.name}
+                                      </Link>
+                                    </li>
+                                  )
+                                )}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <Link
+                          to={item.link}
+                          className="text-white flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
+                        >
+                          {item.name}
+                        </Link>
+                      )}
+                    </li>
+                  );
+                }
               }
             })}
           </ul>
