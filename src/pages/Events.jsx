@@ -1,10 +1,15 @@
 import HeroBgSection from "../components/HeroBgSection";
 import PostLayout from "../components/PostLayout";
+import useAuthStore from "../store/useAuthStore";
+import CreatePostPopup from "../components/CreatePostPopup";
+
 import SectionEventLayout from "../components/SectionEventLayout";
 import { announcement } from "../data/announcement/announcePost";
 import { upCommingEvents } from "../data/home/upcommingEvent";
 
 const Events = () => {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const userRole = useAuthStore((state) => state.userRole);
   return (
     <main>
       <HeroBgSection
@@ -33,6 +38,12 @@ const Events = () => {
           LATEST HAPPENINGS & UPDATES
         </h2>
       </div>
+
+      {isAuthenticated && (userRole === "admin" || userRole === "teacher") ? (
+        <div className="container mx-auto flex justify-end mt-5 mb-10">
+          <CreatePostPopup />
+        </div>
+      ) : null}
 
       <PostLayout data={announcement} label={"BREAKING NEWS"} />
     </main>

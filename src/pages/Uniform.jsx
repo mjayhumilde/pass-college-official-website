@@ -1,8 +1,12 @@
 import HeroBgSection from "../components/HeroBgSection";
 import PostLayout from "../components/PostLayout";
+import CreatePostPopup from "../components/CreatePostPopup";
+import useAuthStore from "../store/useAuthStore";
 import { announcement } from "../data/announcement/announcePost";
 
 const Uniform = () => {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const userRole = useAuthStore((state) => state.userRole);
   return (
     <main>
       <HeroBgSection
@@ -18,6 +22,13 @@ const Uniform = () => {
         </h2>
         {/* <div className="w-55 border-b-2  border-[rgb(255,207,80)] mx-auto mt-2"></div> */}
       </div>
+
+      {isAuthenticated && (userRole === "admin" || userRole === "teacher") ? (
+        <div className="container mx-auto flex justify-end mt-5 mb-10">
+          <CreatePostPopup />
+        </div>
+      ) : null}
+
       <PostLayout data={announcement} label={"UNIFORMS"} />
     </main>
   );
