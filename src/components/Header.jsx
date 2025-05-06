@@ -99,7 +99,11 @@ const Header = () => {
                 alt="PASS College"
               />
               <p className="hidden md:block text-2xl text-red-primary font-bold">
-                PASS COLLEGE
+                {userRole === "admin"
+                  ? "ADMIN"
+                  : userRole === "teacher"
+                  ? "TEACHER"
+                  : "PASS COLLEGE"}
               </p>
             </Link>
           </div>
@@ -115,17 +119,22 @@ const Header = () => {
                     />
                   </div>
                 </Link>
-                <div
-                  className="relative hover:cursor-pointer"
-                  onClick={() => {
-                    navigate("notifications");
-                  }}
-                >
-                  <Bell className="text-red-primary" size={30} />
-                  <div className="bg-red-primary px-2 -top-2 absolute -right-3 rounded-full text-red-50 text-[15px] font-bold">
-                    {notifications.filter((n) => n.status === "unread").length}
+                {userRole === "user" && isAuthenticated && (
+                  <div
+                    className="relative hover:cursor-pointer"
+                    onClick={() => {
+                      navigate("notifications");
+                    }}
+                  >
+                    <Bell className="text-red-primary" size={30} />
+                    <div className="bg-red-primary px-2 -top-2 absolute -right-3 rounded-full text-red-50 text-[15px] font-bold">
+                      {
+                        notifications.filter((n) => n.status === "unread")
+                          .length
+                      }
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             ) : (
               <BtnPriRed text={"Login"} navi={"login"} />
@@ -133,18 +142,20 @@ const Header = () => {
           </div>
 
           <div className=" md:hidden flex justify-center items-center space-x-6">
-            <div
-              className="relative hover:cursor-pointer"
-              onClick={() => {
-                navigate("notifications");
-                setIsMenuOpen(false);
-              }}
-            >
-              <Bell className="text-red-50" size={24} />
-              <div className="bg-white px-2 -top-3 absolute -right-3 rounded-full text-red-primary text-[15px] font-bold">
-                {notifications.filter((n) => n.status === "unread").length}
+            {isAuthenticated && userRole === "user" && (
+              <div
+                className="relative hover:cursor-pointer"
+                onClick={() => {
+                  navigate("notifications");
+                  setIsMenuOpen(false);
+                }}
+              >
+                <Bell className="text-red-50" size={24} />
+                <div className="bg-white px-2 -top-3 absolute -right-3 rounded-full text-red-primary text-[15px] font-bold">
+                  {notifications.filter((n) => n.status === "unread").length}
+                </div>
               </div>
-            </div>
+            )}
 
             <button
               className=" text-white"
