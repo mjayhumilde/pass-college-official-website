@@ -1,12 +1,23 @@
+import DeleteIcon from "./DeleteIcon";
 import Pagination from "./Pagination";
+import useAuthStore from "../store/useAuthStore";
 
 const PostLayout = ({ data, label }) => {
+  const userRole = useAuthStore((state) => state.userRole);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
   return (
     <section className="mx-auto container p-3 md:p-10">
       <div className="flex flex-col gap-10  lg:shadow-2xl lg:px-36">
         {data.map((post) => (
           <div key={post.id} className="bg-red-primary shadow-lg">
             <div className="bg-gray">
+              {isAuthenticated &&
+                (userRole === "admin" || userRole === "teacher") && (
+                  <div className="flex justify-end items-center p-1">
+                    <DeleteIcon id={post.id} itemName={label} />
+                  </div>
+                )}
               <div className="flex justify-between p-2 py-2 md:px-10">
                 <h3 className="text-red-primary font-bold text-xl">
                   {label}!!
