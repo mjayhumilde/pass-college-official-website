@@ -42,7 +42,7 @@ const Header = () => {
 
   // Helper function to determine if a menu item should be visible based on auth status and role
   const shouldShowMenuItem = (itemName) => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated || userRole === null) {
       // When not authenticated, only show Home, About, News & Events, and Careers
       return ["Home", "About", "News & Events", "Careers"].includes(itemName);
     } else if (userRole === "teacher") {
@@ -51,6 +51,8 @@ const Header = () => {
     } else if (userRole === "user") {
       // For regular users, show ReqDocs but hide Accounts and Request
       return !["Accounts", "Request"].includes(itemName);
+    } else if (userRole === "admin") {
+      return !["ReqDocs", "Request"].includes(itemName);
     } else {
       // For other roles (admin, etc.)
       return true; // Show all menu items

@@ -1,28 +1,19 @@
 import { useState, useEffect } from "react";
+import useAuthStore from "../store/useAuthStore";
 import {
   Search,
   UserPlus,
   Trash2,
   ChevronLeft,
   ChevronRight,
-  Edit,
 } from "lucide-react";
 
-// Custom CSS variables
-const styles = {
-  variables: `
-   
-   
-  
-  `,
-};
-
 export default function Accounts() {
-  // State management
   const [accounts, setAccounts] = useState([]);
   const [filteredAccounts, setFilteredAccounts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [courseFilter, setCourseFilter] = useState("");
+  const [roleFilter, setRoleFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
@@ -35,6 +26,8 @@ export default function Accounts() {
   });
 
   const itemsPerPage = 5;
+
+  const userRole = useAuthStore((state) => state.userRole);
 
   // Mock data for demonstration
   useEffect(() => {
@@ -115,7 +108,7 @@ export default function Accounts() {
     setFilteredAccounts(mockAccounts);
   }, []);
 
-  // Filter accounts based on search term and course
+  // Filter accounts based on search term, course, and role
   useEffect(() => {
     const results = accounts.filter((account) => {
       const nameMatch = account.name
@@ -123,12 +116,13 @@ export default function Accounts() {
         .includes(searchTerm.toLowerCase());
       const courseMatch =
         courseFilter === "" || account.course === courseFilter;
-      return nameMatch && courseMatch;
+      const roleMatch = roleFilter === "" || account.role === roleFilter;
+      return nameMatch && courseMatch && roleMatch;
     });
 
     setFilteredAccounts(results);
     setCurrentPage(1); // Reset to first page when filters change
-  }, [searchTerm, courseFilter, accounts]);
+  }, [searchTerm, courseFilter, roleFilter, accounts]);
 
   // Pagination logic
   const totalPages = Math.ceil(filteredAccounts.length / itemsPerPage);
@@ -140,6 +134,9 @@ export default function Accounts() {
 
   // Available courses (derived from accounts)
   const courses = [...new Set(accounts.map((account) => account.course))];
+
+  // Available roles (derived from accounts)
+  const roles = [...new Set(accounts.map((account) => account.role))];
 
   // Handle account creation
   const handleCreateAccount = () => {
@@ -164,7 +161,6 @@ export default function Accounts() {
 
   return (
     <div className="max-w-6xl mx-auto p-2 sm:p-4 md:p-6">
-      <style dangerouslySetInnerHTML={{ __html: styles.variables }} />
       <h1 className="text-2xl sm:text-3xl font-bold text-red-primary mb-4 sm:mb-8">
         Accounts Management
       </h1>
@@ -199,6 +195,24 @@ export default function Accounts() {
               ))}
             </select>
           </div>
+
+          {/* Role filter for admin users */}
+          {userRole === "admin" && (
+            <div className="w-full sm:w-48">
+              <select
+                value={roleFilter}
+                onChange={(e) => setRoleFilter(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 ring-red-primary"
+              >
+                <option value="">All Roles</option>
+                {roles.map((role, index) => (
+                  <option key={index} value={role}>
+                    {role.charAt(0).toUpperCase() + role.slice(1)}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
 
         <button
@@ -395,6 +409,9 @@ export default function Accounts() {
                   }
                 >
                   <option value="student">Student</option>
+                  {userRole === "admin" && (
+                    <option value="teacher">Teacher</option>
+                  )}
                 </select>
               </div>
 
