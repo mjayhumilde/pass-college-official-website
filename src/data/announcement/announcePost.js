@@ -17,7 +17,7 @@ export let announcement = [
     ],
     message:
       "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore repellendus doloribus aliquid illum vel sequi velit dolorem saepe molestiae, eos voluptate officia! Officia eum ad eveniet quaerat qui a magnam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos corrupti, consectetur asperiores ut recusandae est ad velit vero non, repellat quis eos accusantium aut atque alias labore aliquid voluptatum excepturi! Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus illum provident saepe placeat alias. Aspernatur illum a maiores, excepturi necessitatibus temporibus nulla. Odit eos assumenda a asperiores maxime, consequuntur nam?",
-    date: "March 19, 11:51 PM",
+    date: "March 19, 2025",
   },
   {
     id: 2,
@@ -30,7 +30,7 @@ export let announcement = [
     ],
     message:
       "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore repellendus doloribus aliquid illum vel sequi velit dolorem saepe molestiae, eos voluptate officia! Officia eum ad eveniet quaerat qui a magnam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos corrupti, consectetur asperiores ut recusandae est ad velit vero non, repellat quis eos accusantium aut atque alias labore aliquid voluptatum excepturi! Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus illum provident saepe placeat alias. Aspernatur illum a maiores, excepturi necessitatibus temporibus nulla. Odit eos assumenda a asperiores maxime, consequuntur nam?",
-    date: "March 19, 11:51 PM",
+    date: "March 19, 2025",
   },
   {
     id: 3,
@@ -42,7 +42,7 @@ export let announcement = [
     ],
     message:
       "Lorepe molestiae, eos voluptatdipisicing elittium aut atque alias labore aliquid voluptatum excepturi! Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus illum provident saepe placeat alias. Aspernatur illum a maiores, excepturi necessitatibus temporibus nulla. Odit eos assumenda a asperiores maxime, consequuntur nam?",
-    date: "March 19, 11:51 PM",
+    date: "March 19, 2025",
   },
   {
     id: 4,
@@ -53,7 +53,7 @@ export let announcement = [
     ],
     message:
       "Lorepe molestiae, eos voluptatdipisicing elittium aut atque alias labore aliquid voluptatum excepturi! Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus illum provident saepe placeat alias. Aspernatur illum a maiores, excepturi necessitatibus temporibus nulla. Odit eos assumenda a asperiores maxime, consequuntur nam?",
-    date: "March 19, 11:51 PM",
+    date: "March 19, 2025",
   },
   {
     id: 5,
@@ -63,7 +63,7 @@ export let announcement = [
     ],
     message:
       "Lorepe molestiae, eos voluptatdipisicing elittium aut atque alias labore aliquid voluptatum excepturi! Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus illum provident saepe placeat alias. Aspernatur illum a maiores, excepturi necessitatibus temporibus nulla. Odit eos assumenda a asperiores maxime, consequuntur nam?",
-    date: "March 19, 11:51 PM",
+    date: "March 19, 2025",
   },
   {
     id: 6,
@@ -72,7 +72,7 @@ export let announcement = [
     ],
     message:
       "Lorepe molestiae, eos voluptatdipisicing elittium aut atque alias labore aliquid voluptatum excepturi! Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus illum provident saepe placeat alias. Aspernatur illum a maiores, excepturi necessitatibus temporibus nulla. Odit eos assumenda a asperiores maxime, consequuntur nam?",
-    date: "March 19, 11:51 PM",
+    date: "March 19, 2025",
   },
   {
     id: 7,
@@ -92,7 +92,7 @@ export let announcement = [
     ],
     message:
       "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore repellendus doloribus aliquid illum vel sequi velit dolorem saepe molestiae, eos voluptate officia! Officia eum ad eveniet quaerat qui a magnam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos corrupti, consectetur asperiores ut recusandae est ad velit vero non, repellat quis eos accusantium aut atque alias labore aliquid voluptatum excepturi! Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus illum provident saepe placeat alias. Aspernatur illum a maiores, excepturi necessitatibus temporibus nulla. Odit eos assumenda a asperiores maxime, consequuntur nam?",
-    date: "March 19, 11:51 PM",
+    date: "March 19, 2025",
   },
   // {
   //   id: 8,
