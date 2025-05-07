@@ -184,7 +184,7 @@ export default function CreatePostPopup() {
 
                   {/* Image Upload */}
                   <div className="mb-6">
-                    <label className="block text-gray-700 mb-2 flex items-center">
+                    <label className="block text-gray-700 mb-2 items-center">
                       <Image size={16} className="mr-1" />
                       Upload Images
                       {postType === "events"
