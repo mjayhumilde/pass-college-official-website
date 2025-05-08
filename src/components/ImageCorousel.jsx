@@ -166,7 +166,7 @@ const ImageCarousel = ({ images = [], isOpen, onClose, initialIndex = 0 }) => {
       {images && images.length > 0 && currentIndex > 0 && (
         <button
           onClick={goToPrev}
-          className="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 text-white bg-red-primary bg-opacity-80 rounded-full hover:bg-opacity-100"
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 text-white bg-red-primary bg-opacity-80 rounded-full hover:bg-opacity-100 z-50"
         >
           <ChevronLeft size={24} />
         </button>
@@ -175,7 +175,7 @@ const ImageCarousel = ({ images = [], isOpen, onClose, initialIndex = 0 }) => {
       {images && images.length > 0 && currentIndex < images.length - 1 && (
         <button
           onClick={goToNext}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 text-white bg-red-primary bg-opacity-80 rounded-full hover:bg-opacity-100"
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 text-white bg-red-primary bg-opacity-80 rounded-full hover:bg-opacity-100 z-50"
         >
           <ChevronRight size={24} />
         </button>
