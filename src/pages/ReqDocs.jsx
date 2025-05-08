@@ -18,8 +18,6 @@ const ReqDocs = () => {
 
   return (
     <main>
-      <PendingRequestsSection />
-
       <div className=" text-center space-y-4 flex  justify-center items-center my-6">
         <div className="shadow-lg p-2">
           <div className="flex justify-center items-center mt-1 mb-3">
@@ -35,7 +33,7 @@ const ReqDocs = () => {
             onSubmit={handleSubmit(onSubmitForm)}
             className="space-y-4 p-5 sm:w-full md:w-[500px]"
           >
-            <div className=" flex flex-col items-start w-full space-y-1">
+            {/* <div className=" flex flex-col items-start w-full space-y-1">
               <label className="font-bold text-red-950">Full Name</label>
               <input
                 {...register("name", { required: true })}
@@ -67,7 +65,7 @@ const ReqDocs = () => {
                   placeholder="Enter your email"
                 />
               </div>
-            </div>
+            </div> */}
 
             <div className=" flex flex-col items-start  w-full space-y-1">
               <label className="font-bold text-red-950">Document Type</label>
@@ -102,7 +100,7 @@ const ReqDocs = () => {
                 <option value="other">Other</option>
               </select>
             </div>
-
+            {/* 
             <div className="flex flex-col items-start w-full space-y-1">
               <label className="font-bold text-red-950">
                 Additional Information (Optional)
@@ -112,7 +110,7 @@ const ReqDocs = () => {
                 placeholder="Any additional details about your request..."
                 className="w-full border p-2  h-32 border-red-950"
               ></textarea>
-            </div>
+            </div> */}
 
             <div className="mt-7">
               <button
@@ -137,6 +135,8 @@ const ReqDocs = () => {
       <div>
         <DocumentRequestForm />
       </div> */}
+
+      <PendingRequestsSection />
     </main>
   );
 };
