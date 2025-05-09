@@ -4,7 +4,7 @@ import weWElcomeAll from "../assets/images/home/weWelcomeAll/weWelcomeAll.jpg";
 import { ChevronRight, ExternalLink } from "lucide-react";
 import adsVideo from "../assets/videos/pass_ads_video.mp4";
 import BtnPriWhite from "../components/BtnPriWhite";
-import { news } from "../data/home/news";
+import { news } from "../data/news-events/news";
 import CardSlider from "../components/CardSlider-choosePass";
 import { foster } from "../data/home/foster";
 import { advIdeas } from "../data/home/advanceIdeas";
@@ -14,6 +14,7 @@ import EventCard from "../components/eventCard";
 import { upCommingEvents } from "../data/home/upcommingEvent";
 import CardExample from "../components/practice";
 import SectionEventLayout from "../components/SectionEventLayout";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const playVideo = (e) => {
@@ -57,31 +58,34 @@ const Home = () => {
 
         <div className="container mx-auto">
           {news.length === 0 ? (
-            // Center the "No News" message
+            // No News" message
             <div className="flex justify-center items-center h-[50vh] text-xl font-semibold">
               No news at the moment...🤧
             </div>
           ) : (
             <div>
               <div className="p-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
-                {news.map((item) => (
+                {news.slice(0, 4).map((item) => (
                   <div key={item.id} className="flex flex-col h-full shadow-lg">
                     <div className="h-48 sm:h-56 md:h-64 overflow-hidden">
                       <img
-                        className="w-full h-full object-cover hover:scale-110 transition-all duration-500 cursor-pointer"
-                        src={item.images}
-                        alt={item.title}
+                        className="w-full h-full object-cover transition-all duration-500"
+                        src={item.img.slice(0, 1)}
+                        alt={item.message}
                       />
                     </div>
 
-                    <div className="bg-red-primary text-red-50 font-semibold p-3 flex justify-center items-center">
-                      <div className="underline decoration-red-300 hover:decoration-red-50 cursor-pointer flex items-start gap-1 max-w-full">
-                        <span className="line-clamp-3 text-sm">
-                          {item.title}
-                        </span>
-                        <ExternalLink className="w-4 h-4 flex-shrink-0 mt-1 hover" />
+                    <Link to={`news-events#news-${item.id}`}>
+                      {console.log("Link ID:", item.id)}
+                      <div className="bg-red-primary text-red-50 font-semibold p-3 flex justify-center items-center">
+                        <div className="underline decoration-red-300 hover:decoration-red-50 cursor-pointer flex items-start gap-1 max-w-full">
+                          <span className="line-clamp-3 text-sm">
+                            {item.message}
+                          </span>
+                          <ExternalLink className="w-4 h-4 flex-shrink-0 mt-1 hover" />
+                        </div>
                       </div>
-                    </div>
+                    </Link>
                   </div>
                 ))}
               </div>

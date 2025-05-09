@@ -4,12 +4,31 @@ import useAuthStore from "../store/useAuthStore";
 import CreatePostPopup from "../components/CreatePostPopup";
 
 import SectionEventLayout from "../components/SectionEventLayout";
-import { announcement } from "../data/announcement/announcePost";
+import { news } from "../data/news-events/news";
 import { upCommingEvents } from "../data/home/upcommingEvent";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const Events = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const userRole = useAuthStore((state) => state.userRole);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      setTimeout(() => {
+        const element = document.querySelector(location.hash);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else {
+          window.scrollTo(0, 0);
+        }
+      }, 100); // Adjust the delay (in milliseconds) as needed
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [location.hash]);
   return (
     <main>
       <HeroBgSection
@@ -45,7 +64,7 @@ const Events = () => {
         </div>
       ) : null}
 
-      <PostLayout data={announcement} label={"BREAKING NEWS"} />
+      <PostLayout data={news} label={"BREAKING NEWS"} />
     </main>
   );
 };

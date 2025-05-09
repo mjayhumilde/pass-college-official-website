@@ -40,7 +40,7 @@ const PostLayout = ({ data, label }) => {
       <div className="flex flex-col gap-10 lg:shadow-2xl lg:px-36">
         {data.map((post) => (
           <div key={post.id} className="bg-red-primary shadow-lg">
-            <div className="bg-gray">
+            <div id={`news-${post.id}`} className="bg-gray">
               {isAuthenticated &&
                 (userRole === "admin" || userRole === "teacher") && (
                   <div className="flex justify-end items-center p-1">
