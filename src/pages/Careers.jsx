@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import CreatePostPopup from "../components/CreatePostPopup";
 import HeroBgSection from "../components/HeroBgSection";
 import PostLayout from "../components/PostLayout";
@@ -7,6 +8,10 @@ import useAuthStore from "../store/useAuthStore";
 const Careers = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const userRole = useAuthStore((state) => state.userRole);
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top on mount
+  }, []);
 
   return (
     <main>

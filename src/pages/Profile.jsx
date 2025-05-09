@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Edit, Camera, LogOutIcon } from "lucide-react";
 
 const Profile = () => {
@@ -45,6 +45,10 @@ const Profile = () => {
     setIsEditing(false);
     // In a real app, you would save changes to the server here
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top on mount
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100">

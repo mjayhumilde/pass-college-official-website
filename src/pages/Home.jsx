@@ -15,12 +15,17 @@ import { upCommingEvents } from "../data/home/upcommingEvent";
 import CardExample from "../components/practice";
 import SectionEventLayout from "../components/SectionEventLayout";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 const Home = () => {
   const playVideo = (e) => {
     e.target.muted = false;
     e.target.play();
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top on mount
+  }, []);
 
   return (
     <main>

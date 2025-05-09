@@ -14,6 +14,7 @@ import { cards } from "../../data/home/choose";
 import CourseRecommendationQuiz from "../../components/ourseRecommendationQuiz";
 
 import useAuthStore from "../../store/useAuthStore";
+import { useEffect } from "react";
 
 const CollegePrograms = () => {
   // img adrs  https://scontent.fcrk1-5.fna.fbcdn.net/v/t39.30808-6/484880416_1210267821105051_5144354052467757109_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=127cfc&_nc_ohc=5j_klYeW5cYQ7kNvgEnhVd1&_nc_oc=AdkoPZnxj9XuHvmIhr0fXdCtW4b7Lr1MA0bjvqPt6_V_v39N8R68kSo3AUbZU-H8C8U&_nc_zt=23&_nc_ht=scontent.fcrk1-5.fna&_nc_gid=GlSRuY223SOsqWSVovofsg&oh=00_AYEgS2xiOv59NaAD7xt7nRQcT0fYtRmvYQAgiSASWm4G_A&oe=67E28E91
@@ -21,6 +22,10 @@ const CollegePrograms = () => {
 
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const userRole = useAuthStore((state) => state.userRole);
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top on mount
+  }, []);
 
   return (
     <div className="relative">

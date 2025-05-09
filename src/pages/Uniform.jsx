@@ -3,10 +3,15 @@ import PostLayout from "../components/PostLayout";
 import CreatePostPopup from "../components/CreatePostPopup";
 import useAuthStore from "../store/useAuthStore";
 import { announcement } from "../data/announcement/announcePost";
+import { useEffect } from "react";
 
 const Uniform = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const userRole = useAuthStore((state) => state.userRole);
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top on mount
+  }, []);
   return (
     <main>
       <HeroBgSection

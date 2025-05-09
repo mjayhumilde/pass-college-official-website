@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -188,6 +188,10 @@ export default function Request() {
       setCurrentPage(pageNumber);
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top on mount
+  }, []);
 
   return (
     <div className="w-full p-6 bg-gray-50">

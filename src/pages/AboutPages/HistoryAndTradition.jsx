@@ -8,8 +8,12 @@ import GalleryLayout from "../../components/GalleryLayout";
 
 import { meanings } from "../../data/about/historyTradition/deeperMeaning";
 import { tradition } from "../../data/about/historyTradition/tradition";
+import { useEffect } from "react";
 
 const HistoryAndTradition = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top on mount
+  }, []);
   return (
     <>
       <HeroBgSection img={historyBG} label={"History and Traditions"} />

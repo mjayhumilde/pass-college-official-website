@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Eye, EyeOff, Mail, Lock, User, AlertTriangle } from "lucide-react";
 import logo from "../assets/images/pass_log-removebg-preview.png";
 
@@ -35,6 +35,10 @@ export default function Login() {
       }
     }, 1500);
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top on mount
+  }, []);
 
   return (
     <div className="py-3 bg-gray flex flex-col justify-center px-4 sm:px-6 lg:px-8">

@@ -30,6 +30,8 @@ export default function NotificationPage() {
     setTimeout(() => {
       setLoading(false);
     }, 1000);
+
+    window.scrollTo(0, 0);
   }, []);
 
   // Filter notifications based on active tab

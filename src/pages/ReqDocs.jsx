@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import DocumentRequestForm from "../components/DocumentRequestForm";
 import { FileText } from "lucide-react";
 import PendingRequestsSection from "../components/RequestStatus";
+import { useEffect } from "react";
 
 const ReqDocs = () => {
   const {
@@ -15,6 +16,10 @@ const ReqDocs = () => {
     console.log(formData);
     reset();
   }
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top on mount
+  }, []);
 
   return (
     <main>

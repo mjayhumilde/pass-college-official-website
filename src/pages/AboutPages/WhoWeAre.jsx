@@ -8,8 +8,13 @@ import HeroBgSection from "../../components/HeroBgSection";
 import SectionUnbalance from "../../components/SectionUnbalance";
 import { innovationPastFuture } from "../../data/about/whoWeAre/innovationPastFutrure";
 import { sharedValues } from "../../data/about/whoWeAre/sharedValues";
+import { useEffect } from "react";
 
 const WhoWeAre = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top on mount
+  }, []);
+
   return (
     <>
       <HeroBgSection img={whoWeAreBG} label={"Who we are"} />

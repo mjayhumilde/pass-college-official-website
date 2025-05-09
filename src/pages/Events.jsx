@@ -24,7 +24,7 @@ const Events = () => {
         } else {
           window.scrollTo(0, 0);
         }
-      }, 100); // Adjust the delay (in milliseconds) as needed
+      }, 100);
     } else {
       window.scrollTo(0, 0);
     }

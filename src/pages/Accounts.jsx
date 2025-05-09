@@ -106,6 +106,8 @@ export default function Accounts() {
 
     setAccounts(mockAccounts);
     setFilteredAccounts(mockAccounts);
+
+    window.scrollTo(0, 0); // Scroll to the top on mount
   }, []);
 
   // Filter accounts based on search term, course, and role
