@@ -19,41 +19,38 @@ const ResponsiveCardSlider = ({ cards }) => {
     setActiveIndex(index);
   };
 
-  // Auto-slide functionality
+  // Auto-slide
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
-    }, 5000); // Change slide every 5 seconds
+    }, 3000); //  3 seconds
 
     return () => clearInterval(interval);
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="relative w-full max-w-7xl mx-auto px-3 py-0">
-      {/* Slider container */}
-      <div className="relative overflow-hidden">
-        {/* Slides wrapper */}
-        <div
-          className="flex transition-transform duration-500 ease-in-out"
-          style={{ transform: `translateX(-${activeIndex * 100}%)` }}
-        >
-          {cards.map((card) => (
-            <div key={card.id} className="min-w-full flex-shrink-0 px-1">
-              <div className="relative overflow-hidden h-full shadow-lg">
-                {/* Image */}
-                <img
-                  src={card.image}
-                  alt={`Slide ${card.id}`}
-                  className="w-full h-64 sm:h-80 md:h-96 object-cover"
-                />
-                {/* Caption */}
-                <div className="absolute bottom-0 left-0 right-0 bg-red-800 text-red-50 p-3 text-center">
-                  <p className="text-sm sm:text-base">{card.caption}</p>
-                </div>
+      <div className="relative overflow-hidden h-64 sm:h-80 md:h-96">
+        {cards.map((card, index) => (
+          <div
+            key={card.id}
+            style={{
+              display: index === activeIndex ? "block" : "none",
+            }}
+          >
+            <div className="relative shadow-lg">
+              <img
+                src={card.image}
+                alt={`Slide ${card.id}`}
+                className="w-full h-64 sm:h-80 md:h-96 object-cover"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-red-800 text-red-50 p-3 text-center">
+                <p className="text-sm sm:text-base">{card.caption}</p>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
 
         {/* Navigation Arrows */}
         <button
@@ -89,48 +86,58 @@ const ResponsiveCardSlider = ({ cards }) => {
   );
 };
 
-// For desktop view with multiple cards
+//  desktop view
 const DesktopCardSlider = ({ cards }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const visibleCards = 3; // Number of cards visible
+  const maxIndex = Math.max(0, cards.length - visibleCards);
 
   const nextSlide = () => {
-    setActiveIndex((prevIndex) =>
-      prevIndex === cards.length - 3 ? 0 : prevIndex + 1
-    );
+    setActiveIndex((prevIndex) => (prevIndex >= maxIndex ? 0 : prevIndex + 1));
   };
 
   const prevSlide = () => {
-    setActiveIndex((prevIndex) =>
-      prevIndex === 0 ? cards.length - 3 : prevIndex - 1
-    );
+    setActiveIndex((prevIndex) => (prevIndex === 0 ? maxIndex : prevIndex - 1));
   };
 
   const goToSlide = (index) => {
-    if (index > cards.length - 3) {
-      index = cards.length - 3;
+    if (index > maxIndex) {
+      index = maxIndex;
     }
     setActiveIndex(index);
   };
 
+  // Auto-slide
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 3000); // 3 seconds
+
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <div className="relative w-full max-w-6xl mx-auto ">
+    <div className="relative w-full max-w-6xl mx-auto">
       <div className="overflow-hidden">
         <div
           className="flex transition-transform duration-500 ease-in-out"
-          style={{ transform: `translateX(-${activeIndex * 33.33}%)` }}
+          style={{
+            transform: `translateX(-${activeIndex * (100 / visibleCards)}%)`,
+          }}
         >
           {cards.map((card) => (
-            <div key={card.id} className="w-1/3 flex-shrink-0 px-2 ">
+            <div key={card.id} className="w-1/3 flex-shrink-0 px-2">
               <div className="relative overflow-hidden shadow-lg">
                 <img
                   src={card.image}
                   alt={`Slide ${card.id}`}
-                  className="hover:scale-105 transition-transform duration-600 w-full h-96 object-cover"
+                  className="hover:scale-105 transition-transform duration-500 w-full h-96 object-cover"
                 />
                 <div className="block lg:hidden absolute bottom-0 left-0 right-0 bg-red-800 text-red-50 p-4 text-center">
                   <p>{card.caption}</p>
                 </div>
-                <div className="hidden p-5 absolute inset-0 bg-[rgb(128,0,0)]/60 text-white lg:flex items-center justify-center text-xl font-semibold opacity-0 transition-opacity duration-600 hover:opacity-100">
+                <div className="hidden p-5 absolute inset-0 bg-red-800/70 bg-opacity-60 text-white lg:flex items-center justify-center text-xl font-semibold opacity-0 transition-opacity duration-500 hover:opacity-100">
                   {card.caption}
                 </div>
               </div>
@@ -157,7 +164,7 @@ const DesktopCardSlider = ({ cards }) => {
 
       {/* Pagination Dots */}
       <div className="flex justify-center mt-4 gap-2">
-        {Array.from({ length: cards.length - 2 }).map((_, index) => (
+        {Array.from({ length: maxIndex + 1 }).map((_, index) => (
           <button
             key={index}
             onClick={() => goToSlide(index)}
@@ -174,7 +181,7 @@ const DesktopCardSlider = ({ cards }) => {
 
 // Responsive wrapper component
 const CardSlider = ({ cards }) => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(true);
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -191,10 +198,14 @@ const CardSlider = ({ cards }) => {
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
+  // Make sure least 3 cards for desktop view
+  const safeCards =
+    cards.length < 3 ? [...cards, ...cards, ...cards].slice(0, 3) : cards;
+
   return isMobile ? (
     <ResponsiveCardSlider cards={cards} />
   ) : (
-    <DesktopCardSlider cards={cards} />
+    <DesktopCardSlider cards={safeCards} />
   );
 };
 
