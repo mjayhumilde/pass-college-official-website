@@ -1,7 +1,7 @@
 import upcommingEvent1 from "../../assets/images/home/upcommingEvents/upcommingEvent1.jpg";
 import upcommingEvent2 from "../../assets/images/home/upcommingEvents/upcommingEvent2.jpg";
 
-export let upCommingEvents = [
+export let events = [
   {
     id: 1,
     img: `${upcommingEvent1}`,

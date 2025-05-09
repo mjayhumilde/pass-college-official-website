@@ -5,7 +5,7 @@ import CreatePostPopup from "../components/CreatePostPopup";
 
 import SectionEventLayout from "../components/SectionEventLayout";
 import { news } from "../data/news-events/news";
-import { upCommingEvents } from "../data/home/upcommingEvent";
+import { events } from "../data/news-events/events";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -44,7 +44,7 @@ const Events = () => {
         </h2>
         <div className="w-25 border-b-2 border-[rgb(255,207,80)] mx-auto mt-2"></div>
       </div> */}
-      <SectionEventLayout data={upCommingEvents} label={"EVENTS"} />
+      <SectionEventLayout data={events} label={"EVENTS"} />
 
       <div className="text-center mt-14 px-2 pb-0">
         <h2 className="text-3xl md:text-5xl font-bold tracking-wider text-red-primary">

@@ -11,7 +11,7 @@ import { advIdeas } from "../data/home/advanceIdeas";
 import { cards } from "../data/home/choose";
 import { home } from "../data/home/weCallPassHome";
 import EventCard from "../components/eventCard";
-import { upCommingEvents } from "../data/home/upcommingEvent";
+import { events } from "../data/news-events/events";
 import CardExample from "../components/practice";
 import SectionEventLayout from "../components/SectionEventLayout";
 import { Link } from "react-router-dom";
@@ -81,7 +81,6 @@ const Home = () => {
                     </div>
 
                     <Link to={`news-events#news-${item.id}`}>
-                      {console.log("Link ID:", item.id)}
                       <div className="bg-red-primary text-red-50 font-semibold p-3 flex justify-center items-center">
                         <div className="underline decoration-red-300 hover:decoration-red-50 cursor-pointer flex items-start gap-1 max-w-full">
                           <span className="line-clamp-3 text-sm">
@@ -311,7 +310,7 @@ const Home = () => {
         <CardSlider cards={home} />
       </section>
 
-      <SectionEventLayout data={upCommingEvents} label={"UPCOMMING EVENTS"} />
+      <SectionEventLayout data={events} label={"UPCOMMING EVENTS"} />
     </main>
   );
 };
