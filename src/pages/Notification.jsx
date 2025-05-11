@@ -98,7 +98,8 @@ export default function NotificationPage() {
           </h1>
           <div className="flex items-center space-x-2">
             <span className="text-sm font-medium text-gray-500">
-              {notifications.filter((n) => n.status === "unread").length} unread
+              {notifications.filter((n) => n.notifStatus === "unread").length}{" "}
+              unread
             </span>
             <Bell className="text-red-800" size={20} />
           </div>
@@ -142,7 +143,9 @@ export default function NotificationPage() {
                 <li
                   key={notification.id}
                   className={`p-4 sm:p-6 transition-colors ${
-                    notification.status === "unread" ? "bg-red-50" : "bg-white"
+                    notification.notifStatus === "unread"
+                      ? "bg-red-50"
+                      : "bg-white"
                   }`}
                 >
                   <div className="flex items-start justify-between">
@@ -155,7 +158,7 @@ export default function NotificationPage() {
                           <h3 className="font-medium text-gray-900">
                             {notification.title}
                           </h3>
-                          {notification.status === "unread" && (
+                          {notification.notifStatus === "unread" && (
                             <span className="ml-2 h-2 w-2 rounded-full bg-red-800"></span>
                           )}
                         </div>
@@ -172,7 +175,7 @@ export default function NotificationPage() {
                       </div>
                     </div>
                     <div className="flex space-x-2">
-                      {notification.status === "unread" && (
+                      {notification.notifStatus === "unread" && (
                         <button
                           onClick={() => markAsRead(notification.id)}
                           className="text-xs text-red-800 hover:text-red-900"

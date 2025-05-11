@@ -132,7 +132,7 @@ const Header = () => {
                     <Bell className="text-red-primary" size={30} />
                     <div className="bg-red-primary px-2 -top-2 absolute -right-3 rounded-full text-red-50 text-[15px] font-bold">
                       {
-                        notifications.filter((n) => n.status === "unread")
+                        notifications.filter((n) => n.notifStatus === "unread")
                           .length
                       }
                     </div>
@@ -155,7 +155,10 @@ const Header = () => {
               >
                 <Bell className="text-red-50" size={24} />
                 <div className="bg-white px-2 -top-3 absolute -right-3 rounded-full text-red-primary text-[15px] font-bold">
-                  {notifications.filter((n) => n.status === "unread").length}
+                  {
+                    notifications.filter((n) => n.notifStatus === "unread")
+                      .length
+                  }
                 </div>
               </div>
             )}

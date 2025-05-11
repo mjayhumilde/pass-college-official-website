@@ -6,7 +6,7 @@ export let notifications = [
     description:
       "School will be closed tomorrow due to severe weather conditions.",
     date: "2025-05-03",
-    status: "unread",
+    notifStatus: "unread",
   },
   {
     id: 2,
@@ -14,7 +14,7 @@ export let notifications = [
     title: "Teaching Position Available",
     description: "We're hiring Math teachers. Apply before May 15.",
     date: "2025-05-02",
-    status: "read",
+    notifStatus: "read",
   },
   {
     id: 3,
@@ -22,7 +22,7 @@ export let notifications = [
     title: "Students Win Science Competition",
     description: "Our students took first place in the regional science fair.",
     date: "2025-05-01",
-    status: "unread",
+    notifStatus: "unread",
   },
   {
     id: 4,
@@ -31,7 +31,7 @@ export let notifications = [
     description:
       "Annual sports day scheduled for May 20. All students must participate.",
     date: "2025-04-30",
-    status: "read",
+    notifStatus: "read",
   },
   {
     id: 5,
@@ -39,7 +39,7 @@ export let notifications = [
     title: "Summer Uniform Update",
     description: "Summer uniforms are now available at the school store.",
     date: "2025-04-29",
-    status: "unread",
+    notifStatus: "unread",
   },
   {
     id: 6,
@@ -48,7 +48,7 @@ export let notifications = [
     description:
       "Your request for transcripts has been approved and is being processed.",
     date: "2025-04-28",
-    status: "read",
+    notifStatus: "read",
   },
   {
     id: 7,
@@ -56,7 +56,7 @@ export let notifications = [
     title: "New Curriculum Announcement",
     description: "We're updating our curriculum for the next academic year.",
     date: "2025-04-27",
-    status: "unread",
+    notifStatus: "unread",
   },
   {
     id: 8,
@@ -64,7 +64,7 @@ export let notifications = [
     title: "School Ranked Top 10",
     description: "Our school has been ranked in the top 10 in the state.",
     date: "2025-04-26",
-    status: "read",
+    notifStatus: "read",
   },
   {
     id: 9,
@@ -72,7 +72,7 @@ export let notifications = [
     title: "Certificate Request Completed",
     description: "Your requested certificates are ready for pickup.",
     date: "2025-04-25",
-    status: "unread",
+    notifStatus: "unread",
   },
   {
     id: 10,
@@ -80,6 +80,6 @@ export let notifications = [
     title: "Parent-Teacher Conference",
     description: "Parent-teacher conferences scheduled for next week.",
     date: "2025-04-24",
-    status: "read",
+    notifStatus: "read",
   },
 ];
