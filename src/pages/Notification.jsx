@@ -36,7 +36,7 @@ export default function NotificationPage() {
 
   // Filter notifications based on active tab
   const filteredNotifications = notifications.filter(
-    (notification) => activeTab === "all" || notification.type === activeTab
+    (notification) => activeTab === "all" || notification.postType === activeTab
   );
 
   // Pagination logic
@@ -52,8 +52,8 @@ export default function NotificationPage() {
   );
 
   // Get icon based on notification type
-  const getIcon = (type) => {
-    switch (type) {
+  const getIcon = (postType) => {
+    switch (postType) {
       case "announcement":
         return <Megaphone className="text-red-800" size={20} />;
       case "career":
@@ -148,7 +148,7 @@ export default function NotificationPage() {
                   <div className="flex items-start justify-between">
                     <div className="flex items-start space-x-3 sm:space-x-4">
                       <div className="flex-shrink-0 p-2 bg-red-100 rounded-full">
-                        {getIcon(notification.type)}
+                        {getIcon(notification.postType)}
                       </div>
                       <div>
                         <div className="flex items-center">
@@ -160,13 +160,13 @@ export default function NotificationPage() {
                           )}
                         </div>
                         <p className="mt-1 text-sm text-gray-600">
-                          {notification.content}
+                          {notification.description}
                         </p>
                         <div className="mt-2 flex items-center text-xs text-gray-500">
                           <span>{formatDate(notification.date)}</span>
                           <span className="mx-2">•</span>
                           <span className="capitalize">
-                            {notification.type}
+                            {notification.postType}
                           </span>
                         </div>
                       </div>

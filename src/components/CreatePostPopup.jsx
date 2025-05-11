@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Plus, X, Calendar, Clock, Image, FileText } from "lucide-react";
 
 import usePostStore from "../store/usePostStore";
+import useNotificationStore from "../store/useNotificationStore";
 
 export default function CreatePostPopup() {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,6 +34,8 @@ export default function CreatePostPopup() {
   const news = usePostStore((state) => state.news);
   const uniforms = usePostStore((state) => state.uniforms);
   const careers = usePostStore((state) => state.careers);
+
+  const { addNewNotification } = useNotificationStore();
 
   const handleImageChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -97,10 +100,10 @@ export default function CreatePostPopup() {
     switch (postType) {
       case "announcement":
         addNewAnnouncement(dataWithId);
+
         break;
       case "events":
         addNewEvents(dataWithId);
-
         break;
       case "news":
         addNewNews(dataWithId);
@@ -115,13 +118,17 @@ export default function CreatePostPopup() {
       default:
         break;
     }
+
+    // added a status property for notif
+    const dataForNotif = { status: "unread", ...dataWithId };
+    addNewNotification(dataForNotif);
+
     // Reset form and close popup
     resetForm();
     setIsOpen(false);
   };
 
   const resetForm = () => {
-    // No need to revoke URLs for base64 strings
     setPostType("");
     setTitle("");
     setDescription("");
@@ -140,7 +147,6 @@ export default function CreatePostPopup() {
     if (postType === "events" && (!eventDate || !eventTime)) return false;
     return true;
   };
-  console.log(events);
 
   return (
     <div>
