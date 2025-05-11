@@ -2,12 +2,16 @@ import HeroBgSection from "../components/HeroBgSection";
 import PostLayout from "../components/PostLayout";
 import CreatePostPopup from "../components/CreatePostPopup";
 import useAuthStore from "../store/useAuthStore";
-import { announcement } from "../data/announcement/announcePost";
+import usePostStore from "../store/usePostStore";
+
 import { useEffect } from "react";
 
 const Uniform = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const userRole = useAuthStore((state) => state.userRole);
+
+  const uniforms = usePostStore((state) => state.uniforms);
+  console.log(uniforms);
 
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to the top on mount
@@ -34,7 +38,7 @@ const Uniform = () => {
         </div>
       ) : null}
 
-      <PostLayout data={announcement} label={"UNIFORMS"} />
+      <PostLayout data={uniforms} label={"UNIFORMS"} />
     </main>
   );
 };

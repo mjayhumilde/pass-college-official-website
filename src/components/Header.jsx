@@ -87,8 +87,8 @@ const Header = () => {
   return (
     <header className="shadow-md w-full fixed top-0 left-0 right-0 z-50 text-red-50">
       <div className="bg-red-primary md:bg-white py-1 px-4 md:px-8">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="flex items-center">
+        <div className=" container mx-auto flex justify-between items-center">
+          <div className="flex items-center relative">
             <Link
               to="/"
               className="flex justify-center items-center space-x-1 text-xl font-serif "
@@ -105,6 +105,9 @@ const Header = () => {
                   ? "TEACHER"
                   : "PASS COLLEGE"}
               </p>
+              {/* <span className="absolute text-red-primary -bottom-2 text-[]">
+                digital hub
+              </span> */}
             </Link>
           </div>
 

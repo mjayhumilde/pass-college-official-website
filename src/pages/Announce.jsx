@@ -2,12 +2,14 @@ import { useEffect } from "react";
 import CreatePostPopup from "../components/CreatePostPopup";
 import HeroBgSection from "../components/HeroBgSection";
 import PostLayout from "../components/PostLayout";
-import { announcement } from "../data/announcement/announcePost";
 import useAuthStore from "../store/useAuthStore";
+import usePostStore from "../store/usePostStore";
 
 const Announce = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const userRole = useAuthStore((state) => state.userRole);
+
+  const announcements = usePostStore((state) => state.announcements);
 
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to the top on mount
@@ -31,7 +33,7 @@ const Announce = () => {
           <CreatePostPopup />
         </div>
       ) : null}
-      <PostLayout data={announcement} label={"ANNOUNCEMENT"} />
+      <PostLayout data={announcements} label={"ANNOUNCEMENT"} />
     </main>
   );
 };

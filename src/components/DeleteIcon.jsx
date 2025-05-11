@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
+import { announcement } from "../data/announcement/announcePost";
 
 export default function DeleteIcon({ id, itemName }) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -15,6 +16,8 @@ export default function DeleteIcon({ id, itemName }) {
   const handleConfirm = () => {
     console.log(id);
     setIsConfirmOpen(false);
+    const updatedAnnouncement = announcement.filter((post) => post.id != id);
+    console.log(updatedAnnouncement);
   };
 
   return (

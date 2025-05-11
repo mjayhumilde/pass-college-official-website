@@ -1,17 +1,20 @@
 import HeroBgSection from "../components/HeroBgSection";
 import PostLayout from "../components/PostLayout";
 import useAuthStore from "../store/useAuthStore";
+import usePostStore from "../store/usePostStore";
 import CreatePostPopup from "../components/CreatePostPopup";
 
 import SectionEventLayout from "../components/SectionEventLayout";
-import { news } from "../data/news-events/news";
-import { events } from "../data/news-events/events";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 const Events = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const userRole = useAuthStore((state) => state.userRole);
+
+  const events = usePostStore((state) => state.events);
+  const news = usePostStore((state) => state.news);
+  console.log(news);
 
   const location = useLocation();
 
