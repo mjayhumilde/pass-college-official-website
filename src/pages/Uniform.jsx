@@ -11,7 +11,6 @@ const Uniform = () => {
   const userRole = useAuthStore((state) => state.userRole);
 
   const uniforms = usePostStore((state) => state.uniforms);
-  console.log(uniforms);
 
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to the top on mount

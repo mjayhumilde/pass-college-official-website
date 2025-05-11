@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Plus, X, Calendar, Clock, Image, FileText } from "lucide-react";
 
-// Custom CSS for the primary color
+import usePostStore from "../store/usePostStore";
 
 export default function CreatePostPopup() {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,40 +20,108 @@ export default function CreatePostPopup() {
     { id: "careers", label: "Careers", minImages: 1 },
   ];
 
+  const {
+    addNewAnnouncement,
+    addNewEvents,
+    addNewNews,
+    addNewUniforms,
+    addNewCareers,
+  } = usePostStore();
+
+  const announcements = usePostStore((state) => state.announcements);
+  const events = usePostStore((state) => state.events);
+  const news = usePostStore((state) => state.news);
+  const uniforms = usePostStore((state) => state.uniforms);
+  const careers = usePostStore((state) => state.careers);
+
   const handleImageChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     const currentPostType = postTypes.find((p) => p.id === postType);
 
+    const processFile = (file) => {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          resolve({
+            file,
+            path: reader.result, // Base64 string
+          });
+        };
+        reader.readAsDataURL(file);
+      });
+    };
+
     if (currentPostType && currentPostType.maxImages === 1) {
       // For events, only allow one image
-      setImages(selectedFiles.slice(0, 1));
+      const filesToProcess = selectedFiles.slice(0, 1);
+
+      Promise.all(filesToProcess.map(processFile)).then((processedImages) => {
+        setImages(processedImages);
+      });
     } else {
       // For other post types, allow multiple images
-      setImages([...images, ...selectedFiles]);
+      const filesToProcess = selectedFiles;
+
+      Promise.all(filesToProcess.map(processFile)).then((processedImages) => {
+        setImages([...images, ...processedImages]);
+      });
     }
   };
 
   const removeImage = (index) => {
+    // No need to revoke URL for base64 strings
     setImages(images.filter((_, i) => i !== index));
   };
 
   const handleSubmit = () => {
     // Here you would handle the actual submission
-    console.log({
+    const data = {
       postType,
       title,
       description,
       eventDate: postType === "events" ? eventDate : null,
+      date: Date.now(),
       eventTime: postType === "events" ? eventTime : null,
-      images,
-    });
+      images: images.map((img) => img.path),
+    };
 
+    const dataWithId = {
+      ...(postType === "announcement" && { id: announcements.length + 1 }),
+      ...(postType === "events" && { id: events.length + 1 }),
+      ...(postType === "news" && { id: news.length + 1 }),
+      ...(postType === "careers" && { id: careers.length + 1 }),
+      ...(postType === "uniforms" && { id: uniforms.length + 1 }),
+      ...data,
+    };
+
+    switch (postType) {
+      case "announcement":
+        addNewAnnouncement(dataWithId);
+        break;
+      case "events":
+        addNewEvents(dataWithId);
+
+        break;
+      case "news":
+        addNewNews(dataWithId);
+
+        break;
+      case "careers":
+        addNewCareers(dataWithId);
+        break;
+      case "uniforms":
+        addNewUniforms(dataWithId);
+        break;
+      default:
+        break;
+    }
     // Reset form and close popup
     resetForm();
     setIsOpen(false);
   };
 
   const resetForm = () => {
+    // No need to revoke URLs for base64 strings
     setPostType("");
     setTitle("");
     setDescription("");
@@ -72,6 +140,7 @@ export default function CreatePostPopup() {
     if (postType === "events" && (!eventDate || !eventTime)) return false;
     return true;
   };
+  console.log(events);
 
   return (
     <div>
@@ -219,7 +288,7 @@ export default function CreatePostPopup() {
                         {images.map((image, index) => (
                           <div key={index} className="relative">
                             <img
-                              src={URL.createObjectURL(image)}
+                              src={image.path}
                               alt={`Preview ${index}`}
                               className="w-full h-24 object-cover border border-gray-300"
                             />

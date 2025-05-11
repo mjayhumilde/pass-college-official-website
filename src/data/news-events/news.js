@@ -33,7 +33,7 @@ import news5_1 from "../../assets/images/news-events/news/news4-1.jpg";
 export let news = [
   {
     id: 0,
-    img: [
+    images: [
       `${news2_1}`,
       `${news2_2}`,
       `${news2_3}`,
@@ -47,20 +47,22 @@ export let news = [
       `${news2_11}`,
       `${news2_12}`,
     ],
-    message:
+    description:
       "title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h",
     date: "March 9, 2025",
+    title: "try title tiltel tilteketlei",
   },
   {
     id: 1,
-    img: [`${news3_1}`],
-    message:
+    images: [`${news3_1}`],
+    description:
       "title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h",
     date: "March 9, 2025",
+    title: "try title tiltel tilteketlei",
   },
   {
     id: 2,
-    img: [
+    images: [
       `${news4_1}`,
       `${news4_2}`,
       `${news4_3}`,
@@ -76,16 +78,18 @@ export let news = [
       `${news4_13}`,
       `${news4_14}`,
     ],
-    message:
+    description:
       "title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h",
     date: "March 9, 2025",
+    title: "try title tiltel tilteketlei",
   },
   {
     id: 3,
-    img: [`${news5_1}`],
-    message:
+    images: [`${news5_1}`],
+    description:
       "title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h",
     date: "March 9, 2025",
+    title: "try title tiltel tilteketlei",
   },
   ////////////////////////////
   //   {

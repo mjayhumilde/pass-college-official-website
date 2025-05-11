@@ -1,23 +1,22 @@
 import shapeYourFuture from "../assets/images/home/shapeYourFuture/shapeYourFuture.jpg";
 import weWElcomeAll from "../assets/images/home/weWelcomeAll/weWelcomeAll.jpg";
-
-import { ChevronRight, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import adsVideo from "../assets/videos/pass_ads_video.mp4";
 import BtnPriWhite from "../components/BtnPriWhite";
-import { news } from "../data/news-events/news";
 import CardSlider from "../components/CardSlider-choosePass";
 import { foster } from "../data/home/foster";
 import { advIdeas } from "../data/home/advanceIdeas";
 import { cards } from "../data/home/choose";
 import { home } from "../data/home/weCallPassHome";
-import EventCard from "../components/eventCard";
-import { events } from "../data/news-events/events";
-import CardExample from "../components/practice";
 import SectionEventLayout from "../components/SectionEventLayout";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
+import usePostStore from "../store/usePostStore";
 
 const Home = () => {
+  const news = usePostStore((state) => state.news);
+  const events = usePostStore((state) => state.events);
+
   const playVideo = (e) => {
     e.target.muted = false;
     e.target.play();
@@ -75,8 +74,8 @@ const Home = () => {
                     <div className="h-48 sm:h-56 md:h-64 overflow-hidden">
                       <img
                         className="w-full h-full object-cover transition-all duration-500"
-                        src={item.img.slice(0, 1)}
-                        alt={item.message}
+                        src={item.images.slice(0, 1)}
+                        alt={item.title}
                       />
                     </div>
 
@@ -84,7 +83,7 @@ const Home = () => {
                       <div className="bg-red-primary text-red-50 font-semibold p-3 flex justify-center items-center">
                         <div className="underline decoration-red-300 hover:decoration-red-50 cursor-pointer flex items-start gap-1 max-w-full">
                           <span className="line-clamp-3 text-sm">
-                            {item.message}
+                            {item.description}
                           </span>
                           <ExternalLink className="w-4 h-4 flex-shrink-0 mt-1 hover" />
                         </div>
@@ -93,7 +92,6 @@ const Home = () => {
                   </div>
                 ))}
               </div>
-
               <div className="flex justify-center items-center pt-5 pb-10">
                 <button className="cursor-pointer text-sm md:text-base px-6 py-1 border-red text-red-primary font-bold hover:bg-[rgb(128,0,0)] hover:text-white transition-colors duration-500">
                   SEE MORE NEWS
