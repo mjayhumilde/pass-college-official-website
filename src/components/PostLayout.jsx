@@ -44,7 +44,7 @@ const PostLayout = ({ data, label }) => {
               {isAuthenticated &&
                 (userRole === "admin" || userRole === "teacher") && (
                   <div className="flex justify-end items-center p-1">
-                    <DeleteIcon id={post.id} itemName={label} />
+                    <DeleteIcon id={post.id} itemType={label} />
                   </div>
                 )}
               <div className="flex justify-between p-2 py-2 md:px-10">

@@ -14,7 +14,6 @@ const Events = () => {
 
   const events = usePostStore((state) => state.events);
   const news = usePostStore((state) => state.news);
-  console.log(news);
 
   const location = useLocation();
 
@@ -67,7 +66,7 @@ const Events = () => {
         </div>
       ) : null}
 
-      <PostLayout data={news} label={"BREAKING NEWS"} />
+      <PostLayout data={news} label={"NEWS"} />
     </main>
   );
 };
