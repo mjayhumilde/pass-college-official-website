@@ -97,6 +97,8 @@ export default function CreatePostPopup() {
       ...data,
     };
 
+    console.log(dataWithId);
+
     switch (postType) {
       case "announcement":
         addNewAnnouncement(dataWithId);

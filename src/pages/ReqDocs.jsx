@@ -1,8 +1,10 @@
-import { useForm } from "react-hook-form";
-import DocumentRequestForm from "../components/DocumentRequestForm";
-import { FileText } from "lucide-react";
+import useRequestDocsStore from "../store/useRequestDocsStore";
+import useNotificationStore from "../store/useNotificationStore";
+
 import PendingRequestsSection from "../components/RequestStatus";
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { FileText } from "lucide-react";
 
 const ReqDocs = () => {
   const {
@@ -12,8 +14,46 @@ const ReqDocs = () => {
     reset,
   } = useForm();
 
+  const requestData = useRequestDocsStore((state) => state.requestsDocs);
+  const { addNewRequestDocs } = useRequestDocsStore();
+
+  const { addNewNotification } = useNotificationStore();
+
   function onSubmitForm(formData) {
-    console.log(formData);
+    //     {
+    //   id: "REQ-2025-003",
+    //   documentType: "Recommendation Letter",
+    //   requestDate: "2025-03-25",
+    //   status: "Ready for Pickup",
+    //   estimatedCompletion: "2025-04-01",
+    // },
+    const { documentType } = formData;
+    const requestValidData = {
+      ...formData,
+      id: `REQ-2025-003${requestData.length + 1}`,
+      requestDate: Date.now(),
+      status: "Processing",
+      estimatedCompletion: Date.now() + 6 * 24 * 60 * 60 * 1000, // 6 days in ms
+      // for notif
+      postType: "document",
+      title: `${documentType} Request is Processing`,
+      description: `Your request for ${documentType} is being processed`,
+      date: Date.now(),
+      notifStatus: "unread",
+    };
+    //     {
+    //   id: 2,
+    //   postType: "career",
+    //   title: "Teaching Position Available",
+    //   description: "We're hiring Math teachers. Apply before May 15.",
+    //   date: "2025-05-02",
+    //   status: "read",
+    // },
+
+    addNewRequestDocs(requestValidData);
+    addNewNotification(requestValidData);
+
+    console.log(requestValidData);
     reset();
   }
 
@@ -141,7 +181,7 @@ const ReqDocs = () => {
         <DocumentRequestForm />
       </div> */}
 
-      <PendingRequestsSection />
+      <PendingRequestsSection request={requestData} />
     </main>
   );
 };

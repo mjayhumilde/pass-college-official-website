@@ -1,4 +1,4 @@
-export let requestDocs = [
+export let requestDocsData = [
   {
     id: "REQ-2025-001",
     documentType: "Transcript",

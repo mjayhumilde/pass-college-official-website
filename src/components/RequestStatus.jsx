@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { requestDocs } from "../data/requestDocs/request";
 
-const PendingRequestsSection = () => {
+const PendingRequestsSection = ({ request }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
 
@@ -14,7 +13,6 @@ const PendingRequestsSection = () => {
     primaryHover: "hover:bg-[rgb(150,20,20)]",
   };
 
-  // Simulate loading data from server
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -25,10 +23,10 @@ const PendingRequestsSection = () => {
 
   // Function to get filtered requests based on active tab
   const getFilteredRequests = () => {
-    if (activeTab === "all") return requestDocs;
+    if (activeTab === "all") return request;
     if (activeTab === "ready")
-      return requestDocs.filter((req) => req.status === "Ready for Pickup");
-    return requestDocs;
+      return request.filter((req) => req.status === "Ready for Pickup");
+    return request;
   };
 
   // Status badge component
@@ -145,7 +143,7 @@ const PendingRequestsSection = () => {
               <div className="flex items-center justify-between flex-wrap gap-2">
                 <div className="flex-shrink-0">
                   <h3 className="text-lg font-medium text-gray-900">
-                    {request.documentType}
+                    {request.documentType.toUpperCase()}
                   </h3>
                   <p className="mt-1 max-w-2xl text-sm text-gray-500">
                     Request ID: {request.id}

@@ -12,7 +12,7 @@ const useNotificationStore = create(
         set((state) => ({
           notifications: state.notifications.map((notification) =>
             notification.id === id
-              ? { ...notification, status: "read" }
+              ? { ...notification, notifStatus: "read" }
               : notification
           ),
         })),
