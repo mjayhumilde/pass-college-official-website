@@ -122,7 +122,7 @@ export default function CreatePostPopup() {
     }
 
     // added a status property for notif
-    const dataForNotif = { status: "unread", ...dataWithId };
+    const dataForNotif = { notifStatus: "unread", ...dataWithId };
     addNewNotification(dataForNotif);
 
     // Reset form and close popup
