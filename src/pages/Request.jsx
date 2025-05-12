@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import useRequestDocsStore from "../store/useRequestDocsStore";
 import {
   ChevronLeft,
   ChevronRight,
@@ -7,139 +8,24 @@ import {
   Check,
 } from "lucide-react";
 
-// Custom CSS for the primary color
-const styles = `
-
-`;
-
-// Sample data for demo purposes
-const initialRequests = [
-  {
-    id: 1,
-    name: "Mjay Humilde",
-    course: "BSCD",
-    year: 1,
-    reqDocs: "Memorandum of Agreement",
-    reqDate: "2025-05-04T08:30:00",
-    status: "processing",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    course: "BSIT",
-    year: 2,
-    reqDocs: "Transcript of Records",
-    reqDate: "2025-05-04T09:15:00",
-    status: "processing",
-  },
-  {
-    id: 3,
-    name: "Alex Johnson",
-    course: "BSCS",
-    year: 3,
-    reqDocs: "Certificate of Enrollment",
-    reqDate: "2025-05-03T14:20:00",
-    status: "ready for pickup",
-  },
-  {
-    id: 4,
-    name: "Maria Garcia",
-    course: "BSED",
-    year: 4,
-    reqDocs: "Good Moral Certificate",
-    reqDate: "2025-05-03T10:45:00",
-    status: "processing",
-  },
-  {
-    id: 5,
-    name: "John Doe",
-    course: "BSBA",
-    year: 2,
-    reqDocs: "Form 137",
-    reqDate: "2025-05-02T13:30:00",
-    status: "ready for pickup",
-  },
-  {
-    id: 6,
-    name: "Sarah Lee",
-    course: "BSHRM",
-    year: 1,
-    reqDocs: "Letter of Recommendation",
-    reqDate: "2025-05-02T11:20:00",
-    status: "processing",
-  },
-  {
-    id: 7,
-    name: "Michael Brown",
-    course: "BSA",
-    year: 3,
-    reqDocs: "Diploma",
-    reqDate: "2025-05-01T15:45:00",
-    status: "processing",
-  },
-  {
-    id: 8,
-    name: "Emily Chen",
-    course: "BSCD",
-    year: 4,
-    reqDocs: "Certificate of Good Standing",
-    reqDate: "2025-05-01T09:50:00",
-    status: "ready for pickup",
-  },
-  {
-    id: 9,
-    name: "David Wilson",
-    course: "BSIT",
-    year: 2,
-    reqDocs: "Class Schedule",
-    reqDate: "2025-04-30T14:15:00",
-    status: "processing",
-  },
-  {
-    id: 10,
-    name: "Lisa Taylor",
-    course: "BSCS",
-    year: 1,
-    reqDocs: "Clearance Form",
-    reqDate: "2025-04-30T10:10:00",
-    status: "processing",
-  },
-  {
-    id: 11,
-    name: "Ryan Martinez",
-    course: "BSED",
-    year: 3,
-    reqDocs: "Evaluation Form",
-    reqDate: "2025-04-29T16:30:00",
-    status: "ready for pickup",
-  },
-  {
-    id: 12,
-    name: "Olivia Clark",
-    course: "BSBA",
-    year: 4,
-    reqDocs: "Registration Form",
-    reqDate: "2025-04-29T11:40:00",
-    status: "processing",
-  },
-];
-
 export default function Request() {
-  const [requests, setRequests] = useState(initialRequests);
+  const allUserRequest = useRequestDocsStore((state) => state.allUserRequest);
+  const updateUserRequestStatus = useRequestDocsStore(
+    (state) => state.updateUserRequestStatus
+  );
+  const deleteUserRequest = useRequestDocsStore(
+    (state) => state.deleteUserRequest
+  );
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
-  // Pagination calculations
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-
-  // Filter requests based on search term and status
-  const filteredRequests = requests.filter((request) => {
+  const filteredRequests = allUserRequest.filter((request) => {
     const matchesSearch =
       request.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      request.reqDocs.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.documentType.toLowerCase().includes(searchTerm.toLowerCase()) ||
       request.course.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesStatus =
@@ -148,13 +34,14 @@ export default function Request() {
     return matchesSearch && matchesStatus;
   });
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredRequests.slice(
     indexOfFirstItem,
     indexOfLastItem
   );
   const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
 
-  // Format date to readable format
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleString("en-US", {
@@ -166,23 +53,18 @@ export default function Request() {
     });
   };
 
-  // Update request status
-  const updateStatus = (id, newStatus) => {
-    setRequests((prevRequests) =>
-      prevRequests.map((request) =>
-        request.id === id ? { ...request, status: newStatus } : request
-      )
-    );
+  const handleStatusChange = (id, currentStatus) => {
+    const newStatus =
+      currentStatus.toLowerCase() === "processing"
+        ? "ready for pickup"
+        : "processing";
+    updateUserRequestStatus(id, newStatus);
   };
 
-  // Delete request
-  const deleteRequest = (id) => {
-    setRequests((prevRequests) =>
-      prevRequests.filter((request) => request.id !== id)
-    );
+  const handleDelete = (id) => {
+    deleteUserRequest(id);
   };
 
-  // Handle page change
   const changePage = (pageNumber) => {
     if (pageNumber > 0 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
@@ -190,13 +72,11 @@ export default function Request() {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0); // Scroll to the top on mount
+    window.scrollTo(0, 0);
   }, []);
 
   return (
     <div className="w-full p-6 bg-gray-50">
-      <style>{styles}</style>
-
       {/* Header */}
       <div className="w-full mb-6">
         <h1 className="text-2xl font-bold text-red-primary">
@@ -267,45 +147,48 @@ export default function Request() {
                   </td>
                   <td className="p-3 border border-gray-300">{request.year}</td>
                   <td className="p-3 border border-gray-300">
-                    {request.reqDocs}
+                    {request.documentType}
                   </td>
                   <td className="p-3 border border-gray-300">
-                    {formatDate(request.reqDate)}
+                    {formatDate(request.requestDate)}
                   </td>
                   <td className="p-3 border border-gray-300">
                     <span
                       className={`px-2 py-1 ${
-                        request.status === "processing"
+                        request.status.toLowerCase() === "processing"
                           ? "bg-yellow-100 text-yellow-800"
                           : "bg-green-100 text-green-800"
                       }`}
                     >
-                      {request.status}
+                      {request.status.toLowerCase()}
                     </span>
                   </td>
                   <td className="p-3 border border-gray-300">
                     <div className="flex space-x-2">
-                      {request.status === "processing" ? (
-                        <button
-                          onClick={() =>
-                            updateStatus(request.id, "ready for pickup")
-                          }
-                          className="p-1 bg-green-600 text-white flex items-center"
-                          title="Mark as Ready for Pickup"
-                        >
-                          <Check size={16} />
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => updateStatus(request.id, "processing")}
-                          className="p-1 bg-yellow-500 text-white flex items-center"
-                          title="Mark as Processing"
-                        >
-                          <RefreshCw size={16} />
-                        </button>
-                      )}
                       <button
-                        onClick={() => deleteRequest(request.id)}
+                        onClick={() =>
+                          handleStatusChange(request.id, request.status)
+                        }
+                        className={`p-1 ${
+                          request.status.toLowerCase() === "processing"
+                            ? "bg-green-600"
+                            : "bg-yellow-500"
+                        } text-white flex items-center`}
+                        title={
+                          request.status.toLowerCase() === "processing"
+                            ? "Mark as Ready for Pickup"
+                            : "Mark as Processing"
+                        }
+                      >
+                        {request.status.toLowerCase() === "processing" ? (
+                          <Check size={16} />
+                        ) : (
+                          <RefreshCw size={16} />
+                        )}
+                      </button>
+
+                      <button
+                        onClick={() => handleDelete(request.id)}
                         className="p-1 bg-red-primary text-white flex items-center"
                         title="Delete Request"
                       >
@@ -347,7 +230,6 @@ export default function Request() {
             <ChevronLeft size={16} />
           </button>
 
-          {/* Page numbers */}
           {Array.from({ length: totalPages }, (_, i) => i + 1)
             .filter(
               (page) =>
@@ -356,7 +238,6 @@ export default function Request() {
                 (page >= currentPage - 1 && page <= currentPage + 1)
             )
             .map((page, index, array) => {
-              // Add ellipsis
               if (index > 0 && page > array[index - 1] + 1) {
                 return (
                   <span key={`ellipsis-${page}`} className="p-2 bg-gray-200">

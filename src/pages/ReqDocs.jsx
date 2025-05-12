@@ -1,5 +1,6 @@
 import useRequestDocsStore from "../store/useRequestDocsStore";
 import useNotificationStore from "../store/useNotificationStore";
+import useAuthStore from "../store/useAuthStore";
 
 import PendingRequestsSection from "../components/RequestStatus";
 import { useEffect } from "react";
@@ -10,14 +11,17 @@ const ReqDocs = () => {
   const {
     register,
     handleSubmit,
+    // eslint-disable-next-line no-unused-vars
     formState: { errors },
     reset,
   } = useForm();
 
   const requestData = useRequestDocsStore((state) => state.requestsDocs);
-  const { addNewRequestDocs } = useRequestDocsStore();
+  const { addNewRequestDocs, addNewAllUserRequest } = useRequestDocsStore();
 
   const { addNewNotification } = useNotificationStore();
+
+  const user = useAuthStore((state) => state.user);
 
   function onSubmitForm(formData) {
     //     {
@@ -32,7 +36,7 @@ const ReqDocs = () => {
       ...formData,
       id: `REQ-2025-003${requestData.length + 1}`,
       requestDate: Date.now(),
-      status: "Processing",
+      status: "processing",
       estimatedCompletion: Date.now() + 6 * 24 * 60 * 60 * 1000, // 6 days in ms
       // for notif
       postType: "document",
@@ -40,6 +44,7 @@ const ReqDocs = () => {
       description: `Your request for ${documentType} is being processed`,
       date: Date.now(),
       notifStatus: "unread",
+      ...user,
     };
     //     {
     //   id: 2,
@@ -51,6 +56,7 @@ const ReqDocs = () => {
     // },
 
     addNewRequestDocs(requestValidData);
+    addNewAllUserRequest(requestValidData);
     addNewNotification(requestValidData);
 
     console.log(requestValidData);

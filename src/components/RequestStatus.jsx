@@ -34,10 +34,10 @@ const PendingRequestsSection = ({ request }) => {
     let color = "";
 
     switch (status) {
-      case "Processing":
+      case "processing":
         color = "bg-blue-100 text-blue-800";
         break;
-      case "Ready for Pickup":
+      case "ready for pickup":
         color = "bg-green-100 text-green-800";
         break;
       default:
