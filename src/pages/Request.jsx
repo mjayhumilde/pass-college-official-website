@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import useRequestDocsStore from "../store/useRequestDocsStore";
+import useNotificationStore from "../store/useNotificationStore";
 import {
   ChevronLeft,
   ChevronRight,
@@ -10,12 +11,9 @@ import {
 
 export default function Request() {
   const allUserRequest = useRequestDocsStore((state) => state.allUserRequest);
-  const updateUserRequestStatus = useRequestDocsStore(
-    (state) => state.updateUserRequestStatus
-  );
-  const deleteUserRequest = useRequestDocsStore(
-    (state) => state.deleteUserRequest
-  );
+  const { updateUserRequestStatus, deleteUserRequest } = useRequestDocsStore();
+
+  const { addNewNotification } = useNotificationStore();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
@@ -53,12 +51,38 @@ export default function Request() {
     });
   };
 
-  const handleStatusChange = (id, currentStatus) => {
+  const handleStatusChange = async (reqId, currentStatus) => {
     const newStatus =
       currentStatus.toLowerCase() === "processing"
         ? "ready for pickup"
         : "processing";
-    updateUserRequestStatus(id, newStatus);
+
+    await updateUserRequestStatus(reqId, newStatus);
+
+    const updatedData = allUserRequest.find((request) => request.id === reqId);
+
+    if (updatedData) {
+      const { id, documentType } = updatedData;
+      const notificationMessage =
+        newStatus === "ready for pickup"
+          ? `Your requested ${documentType} are ready to pickup.`
+          : `Your requested ${documentType} are being re-processed.`;
+
+      const newNotif = {
+        ...updatedData,
+        id: id + allUserRequest.length,
+        notifStatus: "unread",
+        description: notificationMessage,
+
+        title: `Status Update: ${documentType} Request`,
+        date: new Date().toISOString().slice(0, 10),
+      };
+      addNewNotification(newNotif);
+    } else {
+      console.error(
+        `Could not find user request with ID: ${reqId} after update.`
+      );
+    }
   };
 
   const handleDelete = (id) => {
