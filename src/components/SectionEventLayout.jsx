@@ -1,5 +1,5 @@
 import { CalendarOff } from "lucide-react";
-import EventCard from "./eventCard";
+import EventCard from "./EventCard";
 
 const SectionEventLayout = ({ data, label }) => {
   return (
