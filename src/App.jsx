@@ -15,6 +15,7 @@ import Notification from "./pages/Notification";
 import Login from "./pages/Login";
 import Accounts from "./pages/Accounts";
 import Request from "./pages/Request";
+import TransactionReport from "./pages/TransactionReport";
 
 const App = () => {
   return (
@@ -38,6 +39,7 @@ const App = () => {
           <Route path="login" element={<Login />} />
           <Route path="accounts" element={<Accounts />} />
           <Route path="request" element={<Request />} />
+          <Route path="transaction-report" element={<TransactionReport />} />
 
           {/* <Route path="/profile" element={}/>
         <Route path="/signup" element={}/>

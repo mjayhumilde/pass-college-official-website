@@ -46,11 +46,11 @@ const Header = () => {
       // When not authenticated, only show Home, About, News & Events, and Careers
       return ["Home", "About", "News & Events", "Careers"].includes(itemName);
     } else if (userRole === "teacher") {
-      // For teachers, show Accounts and Request but hide ReqDocs
-      return itemName !== "ReqDocs";
+      // For teachers, show Accounts and Request but hide ReqDocs and Transaction Report
+      return itemName !== "ReqDocs" && itemName !== "Transaction Report";
     } else if (userRole === "user") {
       // For regular users, show ReqDocs but hide Accounts and Request
-      return !["Accounts", "Request"].includes(itemName);
+      return !["Accounts", "Request", "Transaction Report"].includes(itemName);
     } else if (userRole === "admin") {
       return !["ReqDocs", "Request"].includes(itemName);
     } else {
@@ -77,6 +77,7 @@ const Header = () => {
     { name: "Careers", link: "/careers" },
     { name: "Accounts", link: "/accounts" },
     { name: "Request", link: "/request" },
+    { name: "Transaction Report", link: "/transaction-report" },
   ];
 
   // Filter menu items based on authentication and user role
