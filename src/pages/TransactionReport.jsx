@@ -36,6 +36,7 @@ export default function TransactionReport() {
   // In a real application, you would fetch data from an API
   useEffect(() => {
     setData(mockData[activeTimeframe]);
+    window.scrollTo(0, 0);
   }, [activeTimeframe]);
 
   const handlePrint = () => {

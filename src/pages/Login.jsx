@@ -1,6 +1,8 @@
+import useAuthStore from "../store/useAuthStore";
 import { useEffect, useState } from "react";
 import { Eye, EyeOff, Mail, Lock, User, AlertTriangle } from "lucide-react";
 import logo from "../assets/images/pass_log-removebg-preview.png";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -9,6 +11,10 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const { login } = useAuthStore();
+
+  const navigate = useNavigate();
 
   const handleSubmit = () => {
     setError("");
@@ -184,6 +190,38 @@ export default function Login() {
           <a href="#" className="text-red-800 hover:text-red-900 mx-2">
             Contact Support
           </a>
+        </div>
+        <div className="space-x-2 space-y-2  mt-10 bg-blue-100">
+          <p className="text-red-700 text-xl">
+            *for development navigation only bayybiii!😉*
+          </p>
+          <button
+            onClick={() => {
+              login("user");
+              navigate("/");
+            }}
+            className=" px-2 sm:px-7 py-2 text-blue-100 bg-blue-400 hover:cursor-pointer hover:bg-blue-800"
+          >
+            Log in as USER
+          </button>
+          <button
+            onClick={() => {
+              login("teacher");
+              navigate("/");
+            }}
+            className=" px-2 sm:px-7 py-2 text-blue-100 bg-blue-400 hover:cursor-pointer hover:bg-blue-800"
+          >
+            Log in as TEACHER
+          </button>
+          <button
+            onClick={() => {
+              login("admin");
+              navigate("/");
+            }}
+            className=" px-2 sm:px-7 py-2 text-blue-100 bg-blue-400 hover:cursor-pointer hover:bg-blue-800"
+          >
+            Log in as ADMIN
+          </button>
         </div>
       </div>
     </div>

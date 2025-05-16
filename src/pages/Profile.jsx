@@ -1,7 +1,13 @@
+import useAuthStore from "../store/useAuthStore";
+import { useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
+
 import { Edit, Camera, LogOutIcon } from "lucide-react";
 
 const Profile = () => {
+  const { logout } = useAuthStore();
+  const navigate = useNavigate();
+
   // State for student data
   const [userData, setUserData] = useState({
     firstName: "Mark John",
@@ -277,7 +283,13 @@ const Profile = () => {
         </div>
       </div>
       <div className="mx-auto container mt-10 mb-5 flex justify-center">
-        <button className="bg-red-primary px-8 py-2 text-red-50">
+        <button
+          className="bg-red-primary px-8 py-2 text-red-50"
+          onClick={() => {
+            logout();
+            navigate("/");
+          }}
+        >
           <span className="flex font-bold">
             <LogOutIcon /> LOG OUT
           </span>
