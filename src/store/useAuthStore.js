@@ -8,7 +8,7 @@ const useAuthStore = create((set) => ({
     year: "3",
   },
   isAuthenticated: true,
-  userRole: "admin",
+  userRole: "user",
 
   login: (role) => set({ isAuthenticated: true, userRole: role }),
   logout: () => set({ isAuthenticated: false, userRole: null }),
