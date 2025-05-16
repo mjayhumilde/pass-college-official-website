@@ -1,6 +1,9 @@
+import useAuthStore from "../store/useAuthStore";
 import DeleteIcon from "./DeleteIcon";
 
 const EventCard = ({ event }) => {
+  const userRole = useAuthStore((state) => state.userRole);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   return (
     <div className="flex flex-col w-full bg-white   ">
       <div
@@ -21,7 +24,10 @@ const EventCard = ({ event }) => {
           </h3>
           <p className="leading-normal text-red-950">{event.description}</p>
           <div className="absolute right-2 bottom-0">
-            <DeleteIcon id={event.id} itemType={"events"} />
+            {(userRole === "admin" || userRole === "teacher") &&
+              isAuthenticated && (
+                <DeleteIcon id={event.id} itemType={"events"} />
+              )}
           </div>
         </div>
       </div>
