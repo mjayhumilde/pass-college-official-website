@@ -1,7 +1,7 @@
 import shapeYourFuture from "../assets/images/home/shapeYourFuture/shapeYourFuture.jpg";
 import weWElcomeAll from "../assets/images/home/weWelcomeAll/weWelcomeAll.jpg";
 import { ExternalLink } from "lucide-react";
-import adsVideo from "../assets/videos/promotionalVideo.mp4";
+import adsVideo from "../assets/videos/pass_ads_video.mp4";
 import BtnPriWhite from "../components/BtnPriWhite";
 import CardSlider from "../components/CardSlider-choosePass";
 import { foster } from "../data/home/foster";
