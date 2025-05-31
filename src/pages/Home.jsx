@@ -9,11 +9,12 @@ import { advIdeas } from "../data/home/advanceIdeas";
 import { cards } from "../data/home/choose";
 import { home } from "../data/home/weCallPassHome";
 import SectionEventLayout from "../components/SectionEventLayout";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import usePostStore from "../store/usePostStore";
 
 const Home = () => {
+  const navigate = useNavigate();
   const news = usePostStore((state) => state.news);
   const events = usePostStore((state) => state.events);
 
@@ -44,20 +45,19 @@ const Home = () => {
           </div>
 
           {/* Your other content would go here */}
-          <div className="bg-red-primary flex flex-col sm:flex-row justify-center items-center py-5 sm:py-4 px-5 space-y-4 sm:space-y-0 sm:space-x-5">
-            <BtnPriWhite text="ABOUT US" />
-            <BtnPriWhite text="WORK WITH US" />
-            <BtnPriWhite text="CONTACT US" />
+          <div className="flex flex-col items-center justify-center px-5 py-5 space-y-4 bg-red-primary sm:flex-row sm:py-4 sm:space-y-0 sm:space-x-5">
+            <BtnPriWhite text="ABOUT US" route={"about/who-we-are"} />
+            <BtnPriWhite text="WORK WITH US " route={"careers"} />
           </div>
         </div>
       </section>
 
       <section className="bg-gray">
-        <div className="text-center pt-10 md:pt-20 pb-5">
-          <h2 className="text-2xl md:text-4xl font-bold tracking-wider text-red-primary">
+        <div className="pt-10 pb-5 text-center md:pt-20">
+          <h2 className="text-2xl font-bold tracking-wider md:text-4xl text-red-primary">
             LATEST NEWS
           </h2>
-          <div className="w-20 md:w-32 border-b-2 border-red-950 mx-auto mt-2"></div>
+          <div className="w-20 mx-auto mt-2 border-b-2 md:w-32 border-red-950"></div>
         </div>
 
         <div className="container mx-auto">
@@ -68,32 +68,38 @@ const Home = () => {
             </div>
           ) : (
             <div>
-              <div className="p-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+              <div className="grid grid-cols-1 gap-3 p-3 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 md:gap-6">
                 {news.slice(0, 4).map((item) => (
-                  <div key={item.id} className="flex flex-col h-full shadow-lg">
-                    <div className="h-48 sm:h-56 md:h-64 overflow-hidden">
+                  <div
+                    key={item.id}
+                    className="flex flex-col h-full rounded-lg shadow-lg"
+                  >
+                    <div className="h-48 overflow-hidden sm:h-56 md:h-64">
                       <img
-                        className="w-full h-full object-cover transition-all duration-500"
+                        className="object-cover w-full h-full transition-all duration-500 rounded-t-lg"
                         src={item.images.slice(0, 1)}
                         alt={item.title}
                       />
                     </div>
 
                     <Link to={`news-events#news-${item.id}`}>
-                      <div className="bg-red-primary text-red-50 font-semibold p-3 flex justify-center items-center">
-                        <div className="underline decoration-red-300 hover:decoration-red-50 cursor-pointer flex items-start gap-1 max-w-full">
-                          <span className="line-clamp-3 text-sm">
+                      <div className="flex items-center justify-center p-3 font-semibold rounded-b-lg bg-red-primary text-red-50">
+                        <div className="flex items-start max-w-full gap-1 underline cursor-pointer decoration-red-300 hover:decoration-red-50">
+                          <span className="text-sm line-clamp-3">
                             {item.description}
                           </span>
-                          <ExternalLink className="w-4 h-4 flex-shrink-0 mt-1 hover" />
+                          <ExternalLink className="flex-shrink-0 w-4 h-4 mt-1 hover" />
                         </div>
                       </div>
                     </Link>
                   </div>
                 ))}
               </div>
-              <div className="flex justify-center items-center pt-5 pb-10">
-                <button className="cursor-pointer text-sm md:text-base px-6 py-1 border-red text-red-primary font-bold hover:bg-[rgb(128,0,0)] hover:text-white transition-colors duration-500">
+              <div className="flex items-center justify-center pt-5 pb-10">
+                <button
+                  onClick={() => navigate("news-events")}
+                  className="cursor-pointer rounded-2xl text-sm md:text-base px-6 py-1 border-red text-red-primary  font-bold hover:bg-[rgb(128,0,0)] hover:text-white transition-colors duration-500 "
+                >
                   SEE MORE NEWS
                 </button>
               </div>
@@ -102,14 +108,14 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="container pt-10 md:pt-20 mx-auto space-y-2">
-        <div className="text-center  pb-1 md:pb-2">
-          <h2 className="text-2xl md:text-4xl font-bold tracking-wider text-red-primary p-1">
+      <section className="container pt-10 mx-auto space-y-2 md:pt-20">
+        <div className="pb-1 text-center md:pb-2">
+          <h2 className="p-1 text-2xl font-bold tracking-wider md:text-4xl text-red-primary">
             CHOOSE PASSIAN EDUCATION
           </h2>
-          <div className="w-20 md:w-92 border-b-2 border-red-950 mx-auto mt-2"></div>
+          <div className="w-20 mx-auto mt-2 border-b-2 md:w-92 border-red-950"></div>
         </div>
-        <div className="text-center space-y-5 px-5 text-red-950 lg:px-10">
+        <div className="px-5 space-y-5 text-center text-red-950 lg:px-10">
           <p>
             As a leading educational institution in Western Pangasinan, PASS
             College is committed to providing high-quality and accessible
@@ -139,28 +145,31 @@ const Home = () => {
           </p>
         </div>
         <CardSlider cards={cards} />
-        <div className="flex justify-center items-center pt-5 pb-10">
-          <button className="cursor-pointer text-sm md:text-base px-6 py-1 border-red text-red-primary font-bold hover:bg-[rgb(128,0,0)] hover:text-white transition-colors duration-500">
+        <div className="flex items-center justify-center pt-5 pb-10">
+          <button
+            onClick={() => navigate("about/who-we-are")}
+            className="rounded-2xl cursor-pointer text-sm md:text-base px-6 py-1 border-red text-red-primary font-bold hover:bg-[rgb(128,0,0)] hover:text-white transition-colors duration-500"
+          >
             MORE ABOUT PASSIAN
           </button>
         </div>
       </section>
 
-      <section className="2xl:container 2xl:mx-auto pt-10 pb-5">
+      <section className="pt-10 pb-5 2xl:container 2xl:mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr]">
           <div className="overflow-hidden w-full h-[300px] md:h-[400px] lg:h-auto ">
             <img
-              className="w-full h-full object-cover"
+              className="object-cover w-full h-full"
               src={shapeYourFuture}
               alt="Descriptive text"
             />
           </div>
           <div className="bg-gray-secondary">
             <div className="w-1/2 h-2 bg-red-primary"></div>
-            <div className="w-full h-full flex justify-center items-center p-10">
-              <div className="font-bold space-y-5 text-red-50">
+            <div className="flex items-center justify-center w-full h-full p-10">
+              <div className="space-y-5 font-bold text-red-50">
                 <h2 className="text-4xl">Shape Your Future Profession</h2>
-                <p className="text-sm sm:text-base hover:underline cursor-pointer">
+                <p className="text-sm cursor-pointer sm:text-base hover:underline">
                   "JOIN US IN SHAPING THE FUTURE—WHERE GROUNDBREAKING IDEAS
                   BEGIN, PASSION MEETS PURPOSE, AND INNOVATION THRIVES AT PASS
                   COLLEGE."
@@ -171,21 +180,21 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="pb-10 bg-gray mt-10 md:mt-20">
-        <div className="bg-red-primary h-2 w-1/2 md:w-1/3"></div>
-        <div className="text-center pt-10 pb-5">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-wider text-red-primary">
+      <section className="pb-10 mt-10 bg-gray md:mt-20">
+        <div className="w-1/2 h-2 bg-red-primary md:w-1/3"></div>
+        <div className="pt-10 pb-5 text-center">
+          <h2 className="text-2xl font-bold tracking-wider md:text-3xl text-red-primary">
             WE FOSTER INDEPENDENT THINKING
           </h2>
-          <div className="w-20 md:w-32 border-b-2 border-red-950 mx-auto mt-2"></div>
+          <div className="w-20 mx-auto mt-2 border-b-2 md:w-32 border-red-950"></div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 2xl:container 2xl:mx-auto p-4  lg:px-25">
+        <div className="grid grid-cols-1 gap-3 p-4 md:grid-cols-2 2xl:container 2xl:mx-auto lg:px-25">
           {foster.map((item) => (
-            <div className="bg-white shadow-lg " key={item.id}>
+            <div className="bg-white " key={item.id}>
               <div className="w-full lg:max-h-[400px] overflow-hidden">
                 <img
-                  className="w-full h-full object-cover"
+                  className="object-cover w-full h-full"
                   src={item.img}
                   alt=""
                 />
@@ -199,16 +208,16 @@ const Home = () => {
         </div>
       </section>
 
-      {/* <section className="pb-10 bg-gray mt-10 md:mt-20">
-        <div className="bg-red-primary h-2 w-1/2 md:w-1/3"></div>
-        <div className="text-center pt-10 pb-5">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-wider text-red-primary">
+      {/* <section className="pb-10 mt-10 bg-gray md:mt-20">
+        <div className="w-1/2 h-2 bg-red-primary md:w-1/3"></div>
+        <div className="pt-10 pb-5 text-center">
+          <h2 className="text-2xl font-bold tracking-wider md:text-3xl text-red-primary">
             PRACTICE
           </h2>
-          <div className="w-20 md:w-32 border-b-2 border-red-950 mx-auto mt-2"></div>
+          <div className="w-20 mx-auto mt-2 border-b-2 md:w-32 border-red-950"></div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 2xl:container 2xl:mx-auto p-4  lg:px-25">
+        <div className="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 2xl:container 2xl:mx-auto lg:px-25">
           {foster.map((item) => (
             <div key={item.id}>
               <CardExample
@@ -222,20 +231,20 @@ const Home = () => {
       </section> */}
 
       <section className="">
-        <div className="text-center pt-10 pb-5">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-wider text-red-primary">
+        <div className="pt-10 pb-5 text-center">
+          <h2 className="text-2xl font-bold tracking-wider md:text-3xl text-red-primary">
             WE ADVANCE IDEAS AND HUMANITY
           </h2>
-          <div className="w-20 md:w-32 border-b-2 border-red-950 mx-auto mt-2"></div>
+          <div className="w-20 mx-auto mt-2 border-b-2 md:w-32 border-red-950"></div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 2xl:container 2xl:mx-auto p-4">
+        <div className="grid grid-cols-1 gap-3 p-4 md:grid-cols-3 2xl:container 2xl:mx-auto">
           {advIdeas.map((item) => (
-            <div className="bg-gray shadow-lg" key={item.id}>
+            <div className="bg-gray" key={item.id}>
               <div>
                 <img className="w-full" src={item.img} alt="" />
               </div>
-              <div className="p-5  ">
+              <div className="p-5 ">
                 <h2 className="text-lg text-red-primary ">{item.title}</h2>
                 <p className="text-red-950">{item.description}</p>
               </div>
@@ -244,28 +253,28 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="bg-gray 2xl:container 2xl:mx-auto mt-10 md:mt-20 md:ml-3 md:mr-3">
+      <section className="mt-10 bg-gray 2xl:container 2xl:mx-auto md:mt-20 md:ml-3 md:mr-3">
         <div className="relative">
           {/* Red bar that only extends halfway */}
-          <div className="absolute top-0 left-0 h-2 bg-red-primary w-1/2 md:w-1/3"></div>
+          <div className="absolute top-0 left-0 w-1/2 h-2 bg-red-primary md:w-1/3"></div>
 
           {/* Flex container: Adjusts order based on screen size */}
           <div className="flex flex-col md:grid md:grid-cols-2 md:items-center">
             {/* Image Section (Will appear first on small screens, second on md+) */}
-            <div className="order-1 md:order-2 w-full h-full">
+            <div className="order-1 w-full h-full md:order-2">
               <img
                 src={weWElcomeAll}
                 alt="Students conversing"
-                className="w-full h-full object-cover"
+                className="object-cover w-full h-full"
               />
             </div>
 
             {/* Text Section */}
-            <div className="order-2 md:order-1 lg:pl-16 p-5 md:p-7 lg:pt-0">
-              <h2 className="text-3xl font-bold md:text-4xl text-red-primary mb-2 md:mb-6 ">
+            <div className="order-2 p-5 md:order-1 lg:pl-16 md:p-7 lg:pt-0">
+              <h2 className="mb-2 text-3xl font-bold md:text-4xl text-red-primary md:mb-6 ">
                 We welcome all
               </h2>
-              <p className="text-red-950 mb-4 md:mb-8">
+              <p className="mb-4 text-red-950 md:mb-8">
                 Only when different values, experiences, and perspectives are
                 met with free and open discourse can education be truly
                 transformative. This is why we continue to work together as an
@@ -276,7 +285,7 @@ const Home = () => {
                 exercitationem inventore amet vel quis error quas nostrum
                 provident, maxime sint debitis.
               </p>
-              <button className="cursor-pointer text-sm md:text-base py-1 text-red-primary font-bold hover:underline transition-all duration-500">
+              <button className="py-1 text-sm font-bold transition-all duration-500 cursor-pointer md:text-base text-red-primary hover:underline">
                 LEARN MORE
               </button>
             </div>
@@ -284,10 +293,10 @@ const Home = () => {
         </div>
       </section>
 
-      <section className=" 2xl:container 2xl:mx-auto mt-10 md:mt-15">
+      <section className="mt-10 2xl:container 2xl:mx-auto md:mt-15">
         <div className=" lg:px-40 p-5 sm:grid sm:grid-cols-[1fr_1.5fr] md:gap-6">
           <div className="sm:text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-red-primary mb-5">
+            <h2 className="mb-5 text-3xl font-bold md:text-4xl text-red-primary">
               We call Pass College home
             </h2>
           </div>
@@ -300,7 +309,7 @@ const Home = () => {
               elit.
             </p>
 
-            <button className="cursor-pointer text-sm md:text-base py-1 text-red-primary font-bold underline transition-all duration-500">
+            <button className="py-1 text-sm font-bold underline transition-all duration-500 cursor-pointer md:text-base text-red-primary">
               LEARN MORE
             </button>
           </div>

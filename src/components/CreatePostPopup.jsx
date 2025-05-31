@@ -155,7 +155,7 @@ export default function CreatePostPopup() {
       {/* Create Post Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center space-x-2 bg-red-primary text-white p-3 mr-3 hover-bg-red-primary"
+        className="flex items-center p-3 mr-3 space-x-2 text-white bg-red-primary hover-bg-red-primary"
       >
         <Plus size={20} />
         <span>Create Post</span>
@@ -163,10 +163,10 @@ export default function CreatePostPopup() {
 
       {/* Overlay */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           {/* Popup */}
-          <div className="bg-white w-full max-w-2xl h-auto max-h-screen overflow-y-auto p-6 border border-gray-300">
-            <div className="flex justify-between items-center mb-6">
+          <div className="w-full h-auto max-w-2xl max-h-screen p-6 overflow-y-auto bg-white border border-gray-300">
+            <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-red-primary">
                 Create New Post
               </h2>
@@ -181,10 +181,10 @@ export default function CreatePostPopup() {
             <div>
               {/* Post Type Selection */}
               <div className="mb-6">
-                <label className="block text-gray-700 mb-2">
+                <label className="block mb-2 text-gray-700">
                   Select Post Type
                 </label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
                   {postTypes.map((type) => (
                     <button
                       key={type.id}
@@ -206,7 +206,7 @@ export default function CreatePostPopup() {
                 <>
                   {/* Title */}
                   <div className="mb-4">
-                    <label className="block text-gray-700 mb-2">Title</label>
+                    <label className="block mb-2 text-gray-700">Title</label>
                     <input
                       type="text"
                       value={title}
@@ -218,22 +218,22 @@ export default function CreatePostPopup() {
 
                   {/* Description */}
                   <div className="mb-4">
-                    <label className="block text-gray-700 mb-2">
+                    <label className="block mb-2 text-gray-700">
                       Description
                     </label>
                     <textarea
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
-                      className="w-full p-2 border border-gray-300 h-32"
+                      className="w-full h-32 p-2 border border-gray-300"
                       placeholder="Enter post description"
                     ></textarea>
                   </div>
 
                   {/* Event Date and Time (only for events) */}
                   {postType === "events" && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-2">
                       <div>
-                        <label className="block text-gray-700 mb-2 flex items-center">
+                        <label className="flex items-center block mb-2 text-gray-700">
                           <Calendar size={16} className="mr-1" />
                           Event Date
                         </label>
@@ -245,7 +245,7 @@ export default function CreatePostPopup() {
                         />
                       </div>
                       <div>
-                        <label className="block text-gray-700 mb-2 flex items-center">
+                        <label className="flex items-center block mb-2 text-gray-700">
                           <Clock size={16} className="mr-1" />
                           Event Time
                         </label>
@@ -261,7 +261,7 @@ export default function CreatePostPopup() {
 
                   {/* Image Upload */}
                   <div className="mb-6">
-                    <label className="block text-gray-700 mb-2 items-center">
+                    <label className="items-center block mb-2 text-gray-700">
                       <Image size={16} className="mr-1" />
                       Upload Images
                       {postType === "events"
@@ -280,7 +280,7 @@ export default function CreatePostPopup() {
                       />
                       <label
                         htmlFor="image-upload"
-                        className="cursor-pointer bg-gray-200 hover:bg-gray-300 p-2 border border-gray-300 mr-2"
+                        className="p-2 mr-2 bg-gray-200 border border-gray-300 cursor-pointer hover:bg-gray-300"
                       >
                         Select Images
                       </label>
@@ -292,18 +292,18 @@ export default function CreatePostPopup() {
 
                     {/* Preview Images */}
                     {images.length > 0 && (
-                      <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
+                      <div className="grid grid-cols-2 gap-2 mt-4 md:grid-cols-4">
                         {images.map((image, index) => (
                           <div key={index} className="relative">
                             <img
                               src={image.path}
                               alt={`Preview ${index}`}
-                              className="w-full h-24 object-cover border border-gray-300"
+                              className="object-cover w-full h-24 border border-gray-300"
                             />
                             <button
                               type="button"
                               onClick={() => removeImage(index)}
-                              className="absolute top-0 right-0 bg-red-primary text-white p-1"
+                              className="absolute top-0 right-0 p-1 text-white bg-red-primary"
                             >
                               <X size={14} />
                             </button>
@@ -326,14 +326,14 @@ export default function CreatePostPopup() {
                     <button
                       type="button"
                       onClick={closePopup}
-                      className="py-2 px-4 border border-gray-300 text-gray-700"
+                      className="px-4 py-2 text-gray-700 border border-gray-300"
                     >
                       Cancel
                     </button>
                     <button
                       type="button"
                       onClick={handleSubmit}
-                      className="py-2 px-4 bg-red-primary text-white hover-bg-red-primary"
+                      className="px-4 py-2 text-white bg-red-primary hover-bg-red-primary"
                       disabled={!isFormValid()}
                     >
                       Create Post

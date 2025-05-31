@@ -30,8 +30,8 @@ const ResponsiveCardSlider = ({ cards }) => {
   }, []);
 
   return (
-    <div className="relative w-full max-w-7xl mx-auto px-3 py-0">
-      <div className="relative overflow-hidden h-64 sm:h-80 md:h-96">
+    <div className="relative w-full px-3 py-0 mx-auto max-w-7xl">
+      <div className="relative h-64 overflow-hidden sm:h-80 md:h-96">
         {cards.map((card, index) => (
           <div
             key={card.id}
@@ -43,9 +43,9 @@ const ResponsiveCardSlider = ({ cards }) => {
               <img
                 src={card.image}
                 alt={`Slide ${card.id}`}
-                className="w-full h-64 sm:h-80 md:h-96 object-cover"
+                className="object-cover w-full h-64 sm:h-80 md:h-96"
               />
-              <div className="absolute bottom-0 left-0 right-0 bg-red-800 text-red-50 p-3 text-center">
+              <div className="absolute bottom-0 left-0 right-0 p-3 text-center bg-red-800 text-red-50">
                 <p className="text-sm sm:text-base">{card.caption}</p>
               </div>
             </div>
@@ -55,14 +55,14 @@ const ResponsiveCardSlider = ({ cards }) => {
         {/* Navigation Arrows */}
         <button
           onClick={prevSlide}
-          className="text-red-950 cursor-pointer absolute left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 p-1 rounded-r-lg hover:bg-opacity-75 z-10"
+          className="absolute left-0 z-10 p-1 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-r-lg cursor-pointer text-red-950 top-1/2 hover:bg-opacity-75"
           aria-label="Previous slide"
         >
           <span className="text-xl font-bold">‹</span>
         </button>
         <button
           onClick={nextSlide}
-          className="text-red-950 cursor-pointer absolute right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 p-1 rounded-l-lg hover:bg-opacity-75 z-10"
+          className="absolute right-0 z-10 p-1 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-l-lg cursor-pointer text-red-950 top-1/2 hover:bg-opacity-75"
           aria-label="Next slide"
         >
           <span className="text-xl font-bold">›</span>
@@ -70,7 +70,7 @@ const ResponsiveCardSlider = ({ cards }) => {
       </div>
 
       {/* Pagination Dots */}
-      <div className="flex justify-center mt-4 gap-2">
+      <div className="flex justify-center gap-2 mt-4">
         {cards.map((_, index) => (
           <button
             key={index}
@@ -127,17 +127,17 @@ const DesktopCardSlider = ({ cards }) => {
           }}
         >
           {cards.map((card) => (
-            <div key={card.id} className="w-1/3 flex-shrink-0 px-2">
+            <div key={card.id} className="flex-shrink-0 w-1/3 px-2">
               <div className="relative overflow-hidden shadow-lg">
                 <img
                   src={card.image}
                   alt={`Slide ${card.id}`}
-                  className="hover:scale-105 transition-transform duration-500 w-full h-96 object-cover"
+                  className="object-cover w-full transition-transform duration-500 hover:scale-105 h-96"
                 />
-                <div className="block lg:hidden absolute bottom-0 left-0 right-0 bg-red-800 text-red-50 p-4 text-center">
+                <div className="absolute bottom-0 left-0 right-0 block p-4 text-center bg-red-800 lg:hidden text-red-50">
                   <p>{card.caption}</p>
                 </div>
-                <div className="hidden p-5 absolute inset-0 bg-red-800/70 bg-opacity-60 text-white lg:flex items-center justify-center text-xl font-semibold opacity-0 transition-opacity duration-500 hover:opacity-100">
+                <div className="absolute inset-0 items-center justify-center hidden p-5 text-xl font-semibold text-white transition-opacity duration-500 opacity-0 bg-red-800/70 bg-opacity-60 lg:flex hover:opacity-100">
                   {card.caption}
                 </div>
               </div>
@@ -149,21 +149,21 @@ const DesktopCardSlider = ({ cards }) => {
       {/* Navigation Arrows */}
       <button
         onClick={prevSlide}
-        className="text-red-950 cursor-pointer absolute left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 p-2 rounded-r-lg ml-2 hover:bg-opacity-75"
+        className="absolute left-0 p-2 ml-2 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-r-lg cursor-pointer text-red-950 top-1/2 hover:bg-opacity-75"
         aria-label="Previous slide"
       >
         <span className="text-2xl font-bold">‹</span>
       </button>
       <button
         onClick={nextSlide}
-        className="text-red-950 cursor-pointer absolute right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 p-2 rounded-l-lg mr-2 hover:bg-opacity-75"
+        className="absolute right-0 p-2 mr-2 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-l-lg cursor-pointer text-red-950 top-1/2 hover:bg-opacity-75"
         aria-label="Next slide"
       >
         <span className="text-2xl font-bold">›</span>
       </button>
 
       {/* Pagination Dots */}
-      <div className="flex justify-center mt-4 gap-2">
+      <div className="flex justify-center gap-2 mt-4">
         {Array.from({ length: maxIndex + 1 }).map((_, index) => (
           <button
             key={index}

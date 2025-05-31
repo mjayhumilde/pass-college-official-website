@@ -14,23 +14,23 @@ const SectionEventLayout = ({ data, label }) => {
         >
           {label}
         </h2>
-        <div className="w-25 border-b-2 border-red-950 mx-auto mt-2"></div>
+        <div className="mx-auto mt-2 border-b-2 w-25 border-red-950"></div>
       </div>
       <div
         className={`text-center mt-2 mx-1 p-5 pb-5 bg-red-primary ${
           label != "EVENTS" && "hidden"
         }`}
       >
-        <h2 className="text-xl md:text-2xl font-bold tracking-wider text-red-50">
+        <h2 className="text-xl font-bold tracking-wider md:text-2xl text-red-50">
           EXCITING ACTIVITIES & GATHERINGS
         </h2>
       </div>
       {data && data.length > 0 ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5 p-4">
+        <div className="grid grid-cols-1 gap-4 p-4 lg:grid-cols-2 md:gap-5">
           {label === "EVENTS"
             ? data.map((event, index) => (
                 <div
-                  className={`shadow-lg
+                  className={`rounded-2xl shadow-2xl
                 ${
                   (data.length === 3 && index === 2) ||
                   (data.length === 1 && index === 0)
@@ -57,8 +57,8 @@ const SectionEventLayout = ({ data, label }) => {
               ))}
         </div>
       ) : (
-        <div className="flex justify-center items-center p-10 text-gray-500">
-          <div className="flex gap-2 flex-col justify-center items-center rounded-full bg-gray p-10">
+        <div className="flex items-center justify-center p-10 text-gray-500">
+          <div className="flex flex-col items-center justify-center gap-2 p-10 rounded-full bg-gray">
             No events at the moment...
             <span className="text-red-primary">
               <CalendarOff size={78} />
@@ -71,7 +71,7 @@ const SectionEventLayout = ({ data, label }) => {
           label === "EVENTS" || data.length === 1 ? "hidden" : ""
         }`}
       >
-        <button className="cursor-pointer text-sm md:text-base px-6 py-1 border-red text-red-primary font-bold hover:bg-[rgb(128,0,0)] hover:text-white transition-colors duration-500">
+        <button className="cursor-pointer rounded-2xl text-sm md:text-base px-6 py-1 border-red text-red-primary font-bold hover:bg-[rgb(128,0,0)] hover:text-white transition-colors duration-500">
           SEE MORE EVENTS
         </button>
       </div>

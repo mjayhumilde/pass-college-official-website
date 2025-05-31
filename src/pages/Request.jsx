@@ -112,7 +112,7 @@ export default function Request() {
       </div>
 
       {/* Search and Filter */}
-      <div className="flex flex-col md:flex-row justify-between mb-6 gap-4">
+      <div className="flex flex-col justify-between gap-4 mb-6 md:flex-row">
         <div className="w-full md:w-1/2">
           <input
             type="text"
@@ -143,9 +143,9 @@ export default function Request() {
 
       {/* Table */}
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse border border-gray-300">
+        <table className="w-full border border-collapse border-gray-300">
           <thead>
-            <tr className="bg-red-primary text-white">
+            <tr className="text-white bg-red-primary">
               <th className="p-3 text-left border border-gray-300">ID</th>
               <th className="p-3 text-left border border-gray-300">Name</th>
               <th className="p-3 text-left border border-gray-300">Course</th>
@@ -213,7 +213,7 @@ export default function Request() {
 
                       <button
                         onClick={() => handleDelete(request.id)}
-                        className="p-1 bg-red-primary text-white flex items-center"
+                        className="flex items-center p-1 text-white bg-red-primary"
                         title="Delete Request"
                       >
                         <Trash2 size={16} />
@@ -237,7 +237,7 @@ export default function Request() {
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-between items-center mt-6">
+      <div className="flex items-center justify-between mt-6">
         <div className="text-sm text-gray-600">
           Showing {currentItems.length} of {filteredRequests.length} requests
         </div>

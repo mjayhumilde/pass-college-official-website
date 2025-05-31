@@ -1,21 +1,33 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import useAuthStore from "../store/useAuthStore";
 import useNotificationStore from "../store/useNotificationStore";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, ChevronDown, ChevronUp, User, Bell } from "lucide-react";
-import passLogo from "../assets/images/pass_log-removebg-preview.png";
+import passLogo from "../assets/images/logo/pass_logo.png";
 import BtnPriRed from "./BtnPriRed";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const userRole = useAuthStore((state) => state.userRole);
   const { notifications } = useNotificationStore();
+
+  //  scroll event listener
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -65,7 +77,7 @@ const Header = () => {
       name: "About",
       hasDropdown: true,
       dropdownItems: [
-        { name: "Who we are", link: "/about/who-we-are" },
+        { name: "About PASSIAN Education", link: "/about/who-we-are" },
         { name: "Our History & Tradition", link: "/about/history-tradition" },
         { name: "Our College Programs", link: "/about/college-programs" },
       ],
@@ -86,40 +98,59 @@ const Header = () => {
   );
 
   return (
-    <header className="shadow-md w-full fixed top-0 left-0 right-0 z-50 text-red-50">
-      <div className="bg-red-primary md:bg-white py-1 px-4 md:px-8">
-        <div className=" container mx-auto flex justify-between items-center">
-          <div className="flex items-center relative">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full shadow-md text-red-50">
+      <div
+        className={`px-4 bg-red-primary md:bg-white md:px-8 transition-all duration-300 ${
+          isScrolled ? "py-1" : "py-1"
+        }`}
+      >
+        <div className="container flex items-center justify-between mx-auto ">
+          <div className="flex items-center ">
             <Link
               to="/"
-              className="flex justify-center items-center space-x-1 text-xl font-serif "
+              className="flex items-center justify-center space-x-1 font-serif text-xl "
             >
               <img
-                className="w-12 sm:w-16 md:w-11 rounded-full"
+                className={`rounded-full transition-all duration-300 ${
+                  isScrolled
+                    ? "w-10 sm:w-12 md:w-12"
+                    : "w-16 sm:w-16 md:w-[70px]"
+                }`}
                 src={passLogo}
-                alt="PASS College"
+                alt="PASS College Logo"
               />
-              <p className="hidden md:block text-2xl text-red-primary font-bold">
-                {userRole === "admin"
-                  ? "ADMIN"
-                  : userRole === "teacher"
-                  ? "TEACHER"
-                  : "PASS COLLEGE"}
-              </p>
-              {/* <span className="absolute text-red-primary -bottom-2 text-[]">
-                digital hub
-              </span> */}
+              <div className="flex flex-col font-bodoni">
+                <p
+                  className={` font-bold text-red-50 md:text-red-primary transition-all duration-300 ${
+                    isScrolled ? "text-lg" : "text-2xl"
+                  }`}
+                >
+                  PASS COLLEGE
+                </p>
+
+                <span
+                  className={`font-bold text-red-50 md:text-red-primary -bottom-3 transition-all duration-300 ${
+                    isScrolled ? "text-xs" : "text-sm"
+                  }`}
+                >
+                  {userRole === "admin"
+                    ? "ADMIN USER"
+                    : userRole === "teacher"
+                    ? "TEACHER USER"
+                    : "OFFICIAL WEBSITE"}
+                </span>
+              </div>
             </Link>
           </div>
 
-          <div className="hidden md:flex items-center">
+          <div className="items-center hidden md:flex">
             {isAuthenticated ? (
-              <div className="flex justify-center items-center space-x-2 ">
+              <div className="flex items-center justify-center space-x-2 ">
                 <Link to={"/profile"}>
-                  <div className="p-1 bg-red-primary rounded-full">
+                  <div className="p-1 rounded-full bg-red-primary">
                     <User
                       className=" hover:cursor-pointer text-red-50"
-                      size={37}
+                      size={34}
                     />
                   </div>
                 </Link>
@@ -145,7 +176,7 @@ const Header = () => {
             )}
           </div>
 
-          <div className=" md:hidden flex justify-center items-center space-x-6">
+          <div className="flex items-center justify-center space-x-4 md:hidden">
             {isAuthenticated && userRole === "user" && (
               <div
                 className="relative hover:cursor-pointer"
@@ -155,7 +186,7 @@ const Header = () => {
                 }}
               >
                 <Bell className="text-red-50" size={24} />
-                <div className="bg-white px-2 -top-3 absolute -right-3 rounded-full text-red-primary text-[15px] font-bold">
+                <div className="bg-white px-1 sm:px-2 -top-2 -right-1 sm:-top-3 absolute sm:-right-3 rounded-full text-red-primary text-[11px] sm:text-[15px] font-bold">
                   {
                     notifications.filter((n) => n.notifStatus === "unread")
                       .length
@@ -165,7 +196,7 @@ const Header = () => {
             )}
 
             <button
-              className=" text-white"
+              className="text-white "
               onClick={toggleMenu}
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             >
@@ -178,7 +209,7 @@ const Header = () => {
       {/* Main navigation - Desktop */}
       <nav className="hidden md:block bg-red-primary">
         <div className="container mx-auto">
-          <ul className="flex justify-center items-center">
+          <ul className="flex items-center justify-center gap-1 text-sm ">
             {filteredMenuItems.map((item, index) => (
               <li
                 key={index}
@@ -196,7 +227,7 @@ const Header = () => {
                   <div className="relative">
                     <button
                       onClick={toggleAboutDropdown}
-                      className="text-red-50 flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
+                      className="flex items-center px-4 py-4 transition-colors duration-300 text-red-50 hover:text-white hover:bg-red-800"
                       aria-expanded={isAboutDropdownOpen}
                       aria-haspopup="true"
                     >
@@ -209,14 +240,14 @@ const Header = () => {
                     </button>
 
                     {isAboutDropdownOpen && (
-                      <div className="absolute top-full left-0 bg-red-primary shadow-lg w-48 z-10">
+                      <div className="absolute left-0 z-10 w-48 shadow-lg top-full bg-red-primary">
                         <ul className="py-1">
                           {item.dropdownItems.map(
                             (dropdownItem, dropdownIndex) => (
                               <li key={dropdownIndex}>
                                 <Link
                                   to={dropdownItem.link}
-                                  className="block px-4 py-2 text-red-50 hover:bg-red-800 transition-colors duration-300"
+                                  className="block px-4 py-2 transition-colors duration-300 text-red-50 hover:bg-red-800"
                                   onClick={() => setIsAboutDropdownOpen(false)}
                                 >
                                   {dropdownItem.name}
@@ -231,7 +262,7 @@ const Header = () => {
                 ) : (
                   <Link
                     to={item.link}
-                    className="text-white flex items-center px-4 py-4 hover:text-white hover:bg-red-800 transition-colors duration-300"
+                    className="flex items-center px-4 py-4 text-white transition-colors duration-300 hover:text-white hover:bg-red-800"
                   >
                     {item.name}
                   </Link>
@@ -244,7 +275,7 @@ const Header = () => {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="md:hidden py-4 px-4 bg-white text-red-primary">
+        <div className="px-4 py-4 bg-white md:hidden text-red-primary">
           <nav>
             <ul className="flex flex-col">
               {filteredMenuItems.map((item, index) => (
@@ -308,13 +339,13 @@ const Header = () => {
             {/* Mobile Login */}
             <div className="mt-4">
               {isAuthenticated ? (
-                <div className="flex justify-center items-center relative z-50">
+                <div className="relative z-50 flex items-center justify-center">
                   <Link
                     to="/profile"
                     onClick={() => {
                       setIsMenuOpen(false);
                     }}
-                    className="bg-red-primary p-2 rounded-full block"
+                    className="block p-2 rounded-full bg-red-primary"
                   >
                     <User size={70} className="text-red-50" />
                   </Link>
@@ -325,7 +356,7 @@ const Header = () => {
                     navigate("login");
                     setIsMenuOpen(false);
                   }}
-                  className="w-full px-6 py-2 border border-red-primary text-red-primary font-bold hover:bg-red-primary hover:text-white transition-colors duration-300"
+                  className="w-full px-6 py-2 font-bold transition-colors duration-300 border border-red-primary text-red-primary hover:bg-red-primary hover:text-white"
                 >
                   Login
                 </button>

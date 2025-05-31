@@ -36,22 +36,22 @@ const PostLayout = ({ data, label }) => {
   };
 
   return (
-    <section className="mx-auto container p-3 md:p-10">
+    <section className="container p-3 mx-auto md:p-10">
       <div className="flex flex-col gap-10 lg:shadow-2xl lg:px-36">
         {data.map((post) => (
-          <div key={post.id} className="bg-red-primary shadow-lg">
+          <div key={post.id} className="shadow-lg bg-red-primary">
             <div id={`news-${post.id}`} className="bg-gray">
               {isAuthenticated &&
                 (userRole === "admin" || userRole === "teacher") && (
-                  <div className="flex justify-end items-center p-1">
+                  <div className="flex items-center justify-end p-1">
                     <DeleteIcon id={post.id} itemType={label} />
                   </div>
                 )}
               <div className="flex justify-between p-2 py-2 md:px-10">
-                <h3 className="text-red-primary font-bold text-xl">
+                <h3 className="text-xl font-bold text-red-primary">
                   {label}!!
                 </h3>
-                <p className="text-red-primary font-semibold">
+                <p className="font-semibold text-red-primary">
                   {Number.isFinite(post.date)
                     ? new Date(post.date).toLocaleDateString("en-US", {
                         year: "numeric",
@@ -61,10 +61,10 @@ const PostLayout = ({ data, label }) => {
                     : post.date}
                 </p>
               </div>
-              <div className="text-center text-3xl text-red-primary font-bold">
+              <div className="text-3xl font-bold text-center text-red-primary">
                 {post.title}
               </div>
-              <div className="text-red-950 container mx-auto pt-0 p-2 px-5 pb-2 md:px-13">
+              <div className="container p-2 px-5 pt-0 pb-2 mx-auto text-red-950 md:px-13">
                 {post.description}
               </div>
             </div>

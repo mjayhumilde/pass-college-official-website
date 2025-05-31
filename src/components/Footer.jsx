@@ -7,7 +7,7 @@ import {
   Twitter,
   Youtube,
 } from "lucide-react";
-import passLogo from "../assets/images/pass_log-removebg-preview.png";
+import passLogo from "../assets/images/logo/pass_logo.png";
 
 const Footer = () => {
   return (

@@ -47,20 +47,20 @@ export default function Login() {
   }, []);
 
   return (
-    <div className="py-3 bg-gray flex flex-col justify-center px-4 sm:px-6 lg:px-8">
+    <div className="flex flex-col justify-center px-4 py-3 bg-gray sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className=" mb-1 rounded-full  flex items-center justify-center mx-auto ">
+        <div className="flex items-center justify-center mx-auto mb-1 rounded-full ">
           <img src={logo} alt="" className="w-2/5" />
         </div>
       </div>
 
       <div className="mt-2 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
           {error && (
-            <div className="mb-6 bg-red-50 border-l-4 border-red-800 p-4">
+            <div className="p-4 mb-6 border-l-4 border-red-800 bg-red-50">
               <div className="flex">
                 <div className="flex-shrink-0">
-                  <AlertTriangle className="h-5 w-5 text-red-800" />
+                  <AlertTriangle className="w-5 h-5 text-red-800" />
                 </div>
                 <div className="ml-3">
                   <p className="text-sm text-red-800">{error}</p>
@@ -77,9 +77,9 @@ export default function Login() {
               >
                 Email address
               </label>
-              <div className="mt-1 relative rounded-md shadow-sm">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
+              <div className="relative mt-1 rounded-md shadow-sm">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <Mail className="w-5 h-5 text-gray-400" />
                 </div>
                 <input
                   id="email"
@@ -88,7 +88,7 @@ export default function Login() {
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
+                  className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                   placeholder="you@school_gmail.com"
                 />
               </div>
@@ -101,9 +101,9 @@ export default function Login() {
               >
                 Password
               </label>
-              <div className="mt-1 relative rounded-md shadow-sm">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
+              <div className="relative mt-1 rounded-md shadow-sm">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <Lock className="w-5 h-5 text-gray-400" />
                 </div>
                 <input
                   id="password"
@@ -112,19 +112,19 @@ export default function Login() {
                   autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
+                  className="block w-full py-2 pl-10 pr-10 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                   placeholder="••••••••"
                 />
-                <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="text-gray-400 hover:text-gray-500 focus:outline-none"
                   >
                     {showPassword ? (
-                      <EyeOff className="h-5 w-5" />
+                      <EyeOff className="w-5 h-5" />
                     ) : (
-                      <Eye className="h-5 w-5" />
+                      <Eye className="w-5 h-5" />
                     )}
                   </button>
                 </div>
@@ -162,14 +162,14 @@ export default function Login() {
                 <div className="w-full border-t border-gray-300"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">
+                <span className="px-2 text-gray-500 bg-white">
                   New student?
                 </span>
               </div>
             </div>
 
             <div className="mt-6 text-center">
-              <p href="#" className="text-sm font-medium  text-red-950">
+              <p href="#" className="text-sm font-medium text-red-950">
                 Go to school registrar office
               </p>
             </div>
@@ -178,21 +178,21 @@ export default function Login() {
       </div>
 
       {/* Footer */}
-      <div className="mt-8 text-center text-sm text-gray-500">
+      <div className="mt-8 text-sm text-center text-gray-500">
         <p>© {new Date().getFullYear()} Pass College. All rights reserved.</p>
-        <div className="mt-2 hidden">
-          <a href="#" className="text-red-800 hover:text-red-900 mx-2">
+        <div className="hidden mt-2">
+          <a href="#" className="mx-2 text-red-800 hover:text-red-900">
             Privacy Policy
           </a>
-          <a href="#" className="text-red-800 hover:text-red-900 mx-2">
+          <a href="#" className="mx-2 text-red-800 hover:text-red-900">
             Terms of Service
           </a>
-          <a href="#" className="text-red-800 hover:text-red-900 mx-2">
+          <a href="#" className="mx-2 text-red-800 hover:text-red-900">
             Contact Support
           </a>
         </div>
-        <div className="space-x-2 space-y-2  mt-10 bg-blue-100">
-          <p className="text-red-700 text-xl">
+        <div className="mt-10 space-x-2 space-y-2 bg-blue-100">
+          <p className="text-xl text-red-700">
             *for development navigation only bayybiii!😉*
           </p>
           <button
@@ -200,7 +200,7 @@ export default function Login() {
               login("user");
               navigate("/");
             }}
-            className=" px-2 sm:px-7 py-2 text-blue-100 bg-blue-400 hover:cursor-pointer hover:bg-blue-800"
+            className="px-2 py-2 text-blue-100 bg-blue-400 sm:px-7 hover:cursor-pointer hover:bg-blue-800"
           >
             Log in as USER
           </button>
@@ -209,7 +209,7 @@ export default function Login() {
               login("teacher");
               navigate("/");
             }}
-            className=" px-2 sm:px-7 py-2 text-blue-100 bg-blue-400 hover:cursor-pointer hover:bg-blue-800"
+            className="px-2 py-2 text-blue-100 bg-blue-400 sm:px-7 hover:cursor-pointer hover:bg-blue-800"
           >
             Log in as TEACHER
           </button>
@@ -218,7 +218,7 @@ export default function Login() {
               login("admin");
               navigate("/");
             }}
-            className=" px-2 sm:px-7 py-2 text-blue-100 bg-blue-400 hover:cursor-pointer hover:bg-blue-800"
+            className="px-2 py-2 text-blue-100 bg-blue-400 sm:px-7 hover:cursor-pointer hover:bg-blue-800"
           >
             Log in as ADMIN
           </button>

@@ -89,11 +89,11 @@ export default function NotificationPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-gray-50 p-4 sm:p-6 md:p-8">
+    <main className="min-h-screen p-4 bg-gray-50 sm:p-6 md:p-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl md:text-3xl font-bold text-red-primary">
+          <h1 className="text-2xl font-bold md:text-3xl text-red-primary">
             Notifications
           </h1>
           <div className="flex items-center space-x-2">
@@ -131,10 +131,10 @@ export default function NotificationPage() {
         <div className="bg-white rounded-lg shadow-md">
           {loading ? (
             <div className="p-6 text-center">
-              <div className="animate-pulse flex flex-col items-center">
-                <div className="h-6 bg-gray-200 rounded w-1/4 mb-4"></div>
-                <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+              <div className="flex flex-col items-center animate-pulse">
+                <div className="w-1/4 h-6 mb-4 bg-gray-200 rounded"></div>
+                <div className="w-3/4 h-4 mb-2 bg-gray-200 rounded"></div>
+                <div className="w-1/2 h-4 bg-gray-200 rounded"></div>
               </div>
             </div>
           ) : currentNotifications.length > 0 ? (
@@ -159,13 +159,13 @@ export default function NotificationPage() {
                             {notification.title}
                           </h3>
                           {notification.notifStatus === "unread" && (
-                            <span className="ml-2 h-2 w-2 rounded-full bg-red-800"></span>
+                            <span className="w-2 h-2 ml-2 bg-red-800 rounded-full"></span>
                           )}
                         </div>
                         <p className="mt-1 text-sm text-gray-600">
                           {notification.description}
                         </p>
-                        <div className="mt-2 flex items-center text-xs text-gray-500">
+                        <div className="flex items-center mt-2 text-xs text-gray-500">
                           <span>{formatDate(notification.date)}</span>
                           <span className="mx-2">•</span>
                           <span className="capitalize">
@@ -202,8 +202,8 @@ export default function NotificationPage() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="px-4 py-4 border-t border-gray-200 flex items-center justify-between">
-              <div className="flex-1 flex justify-between sm:hidden">
+            <div className="flex items-center justify-between px-4 py-4 border-t border-gray-200">
+              <div className="flex justify-between flex-1 sm:hidden">
                 <button
                   onClick={() =>
                     setCurrentPage((prev) => Math.max(prev - 1, 1))
@@ -253,7 +253,7 @@ export default function NotificationPage() {
                   </p>
                 </div>
                 <div>
-                  <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                  <nav className="relative z-0 inline-flex -space-x-px rounded-md shadow-sm">
                     <button
                       onClick={() =>
                         setCurrentPage((prev) => Math.max(prev - 1, 1))

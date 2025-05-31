@@ -45,7 +45,7 @@ export default function TransactionReport() {
 
   const StatusCard = ({ title, count, color }) => (
     <div className={`${color} rounded-lg p-4 shadow-md flex flex-col`}>
-      <h3 className="text-lg font-semibold text-white mb-1">{title}</h3>
+      <h3 className="mb-1 text-lg font-semibold text-white">{title}</h3>
       <div className="flex items-end justify-between">
         <span className="text-3xl font-bold text-white">{count}</span>
         <ArrowRight className="text-white" size={20} />
@@ -58,11 +58,11 @@ export default function TransactionReport() {
       {/* Main content that will be printed */}
       <div
         ref={reportRef}
-        className="max-w-7xl mx-auto px-4 py-6 bg-white print:py-2 print:px-2 print:shadow-none"
+        className="px-4 py-6 mx-auto bg-white max-w-7xl print:py-2 print:px-2 print:shadow-none"
         id="printableArea"
       >
         {/* Header */}
-        <div className="flex justify-between items-center mb-6 print:mb-4">
+        <div className="flex items-center justify-between mb-6 print:mb-4">
           <div>
             <h1 className="text-2xl font-bold text-gray-800">
               Transaction Report
@@ -72,7 +72,7 @@ export default function TransactionReport() {
           <div className="flex space-x-4 print:hidden">
             <button
               onClick={handlePrint}
-              className="flex items-center bg-red-primary text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
+              className="flex items-center px-4 py-2 text-white transition-colors rounded bg-red-primary hover:bg-red-700"
             >
               <Printer size={18} className="mr-2" />
               Print Report
@@ -81,7 +81,7 @@ export default function TransactionReport() {
         </div>
 
         {/* Time Period Selector */}
-        <div className="mb-6 flex flex-wrap gap-2 print:hidden">
+        <div className="flex flex-wrap gap-2 mb-6 print:hidden">
           {["today", "week", "month", "year"].map((period) => (
             <button
               key={period}
@@ -99,7 +99,7 @@ export default function TransactionReport() {
         </div>
 
         {/* Print-only timeframe label */}
-        <div className="hidden print:block mb-4">
+        <div className="hidden mb-4 print:block">
           <h2 className="text-xl font-semibold">Period: {data.timeframe}</h2>
           <p className="text-sm text-gray-600">
             Generated on: {new Date().toLocaleDateString()}
@@ -109,13 +109,13 @@ export default function TransactionReport() {
         {/* Summary Cards */}
         <div className="mb-8">
           <div className="mb-4">
-            <h2 className="text-xl font-semibold flex items-center">
+            <h2 className="flex items-center text-xl font-semibold">
               <FileText size={20} className="mr-2" />
               Summary Overview - {data.timeframe}
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
             <StatusCard
               title="Total Requests"
               count={data.totalRequests}
@@ -142,7 +142,7 @@ export default function TransactionReport() {
         {/* Detailed Breakdown */}
         <div className="mb-8">
           <div className="mb-4">
-            <h2 className="text-xl font-semibold flex items-center">
+            <h2 className="flex items-center text-xl font-semibold">
               <BarChart2 size={20} className="mr-2" />
               Detailed Breakdown
             </h2>
@@ -152,18 +152,18 @@ export default function TransactionReport() {
             <table className="min-w-full bg-white border border-gray-300">
               <thead>
                 <tr className="bg-gray-100">
-                  <th className="py-3 px-4 text-left border-b">Status</th>
-                  <th className="py-3 px-4 text-left border-b">Count</th>
-                  <th className="py-3 px-4 text-left border-b">Percentage</th>
+                  <th className="px-4 py-3 text-left border-b">Status</th>
+                  <th className="px-4 py-3 text-left border-b">Count</th>
+                  <th className="px-4 py-3 text-left border-b">Percentage</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td className="py-3 px-4 border-b">Pending</td>
-                  <td className="py-3 px-4 border-b">
+                  <td className="px-4 py-3 border-b">Pending</td>
+                  <td className="px-4 py-3 border-b">
                     {data.statusBreakdown.pending}
                   </td>
-                  <td className="py-3 px-4 border-b">
+                  <td className="px-4 py-3 border-b">
                     {Math.round(
                       (data.statusBreakdown.pending / data.totalRequests) * 100
                     )}
@@ -171,11 +171,11 @@ export default function TransactionReport() {
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4 border-b">Ready for Pickup</td>
-                  <td className="py-3 px-4 border-b">
+                  <td className="px-4 py-3 border-b">Ready for Pickup</td>
+                  <td className="px-4 py-3 border-b">
                     {data.statusBreakdown.readyForPickup}
                   </td>
-                  <td className="py-3 px-4 border-b">
+                  <td className="px-4 py-3 border-b">
                     {Math.round(
                       (data.statusBreakdown.readyForPickup /
                         data.totalRequests) *
@@ -185,11 +185,11 @@ export default function TransactionReport() {
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4 border-b">Completed</td>
-                  <td className="py-3 px-4 border-b">
+                  <td className="px-4 py-3 border-b">Completed</td>
+                  <td className="px-4 py-3 border-b">
                     {data.statusBreakdown.completed}
                   </td>
-                  <td className="py-3 px-4 border-b">
+                  <td className="px-4 py-3 border-b">
                     {Math.round(
                       (data.statusBreakdown.completed / data.totalRequests) *
                         100
@@ -198,11 +198,11 @@ export default function TransactionReport() {
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4 border-b">Cancelled</td>
-                  <td className="py-3 px-4 border-b">
+                  <td className="px-4 py-3 border-b">Cancelled</td>
+                  <td className="px-4 py-3 border-b">
                     {data.statusBreakdown.cancelled}
                   </td>
-                  <td className="py-3 px-4 border-b">
+                  <td className="px-4 py-3 border-b">
                     {Math.round(
                       (data.statusBreakdown.cancelled / data.totalRequests) *
                         100
@@ -210,10 +210,10 @@ export default function TransactionReport() {
                     %
                   </td>
                 </tr>
-                <tr className="bg-gray-50 font-medium">
-                  <td className="py-3 px-4 border-b">Total</td>
-                  <td className="py-3 px-4 border-b">{data.totalRequests}</td>
-                  <td className="py-3 px-4 border-b">100%</td>
+                <tr className="font-medium bg-gray-50">
+                  <td className="px-4 py-3 border-b">Total</td>
+                  <td className="px-4 py-3 border-b">{data.totalRequests}</td>
+                  <td className="px-4 py-3 border-b">100%</td>
                 </tr>
               </tbody>
             </table>
@@ -223,7 +223,7 @@ export default function TransactionReport() {
         {/* Document Type Breakdown */}
         <div>
           <div className="mb-4">
-            <h2 className="text-xl font-semibold flex items-center">
+            <h2 className="flex items-center text-xl font-semibold">
               <FileText size={20} className="mr-2" />
               Document Type Breakdown
             </h2>
@@ -233,42 +233,42 @@ export default function TransactionReport() {
             <table className="min-w-full bg-white border border-gray-300">
               <thead>
                 <tr className="bg-gray-100">
-                  <th className="py-3 px-4 text-left border-b">
+                  <th className="px-4 py-3 text-left border-b">
                     Document Type
                   </th>
-                  <th className="py-3 px-4 text-left border-b">Count</th>
+                  <th className="px-4 py-3 text-left border-b">Count</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td className="py-3 px-4 border-b">Transcript of Records</td>
-                  <td className="py-3 px-4 border-b">
+                  <td className="px-4 py-3 border-b">Transcript of Records</td>
+                  <td className="px-4 py-3 border-b">
                     {Math.floor(data.totalRequests * 0.35)}
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4 border-b">
+                  <td className="px-4 py-3 border-b">
                     Certificate of Enrollment
                   </td>
-                  <td className="py-3 px-4 border-b">
+                  <td className="px-4 py-3 border-b">
                     {Math.floor(data.totalRequests * 0.25)}
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4 border-b">Diploma</td>
-                  <td className="py-3 px-4 border-b">
+                  <td className="px-4 py-3 border-b">Diploma</td>
+                  <td className="px-4 py-3 border-b">
                     {Math.floor(data.totalRequests * 0.15)}
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4 border-b">Good Moral Certificate</td>
-                  <td className="py-3 px-4 border-b">
+                  <td className="px-4 py-3 border-b">Good Moral Certificate</td>
+                  <td className="px-4 py-3 border-b">
                     {Math.floor(data.totalRequests * 0.15)}
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4 border-b">Other Documents</td>
-                  <td className="py-3 px-4 border-b">
+                  <td className="px-4 py-3 border-b">Other Documents</td>
+                  <td className="px-4 py-3 border-b">
                     {Math.floor(data.totalRequests * 0.1)}
                   </td>
                 </tr>
@@ -278,7 +278,7 @@ export default function TransactionReport() {
         </div>
 
         {/* Footer for printed version */}
-        <div className="hidden print:block mt-8 text-xs text-gray-500 text-center border-t pt-4">
+        <div className="hidden pt-4 mt-8 text-xs text-center text-gray-500 border-t print:block">
           <p>School Document Request Transaction Report - {data.timeframe}</p>
           <p>
             Generated on {new Date().toLocaleDateString()} at{" "}

@@ -51,10 +51,10 @@ const PendingRequestsSection = ({ request }) => {
 
   if (isLoading) {
     return (
-      <div className="bg-white shadow-md p-6 max-w-4xl mx-auto mt-8">
-        <div className="animate-pulse flex flex-col space-y-4">
-          <div className="h-8 bg-gray-200 w-1/3"></div>
-          <div className="h-10 bg-gray-200 w-full"></div>
+      <div className="max-w-4xl p-6 mx-auto mt-8 bg-white shadow-md">
+        <div className="flex flex-col space-y-4 animate-pulse">
+          <div className="w-1/3 h-8 bg-gray-200"></div>
+          <div className="w-full h-10 bg-gray-200"></div>
           <div className="space-y-2">
             {[1, 2, 3].map((i) => (
               <div key={i} className="h-20 bg-gray-200"></div>
@@ -68,15 +68,15 @@ const PendingRequestsSection = ({ request }) => {
   const filteredRequests = getFilteredRequests();
 
   return (
-    <div className=" bg-white shadow-md p-6 max-w-4xl mx-auto container">
-      {/* <h2 className="text-2xl font-bold text-gray-800 mb-6">
+    <div className="container max-w-4xl p-6 mx-auto bg-white shadow-md ">
+      {/* <h2 className="mb-6 text-2xl font-bold text-gray-800">
         Your Document Requests
       </h2> */}
 
       {/* Tabs */}
-      <div className="border-b border-gray-200 mb-6">
+      <div className="mb-6 border-b border-gray-200">
         <nav
-          className="flex justify-center items-center space-x-6"
+          className="flex items-center justify-center space-x-6"
           aria-label="Tabs"
         >
           <button
@@ -105,11 +105,11 @@ const PendingRequestsSection = ({ request }) => {
 
       {/* Requests list */}
       {filteredRequests.length === 0 ? (
-        <div className="text-center py-12">
-          <div className="text-gray-400 mb-4">
+        <div className="py-12 text-center">
+          <div className="mb-4 text-gray-400">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="mx-auto h-12 w-12"
+              className="w-12 h-12 mx-auto"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -140,20 +140,20 @@ const PendingRequestsSection = ({ request }) => {
                   : ""
               }`}
             >
-              <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex-shrink-0">
                   <h3 className="text-lg font-medium text-gray-900">
                     {request.documentType.toUpperCase()}
                   </h3>
-                  <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                  <p className="max-w-2xl mt-1 text-sm text-gray-500">
                     Request ID: {request.id}
                   </p>
                 </div>
-                <div className="flex flex-shrink-0 flex-col items-end gap-1">
+                <div className="flex flex-col items-end flex-shrink-0 gap-1">
                   <StatusBadge status={request.status} />
                 </div>
               </div>
-              <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+              <div className="grid grid-cols-1 gap-4 mt-4 text-sm sm:grid-cols-3">
                 <div>
                   <span className="font-medium text-gray-500">
                     Request Date:

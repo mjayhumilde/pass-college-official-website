@@ -62,11 +62,11 @@ const DocumentRequestForm = () => {
 
   if (isSubmitted) {
     return (
-      <div className="flex flex-col items-center justify-center bg-white shadow-md rounded-lg p-8 max-w-lg mx-auto mt-10">
-        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+      <div className="flex flex-col items-center justify-center max-w-lg p-8 mx-auto mt-10 bg-white rounded-lg shadow-md">
+        <div className="flex items-center justify-center w-16 h-16 mb-4 bg-green-100 rounded-full">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-8 w-8 text-green-600"
+            className="w-8 h-8 text-green-600"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -79,20 +79,20 @@ const DocumentRequestForm = () => {
             />
           </svg>
         </div>
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">
+        <h2 className="mb-2 text-2xl font-bold text-gray-800">
           Request Submitted!
         </h2>
-        <p className="text-gray-600 text-center mb-6">
+        <p className="mb-6 text-center text-gray-600">
           Your document request has been successfully submitted. You will
           receive an email confirmation shortly.
         </p>
-        <p className="text-gray-600 text-center mb-6">
+        <p className="mb-6 text-center text-gray-600">
           Your request will be processed according to your selected urgency
           level.
         </p>
         <button
           onClick={handleNewRequest}
-          className="bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 transition duration-300"
+          className="px-6 py-2 text-white transition duration-300 bg-blue-600 rounded-md hover:bg-blue-700"
         >
           Submit Another Request
         </button>
@@ -101,12 +101,12 @@ const DocumentRequestForm = () => {
   }
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 max-w-lg mx-auto mt-10">
+    <div className="max-w-lg p-6 mx-auto mt-10 bg-white rounded-lg shadow-md">
       <div className="flex items-center justify-center mb-6">
-        <div className="bg-blue-100 p-3 rounded-full">
+        <div className="p-3 bg-blue-100 rounded-full">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-8 w-8 text-blue-600"
+            className="w-8 h-8 text-blue-600"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -120,14 +120,14 @@ const DocumentRequestForm = () => {
           </svg>
         </div>
       </div>
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+      <h2 className="mb-6 text-2xl font-bold text-center text-gray-800">
         School Document Request
       </h2>
 
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block mb-2 text-sm font-bold text-gray-700"
             htmlFor="fullName"
           >
             Full Name
@@ -147,7 +147,7 @@ const DocumentRequestForm = () => {
         <div className="grid grid-cols-2 gap-4">
           <div className="mb-4">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block mb-2 text-sm font-bold text-gray-700"
               htmlFor="studentId"
             >
               Student ID
@@ -166,7 +166,7 @@ const DocumentRequestForm = () => {
 
           <div className="mb-4">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block mb-2 text-sm font-bold text-gray-700"
               htmlFor="email"
             >
               Email
@@ -186,7 +186,7 @@ const DocumentRequestForm = () => {
 
         <div className="mb-4">
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block mb-2 text-sm font-bold text-gray-700"
             htmlFor="documentType"
           >
             Document Type
@@ -210,7 +210,7 @@ const DocumentRequestForm = () => {
 
         <div className="mb-4">
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block mb-2 text-sm font-bold text-gray-700"
             htmlFor="purpose"
           >
             Purpose of Request
@@ -228,7 +228,7 @@ const DocumentRequestForm = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block mb-2 text-sm font-bold text-gray-700">
             Urgency Level
           </label>
           <div className="flex space-x-4">
@@ -239,7 +239,7 @@ const DocumentRequestForm = () => {
                 value="urgent"
                 checked={formData.urgency === "urgent"}
                 onChange={handleChange}
-                className="form-radio h-4 w-4 text-blue-600"
+                className="w-4 h-4 text-blue-600 form-radio"
               />
               <span className="ml-2 text-gray-700">Urgent (1-2 days)</span>
             </label>
@@ -250,7 +250,7 @@ const DocumentRequestForm = () => {
                 value="normal"
                 checked={formData.urgency === "normal"}
                 onChange={handleChange}
-                className="form-radio h-4 w-4 text-blue-600"
+                className="w-4 h-4 text-blue-600 form-radio"
               />
               <span className="ml-2 text-gray-700">Normal (3-5 days)</span>
             </label>
@@ -259,7 +259,7 @@ const DocumentRequestForm = () => {
 
         <div className="mb-6">
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block mb-2 text-sm font-bold text-gray-700"
             htmlFor="additionalInfo"
           >
             Additional Information (Optional)
@@ -285,7 +285,7 @@ const DocumentRequestForm = () => {
           {isLoading ? (
             <>
               <svg
-                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                className="w-5 h-5 mr-3 -ml-1 text-white animate-spin"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"

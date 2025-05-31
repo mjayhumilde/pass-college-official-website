@@ -124,20 +124,20 @@ const ImageCarousel = ({ images = [], isOpen, onClose, initialIndex = 0 }) => {
       {/* Close button */}
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 z-50 p-2 text-white bg-red-primary bg-opacity-80 rounded-full hover:bg-opacity-100"
+        className="absolute z-50 p-2 text-white rounded-full top-4 right-4 bg-red-primary bg-opacity-80 hover:bg-opacity-100"
       >
         <X size={24} />
       </button>
 
       {/* Image count indicator */}
       {images && images.length > 0 && (
-        <div className="absolute top-4 left-4 px-3 py-1 bg-red-primary bg-opacity-80 text-white rounded-md">
+        <div className="absolute px-3 py-1 text-white rounded-md top-4 left-4 bg-red-primary bg-opacity-80">
           {currentIndex + 1} / {images.length}
         </div>
       )}
 
       {/* Zoom controls */}
-      <div className="absolute bottom-4 left-4 flex space-x-2">
+      <div className="absolute flex space-x-2 bottom-4 left-4">
         <button
           onClick={zoomOut}
           disabled={scale <= 0.5}
@@ -166,7 +166,7 @@ const ImageCarousel = ({ images = [], isOpen, onClose, initialIndex = 0 }) => {
       {images && images.length > 0 && currentIndex > 0 && (
         <button
           onClick={goToPrev}
-          className="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 text-white bg-red-primary bg-opacity-80 rounded-full hover:bg-opacity-100 z-50"
+          className="absolute z-50 p-2 text-white transform -translate-y-1/2 rounded-full left-4 top-1/2 bg-red-primary bg-opacity-80 hover:bg-opacity-100"
         >
           <ChevronLeft size={24} />
         </button>
@@ -175,7 +175,7 @@ const ImageCarousel = ({ images = [], isOpen, onClose, initialIndex = 0 }) => {
       {images && images.length > 0 && currentIndex < images.length - 1 && (
         <button
           onClick={goToNext}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 text-white bg-red-primary bg-opacity-80 rounded-full hover:bg-opacity-100 z-50"
+          className="absolute z-50 p-2 text-white transform -translate-y-1/2 rounded-full right-4 top-1/2 bg-red-primary bg-opacity-80 hover:bg-opacity-100"
         >
           <ChevronRight size={24} />
         </button>
@@ -183,7 +183,7 @@ const ImageCarousel = ({ images = [], isOpen, onClose, initialIndex = 0 }) => {
 
       {/* Image container */}
       <div
-        className="w-full h-full flex items-center justify-center overflow-hidden"
+        className="flex items-center justify-center w-full h-full overflow-hidden"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -197,7 +197,7 @@ const ImageCarousel = ({ images = [], isOpen, onClose, initialIndex = 0 }) => {
             ref={imageRef}
             src={images[currentIndex].url}
             alt={images[currentIndex].alt || `Image ${currentIndex + 1}`}
-            className="max-w-full max-h-full object-contain select-none cursor-move"
+            className="object-contain max-w-full max-h-full cursor-move select-none"
             style={{
               transform: `scale(${scale}) translate(${position.x / scale}px, ${
                 position.y / scale

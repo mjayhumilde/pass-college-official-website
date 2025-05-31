@@ -69,9 +69,9 @@ const ReqDocs = () => {
 
   return (
     <main>
-      <div className=" text-center space-y-4 flex  justify-center items-center my-6">
-        <div className="shadow-lg p-2">
-          <div className="flex justify-center items-center mt-1 mb-3">
+      <div className="flex items-center justify-center my-6 space-y-4 text-center ">
+        <div className="p-2 shadow-lg">
+          <div className="flex items-center justify-center mt-1 mb-3">
             <p className="p-4 rounded-full bg-red-primary">
               <FileText color="white" size={40} />
             </p>
@@ -84,33 +84,33 @@ const ReqDocs = () => {
             onSubmit={handleSubmit(onSubmitForm)}
             className="space-y-4 p-5 sm:w-full md:w-[500px]"
           >
-            {/* <div className=" flex flex-col items-start w-full space-y-1">
+            {/* <div className="flex flex-col items-start w-full space-y-1 ">
               <label className="font-bold text-red-950">Full Name</label>
               <input
                 {...register("name", { required: true })}
-                className="w-full border p-2 border-red-950"
+                className="w-full p-2 border border-red-950"
                 type="name"
                 name="name"
                 placeholder="Enter your full name"
               />
             </div>
 
-            <div className="flex items-start space-x-3  w-full">
-              <div className=" flex flex-col items-start  w-full space-y-1">
+            <div className="flex items-start w-full space-x-3">
+              <div className="flex flex-col items-start w-full space-y-1 ">
                 <label className="font-bold text-red-950">Student ID</label>
                 <input
                   {...register("id", { required: true })}
-                  className="w-full border p-2 border-red-950"
+                  className="w-full p-2 border border-red-950"
                   type="id"
                   name="id"
                   placeholder="Enter your ID"
                 />
               </div>{" "}
-              <div className=" flex flex-col items-start w-full space-y-1">
+              <div className="flex flex-col items-start w-full space-y-1 ">
                 <label className="font-bold text-red-950">Email</label>
                 <input
                   {...register("email", { required: true })}
-                  className="w-full border p-2 border-red-950"
+                  className="w-full p-2 border border-red-950"
                   type="email"
                   name="email"
                   placeholder="Enter your email"
@@ -118,13 +118,13 @@ const ReqDocs = () => {
               </div>
             </div> */}
 
-            <div className=" flex flex-col items-start  w-full space-y-1">
+            <div className="flex flex-col items-start w-full space-y-1 ">
               <label className="font-bold text-red-950">Document Type</label>
               <select
                 {...register("documentType", {
                   required: true,
                 })}
-                className="border p-2 w-full border-red-950"
+                className="w-full p-2 border border-red-950"
               >
                 <option value="">Select Document Type</option>
                 <option value="transcript">Transcript</option>
@@ -159,13 +159,13 @@ const ReqDocs = () => {
               <textarea
                 {...register("message", { minLength: 10 })}
                 placeholder="Any additional details about your request..."
-                className="w-full border p-2  h-32 border-red-950"
+                className="w-full h-32 p-2 border border-red-950"
               ></textarea>
             </div> */}
 
             <div className="mt-7">
               <button
-                className="bg-red-primary text-red-50 font-bold py-2 w-full"
+                className="w-full py-2 font-bold bg-red-primary text-red-50"
                 type="submit"
               >
                 SUBMIT REQUEST
@@ -179,7 +179,7 @@ const ReqDocs = () => {
         type="text"
         name=""
         id=""
-        className="border w-full"
+        className="w-full border"
         placeholder="practice"
       />
 

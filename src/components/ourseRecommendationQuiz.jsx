@@ -377,16 +377,16 @@ export default function CourseRecommendationQuiz() {
   };
 
   return (
-    <div className="font-sans relative">
+    <div className="relative font-sans">
       <div
         onClick={() => setIsOpen(true)}
-        className="absolute -left-44 bottom-2  text-center bg-red-primary rounded-2xl p-1 text-red-50 font-bold hover:cursor-pointer"
+        className="absolute p-1 font-bold text-center -left-44 bottom-2 bg-red-primary rounded-2xl text-red-50 hover:cursor-pointer"
       >
         recommendation quiz
       </div>
       <button
         onClick={() => setIsOpen(true)}
-        className="text-white p-3 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow hover:cursor-pointer"
+        className="flex items-center justify-center p-3 text-white transition-shadow rounded-full shadow-lg hover:shadow-xl hover:cursor-pointer"
         style={{ backgroundColor: "rgb(128 0 0)" }}
       >
         <HelpCircle size={24} />
@@ -394,14 +394,14 @@ export default function CourseRecommendationQuiz() {
 
       {/* Quiz Popup */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-opacity-50 bg-black/50">
           <div
             ref={modalRef}
-            className="bg-white rounded-lg shadow-xl w-full max-w-lg overflow-hidden"
+            className="w-full max-w-lg overflow-hidden bg-white rounded-lg shadow-xl"
           >
             {/* Modal Header */}
             <div
-              className="text-white p-4 flex justify-between items-center"
+              className="flex items-center justify-between p-4 text-white"
               style={{ backgroundColor: "rgb(128 0 0)" }}
             >
               <h2 className="text-xl font-bold">Course Recommendation Quiz</h2>
@@ -415,7 +415,7 @@ export default function CourseRecommendationQuiz() {
               {!quizCompleted ? (
                 <>
                   {/* Progress Bar */}
-                  <div className="w-full bg-gray-200 rounded-full h-2 mb-6">
+                  <div className="w-full h-2 mb-6 bg-gray-200 rounded-full">
                     <div
                       className="h-2 rounded-full"
                       style={{
@@ -429,7 +429,7 @@ export default function CourseRecommendationQuiz() {
 
                   {/* Question */}
                   <div className="mb-6">
-                    <h3 className="text-lg font-medium mb-2">
+                    <h3 className="mb-2 text-lg font-medium">
                       Question {currentQuestionIndex + 1} of {questions.length}
                     </h3>
                     <p className="text-gray-700">
@@ -438,7 +438,7 @@ export default function CourseRecommendationQuiz() {
                   </div>
 
                   {/* Options */}
-                  <div className="space-y-3 mb-6">
+                  <div className="mb-6 space-y-3">
                     {questions[currentQuestionIndex].options.map((option) => (
                       <button
                         key={option.value}
@@ -520,20 +520,20 @@ export default function CourseRecommendationQuiz() {
                 </>
               ) : (
                 // Results Screen
-                <div className="text-center py-8">
+                <div className="py-8 text-center">
                   <div className="mb-6">
                     <div
-                      className="mx-auto w-16 h-16 rounded-full flex items-center justify-center text-white mb-4"
+                      className="flex items-center justify-center w-16 h-16 mx-auto mb-4 text-white rounded-full"
                       style={{ backgroundColor: "rgb(128 0 0)" }}
                     >
                       <CheckCircle size={32} />
                     </div>
-                    <h3 className="text-2xl font-bold mb-2">Your Result</h3>
-                    <p className="text-gray-600 mb-6">
+                    <h3 className="mb-2 text-2xl font-bold">Your Result</h3>
+                    <p className="mb-6 text-gray-600">
                       Based on your responses, we recommend:
                     </p>
                     <div
-                      className="p-4 rounded-lg mb-8"
+                      className="p-4 mb-8 rounded-lg"
                       style={{
                         backgroundColor: "rgba(128, 0, 0, 0.1)",
                         borderColor: "rgb(128 0 0)",
@@ -547,14 +547,14 @@ export default function CourseRecommendationQuiz() {
                         {result}
                       </p>
                     </div>
-                    <p className="text-gray-600 text-sm mb-6">
+                    <p className="mb-6 text-sm text-gray-600">
                       This recommendation is based on your interests and
                       aptitudes. We encourage you to explore this program
                       further and consult with academic advisors.
                     </p>
                     <button
                       onClick={resetQuiz}
-                      className="text-white py-2 px-6 rounded-md hover:bg-opacity-90 transition-colors"
+                      className="px-6 py-2 text-white transition-colors rounded-md hover:bg-opacity-90"
                       style={{ backgroundColor: "rgb(128 0 0)" }}
                     >
                       Take Quiz Again
