@@ -23,7 +23,7 @@ const Layout = () => {
         className={` ${
           isScrolled
             ? "pt-[56px] sm:pt-[74px] md:pt-[133px] lg:pt-[109px]"
-            : "pt-[56px] sm:pt-[74px] md:pt-[130px] lg:pt-[135px]"
+            : "pt-[69px] sm:pt-[72px] md:pt-[130px] lg:pt-[125px]"
         }`}
       >
         <Outlet />

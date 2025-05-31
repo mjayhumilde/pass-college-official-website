@@ -35,13 +35,13 @@ const PendingRequestsSection = ({ request }) => {
 
     switch (status) {
       case "processing":
-        color = "bg-blue-100 text-blue-800";
+        color = "bg-blue-100 text-blue-800 rounded-full";
         break;
       case "ready for pickup":
-        color = "bg-green-100 text-green-800";
+        color = "bg-green-100 text-green-800 rounded-full";
         break;
       default:
-        color = "bg-gray-100 text-gray-800";
+        color = "bg-gray-100 text-gray-800 rounded-full";
     }
 
     return (
@@ -68,7 +68,7 @@ const PendingRequestsSection = ({ request }) => {
   const filteredRequests = getFilteredRequests();
 
   return (
-    <div className="container max-w-4xl p-6 mx-auto bg-white shadow-md ">
+    <div className="container max-w-4xl p-6 mx-auto bg-white rounded-lg shadow-md">
       {/* <h2 className="mb-6 text-2xl font-bold text-gray-800">
         Your Document Requests
       </h2> */}
@@ -130,11 +130,11 @@ const PendingRequestsSection = ({ request }) => {
           </p>
         </div>
       ) : (
-        <div className="overflow-hidden border border-gray-200">
+        <div className="overflow-hidden border border-gray-200 rounded-lg">
           {filteredRequests.map((request, index) => (
             <div
               key={request.id}
-              className={`bg-white px-4 py-5 sm:p-6 ${
+              className={`bg-white px-4 py-5 sm:p-6  ${
                 index < filteredRequests.length - 1
                   ? "border-b border-gray-200"
                   : ""

@@ -70,7 +70,7 @@ const ReqDocs = () => {
   return (
     <main>
       <div className="flex items-center justify-center my-6 space-y-4 text-center ">
-        <div className="p-2 shadow-lg">
+        <div className="p-2 rounded-lg shadow-lg">
           <div className="flex items-center justify-center mt-1 mb-3">
             <p className="p-4 rounded-full bg-red-primary">
               <FileText color="white" size={40} />
@@ -124,7 +124,7 @@ const ReqDocs = () => {
                 {...register("documentType", {
                   required: true,
                 })}
-                className="w-full p-2 border border-red-950"
+                className="block w-full py-2 pl-10 pr-10 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
               >
                 <option value="">Select Document Type</option>
                 <option value="transcript">Transcript</option>
@@ -165,10 +165,10 @@ const ReqDocs = () => {
 
             <div className="mt-7">
               <button
-                className="w-full py-2 font-bold bg-red-primary text-red-50"
+                className="w-full py-2 text-sm font-bold rounded-full bg-red-primary text-red-50"
                 type="submit"
               >
-                SUBMIT REQUEST
+                Submit Request
               </button>
             </div>
           </form>

@@ -214,7 +214,7 @@ const WhoWeAre = () => {
       <section className="pb-10 ">
         <div className="text-center pt-10 pb-5">
           <h2 className="text-2xl md:text-3xl font-bold tracking-wider text-red-primary">
-            INNOVATION IS OUR PAST & FUTURE
+            LEGACY AND LEARNING AT PASS COLLEGE
           </h2>
           <div className="w-20 md:w-32 border-b-2 border-red-950 mx-auto mt-2"></div>
         </div>

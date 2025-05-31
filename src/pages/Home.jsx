@@ -1,7 +1,7 @@
 import shapeYourFuture from "../assets/images/home/shapeYourFuture/shapeYourFuture.jpg";
 import weWElcomeAll from "../assets/images/home/weWelcomeAll/weWelcomeAll.jpg";
 import { ExternalLink } from "lucide-react";
-import adsVideo from "../assets/videos/pass_ads_video.mp4";
+import adsVideo from "../assets/videos/promotionalVideo.mp4";
 import BtnPriWhite from "../components/BtnPriWhite";
 import CardSlider from "../components/CardSlider-choosePass";
 import { foster } from "../data/home/foster";
@@ -32,10 +32,10 @@ const Home = () => {
       <section>
         <div className="w-full">
           {/* Video container */}
-          <div className="w-full  h-96 sm:h-auto  bg-gradient-to-t from-[rgb(128,0,0)] to-white">
+          <div className="w-full  h-60 sm:h-auto  bg-gradient-to-t from-[rgb(128,0,0)] to-white">
             <video
               src={adsVideo}
-              className="w-full h-full block object-cover"
+              className="block object-cover w-full h-full"
               muted
               autoPlay
               loop
@@ -169,7 +169,7 @@ const Home = () => {
             <div className="flex items-center justify-center w-full h-full p-10">
               <div className="space-y-5 font-bold text-red-50">
                 <h2 className="text-4xl">Shape Your Future Profession</h2>
-                <p className="text-sm cursor-pointer sm:text-base hover:underline">
+                <p className="text-sm sm:text-base hover:underline">
                   "JOIN US IN SHAPING THE FUTURE—WHERE GROUNDBREAKING IDEAS
                   BEGIN, PASSION MEETS PURPOSE, AND INNOVATION THRIVES AT PASS
                   COLLEGE."
@@ -285,7 +285,10 @@ const Home = () => {
                 exercitationem inventore amet vel quis error quas nostrum
                 provident, maxime sint debitis.
               </p>
-              <button className="py-1 text-sm font-bold transition-all duration-500 cursor-pointer md:text-base text-red-primary hover:underline">
+              <button
+                onClick={() => navigate("/about/who-we-are")}
+                className="py-1 text-sm font-bold transition-all duration-500 cursor-pointer md:text-base text-red-primary hover:underline"
+              >
                 LEARN MORE
               </button>
             </div>
@@ -309,7 +312,10 @@ const Home = () => {
               elit.
             </p>
 
-            <button className="py-1 text-sm font-bold underline transition-all duration-500 cursor-pointer md:text-base text-red-primary">
+            <button
+              onClick={() => navigate("/about/history-tradition")}
+              className="py-1 text-sm font-bold underline transition-all duration-500 cursor-pointer md:text-base text-red-primary"
+            >
               LEARN MORE
             </button>
           </div>

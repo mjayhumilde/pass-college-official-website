@@ -88,7 +88,7 @@ export default function Login() {
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
+                  className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                   placeholder="you@school_gmail.com"
                 />
               </div>
@@ -112,7 +112,7 @@ export default function Login() {
                   autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full py-2 pl-10 pr-10 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
+                  className="block w-full py-2 pl-10 pr-10 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                   placeholder="••••••••"
                 />
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3">
@@ -147,11 +147,11 @@ export default function Login() {
                 type="button"
                 onClick={handleSubmit}
                 disabled={isLoading}
-                className={`w-full flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-red-800 hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-800 ${
+                className={`rounded-full w-full flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-red-800 hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-800 ${
                   isLoading ? "opacity-70 cursor-not-allowed" : ""
                 }`}
               >
-                {isLoading ? "Loggin in..." : "Log in"}
+                {isLoading ? "Logging in..." : "Log in"}
               </button>
             </div>
           </div>
@@ -218,7 +218,7 @@ export default function Login() {
               login("admin");
               navigate("/");
             }}
-            className="px-2 py-2 text-blue-100 bg-blue-400 sm:px-7 hover:cursor-pointer hover:bg-blue-800"
+            className="px-2 py-2 text-blue-100 bg-blue-400 sm:px-7 hover:cursor-pointer hover:bg-blue-800 "
           >
             Log in as ADMIN
           </button>

@@ -39,13 +39,13 @@ const ResponsiveCardSlider = ({ cards }) => {
               display: index === activeIndex ? "block" : "none",
             }}
           >
-            <div className="relative shadow-lg">
+            <div className="relative shadow-lg ">
               <img
                 src={card.image}
                 alt={`Slide ${card.id}`}
-                className="object-cover w-full h-64 sm:h-80 md:h-96"
+                className="object-cover w-full h-64 rounded-lg sm:h-80 md:h-96 "
               />
-              <div className="absolute bottom-0 left-0 right-0 p-3 text-center bg-red-800 text-red-50">
+              <div className="absolute bottom-0 left-0 right-0 p-3 text-center bg-red-800 rounded-b-lg text-red-50 ">
                 <p className="text-sm sm:text-base">{card.caption}</p>
               </div>
             </div>
@@ -58,14 +58,14 @@ const ResponsiveCardSlider = ({ cards }) => {
           className="absolute left-0 z-10 p-1 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-r-lg cursor-pointer text-red-950 top-1/2 hover:bg-opacity-75"
           aria-label="Previous slide"
         >
-          <span className="text-xl font-bold">‹</span>
+          <span className="text-xl font-bold text-red-primary">‹</span>
         </button>
         <button
           onClick={nextSlide}
           className="absolute right-0 z-10 p-1 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-l-lg cursor-pointer text-red-950 top-1/2 hover:bg-opacity-75"
           aria-label="Next slide"
         >
-          <span className="text-xl font-bold">›</span>
+          <span className="text-xl font-bold text-red-primary">›</span>
         </button>
       </div>
 
@@ -127,8 +127,8 @@ const DesktopCardSlider = ({ cards }) => {
           }}
         >
           {cards.map((card) => (
-            <div key={card.id} className="flex-shrink-0 w-1/3 px-2">
-              <div className="relative overflow-hidden shadow-lg">
+            <div key={card.id} className="flex-shrink-0 w-1/3 px-2 ">
+              <div className="relative overflow-hidden rounded-lg shadow-lg">
                 <img
                   src={card.image}
                   alt={`Slide ${card.id}`}
@@ -152,14 +152,14 @@ const DesktopCardSlider = ({ cards }) => {
         className="absolute left-0 p-2 ml-2 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-r-lg cursor-pointer text-red-950 top-1/2 hover:bg-opacity-75"
         aria-label="Previous slide"
       >
-        <span className="text-2xl font-bold">‹</span>
+        <span className="text-2xl font-bold text-red-primary">‹</span>
       </button>
       <button
         onClick={nextSlide}
         className="absolute right-0 p-2 mr-2 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-l-lg cursor-pointer text-red-950 top-1/2 hover:bg-opacity-75"
         aria-label="Next slide"
       >
-        <span className="text-2xl font-bold">›</span>
+        <span className="text-2xl font-bold text-red-primary">›</span>
       </button>
 
       {/* Pagination Dots */}
@@ -169,7 +169,7 @@ const DesktopCardSlider = ({ cards }) => {
             key={index}
             onClick={() => goToSlide(index)}
             className={`cursor-pointer h-4 w-4 rounded-full ${
-              activeIndex === index ? "bg-gray-700" : "bg-gray-300"
+              activeIndex === index ? "bg-red-primary" : "bg-gray-300"
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />
