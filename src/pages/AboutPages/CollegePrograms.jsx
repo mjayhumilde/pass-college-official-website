@@ -1,11 +1,10 @@
-import bgCollegeProgram from "../../assets/images/about/collegePrograms/bg-collegePrograms.jpg";
-import alter1 from "../../assets/images/about/collegePrograms/alterSection/alter1.png";
-import alter2 from "../../assets/images/about/collegePrograms/alterSection/alter2.png";
-import alter3 from "../../assets/images/about/collegePrograms/alterSection/alter3.png";
-import alter4 from "../../assets/images/about/collegePrograms/alterSection/alter4.png";
-import alter5 from "../../assets/images/about/collegePrograms/alterSection/alter5.png";
-import alter6 from "../../assets/images/about/collegePrograms/alterSection/alter6.png";
-import alter7 from "../../assets/images/about/collegePrograms/alterSection/alter7.png";
+import bgCollegeProgram from "../../assets/images/about/collegePrograms/alterSection/coverbanner.jpg";
+import alter1 from "../../assets/images/about/collegePrograms/alterSection/course1.jpg";
+import alter2 from "../../assets/images/about/collegePrograms/alterSection/course2.jpg";
+import alter3 from "../../assets/images/about/collegePrograms/alterSection/course3.jpg";
+import alter4 from "../../assets/images/about/collegePrograms/alterSection/course4.jpg";
+import alter5 from "../../assets/images/about/collegePrograms/alterSection/course5.jpg";
+import alter6 from "../../assets/images/about/collegePrograms/alterSection/course6.jpg";
 
 import HeroBgSection from "../../components/HeroBgSection";
 import SectionUnbalance from "../../components/SectionUnbalance";
@@ -44,17 +43,17 @@ const CollegePrograms = () => {
       />
 
       <section className="2xl:container 2xl:mx-auto">
-        <div className="text-center pt-16 pb-5">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-wider text-red-primary">
+        <div className="pt-16 pb-5 text-center">
+          <h2 className="text-2xl font-bold tracking-wider md:text-3xl text-red-primary">
             DISCOVER, LEARN, AND SUCCEED
           </h2>
-          <div className="w-20 md:w-44 border-b-2 border-red-950 mx-auto mt-2"></div>
+          <div className="w-20 mx-auto mt-2 border-b-2 md:w-44 border-red-950"></div>
         </div>
 
         <section className="flex flex-col-reverse lg:grid lg:grid-cols-2">
           <div className="relative lg:h-[500px] bg-cover  bg-no-repeat">
-            <div className="flex  justify-center items-center text-red-50 bg-red-primary h-full sm:p-10 sm:px-16 sm:py-6 p-5 lg:p-20  top-0 bottom-0 left-0 right-0">
-              <div className="h-auto container mx-auto space-y-4 lg:space-y-7">
+            <div className="top-0 bottom-0 left-0 right-0 flex items-center justify-center h-full p-5 text-red-50 bg-red-primary sm:p-10 sm:px-16 sm:py-6 lg:p-20">
+              <div className="container h-auto mx-auto space-y-4 lg:space-y-7">
                 <h2 className="text-3xl font-bold">
                   {" "}
                   Bachelor of Science in Accountancy
@@ -87,7 +86,7 @@ const CollegePrograms = () => {
               backgroundImage: `url('https://t3.ftcdn.net/jpg/02/26/57/24/360_F_226572424_X5ldGN8o6JqfNXMboqND2dXHSAV7eVX2.jpg')`,
             }}
           >
-            <div className="flex  justify-center items-center text-red-50 bg-gray-secondary-opacity h-full sm:p-10 sm:px-16 sm:py-6 p-5 lg:p-10  top-0 bottom-0 left-0 right-0">
+            <div className="top-0 bottom-0 left-0 right-0 flex items-center justify-center h-full p-5 text-red-50 bg-gray-secondary-opacity sm:p-10 sm:px-16 sm:py-6 lg:p-10">
               <div className="container mx-auto space-y-4 lg:space-y-7">
                 <h2 className="text-3xl font-bold">
                   Bachelor of Science in Business Administration
@@ -104,8 +103,8 @@ const CollegePrograms = () => {
 
         <section className="flex flex-col-reverse lg:grid lg:grid-cols-2">
           <div className="relative lg:h-[500px] bg-cover  bg-no-repeat">
-            <div className="flex  justify-center items-center text-red-50 bg-red-primary h-full sm:p-10 sm:px-16 sm:py-6 p-5 lg:p-20  top-0 bottom-0 left-0 right-0">
-              <div className="h-auto container mx-auto space-y-4 lg:space-y-7">
+            <div className="top-0 bottom-0 left-0 right-0 flex items-center justify-center h-full p-5 text-red-50 bg-red-primary sm:p-10 sm:px-16 sm:py-6 lg:p-20">
+              <div className="container h-auto mx-auto space-y-4 lg:space-y-7">
                 <h2 className="text-3xl font-bold">
                   {" "}
                   Bachelor of Science in Computer Science
@@ -138,7 +137,7 @@ const CollegePrograms = () => {
               backgroundImage: `url('https://t3.ftcdn.net/jpg/02/26/57/24/360_F_226572424_X5ldGN8o6JqfNXMboqND2dXHSAV7eVX2.jpg`,
             }}
           >
-            <div className="flex  justify-center items-center text-red-50 bg-gray-secondary-opacity h-full sm:p-10 sm:px-16 sm:py-6 p-5 lg:p-10  top-0 bottom-0 left-0 right-0">
+            <div className="top-0 bottom-0 left-0 right-0 flex items-center justify-center h-full p-5 text-red-50 bg-gray-secondary-opacity sm:p-10 sm:px-16 sm:py-6 lg:p-10">
               <div className="container mx-auto space-y-4 lg:space-y-7">
                 <h2 className="text-3xl font-bold">
                   {" "}
@@ -158,8 +157,8 @@ const CollegePrograms = () => {
 
         <section className="flex flex-col-reverse lg:grid lg:grid-cols-2">
           <div className="relative lg:h-[500px] bg-cover  bg-no-repeat">
-            <div className="flex  justify-center items-center text-red-50 bg-red-primary h-full sm:p-10 sm:px-16 sm:py-6 p-5 lg:p-20  top-0 bottom-0 left-0 right-0">
-              <div className="h-auto container mx-auto space-y-4 lg:space-y-7">
+            <div className="top-0 bottom-0 left-0 right-0 flex items-center justify-center h-full p-5 text-red-50 bg-red-primary sm:p-10 sm:px-16 sm:py-6 lg:p-20">
+              <div className="container h-auto mx-auto space-y-4 lg:space-y-7">
                 <h2 className="text-3xl font-bold">
                   {" "}
                   Bachelor of Science in Elementary Education
@@ -192,7 +191,7 @@ const CollegePrograms = () => {
               backgroundImage: `url('https://t3.ftcdn.net/jpg/02/26/57/24/360_F_226572424_X5ldGN8o6JqfNXMboqND2dXHSAV7eVX2.jpg')`,
             }}
           >
-            <div className="flex  justify-center items-center text-red-50 bg-gray-secondary-opacity h-full sm:p-10 sm:px-16 sm:py-6 p-5 lg:p-10  top-0 bottom-0 left-0 right-0">
+            <div className="top-0 bottom-0 left-0 right-0 flex items-center justify-center h-full p-5 text-red-50 bg-gray-secondary-opacity sm:p-10 sm:px-16 sm:py-6 lg:p-10">
               <div className="container mx-auto space-y-4 lg:space-y-7">
                 <h2 className="text-3xl font-bold">
                   {" "}
@@ -206,29 +205,6 @@ const CollegePrograms = () => {
               </div>
             </div>
           </div>
-        </section>
-
-        <section className="flex flex-col-reverse lg:grid lg:grid-cols-2">
-          <div className="relative lg:h-[500px] bg-cover  bg-no-repeat">
-            <div className="flex  justify-center items-center text-red-50 bg-red-primary h-full sm:p-10 sm:px-16 sm:py-6 p-5 lg:p-20  top-0 bottom-0 left-0 right-0">
-              <div className="h-auto container mx-auto space-y-4 lg:space-y-7">
-                <h2 className="text-3xl font-bold">
-                  {" "}
-                  Bachelor of Science in Hospitality Management
-                </h2>
-                <p className="w-5/6 sm:w-4/6">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Accusamus debitis ratione odio repellat sequ
-                </p>
-              </div>
-            </div>
-          </div>
-          <div
-            className=" h-[400px] lg:h-[500px] bg-cover  bg-no-repeat"
-            style={{
-              backgroundImage: `url(${alter7})`,
-            }}
-          ></div>
         </section>
       </section>
 
