@@ -6,21 +6,21 @@ export let sharedValues = [
   {
     id: 1,
     img: `${ourValues1}`,
-    title: "Diverse and inclusive",
+    title: "INTEGRITY",
     description:
       "Li molestias quaerat amet blanditiis  voluptates  voluptates quo neque quo neque magni vero voluptates quo neque pro Lorem ipsum dolor sit amet consect",
   },
   {
     id: 2,
     img: `${ourValues2}`,
-    title: "Open and challenging",
+    title: "NATIONALISM ",
     description:
       "Lorem ipsum doloramet blanditiis magni vero voluptates quo neque pro Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat architecto reprehend",
   },
   {
     id: 3,
     img: `${ourValues3}`,
-    title: "Civic-minded",
+    title: "INNOVATIVE ",
     description:
       "Lorem ipsum dolor Accusamet blanditiis magni vero voluptates quo neque pro Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat architecto reprehend",
   },

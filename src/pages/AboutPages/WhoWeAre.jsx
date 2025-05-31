@@ -9,8 +9,11 @@ import SectionUnbalance from "../../components/SectionUnbalance";
 import { innovationPastFuture } from "../../data/about/whoWeAre/innovationPastFutrure";
 import { sharedValues } from "../../data/about/whoWeAre/sharedValues";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const WhoWeAre = () => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to the top on mount
   }, []);
@@ -26,21 +29,55 @@ const WhoWeAre = () => {
           </h2>
           <div className="w-20 md:w-92 border-b-2 border-red-950 mx-auto mt-2"></div>
         </div>
-        <div className="text-center space-y-5 px-5 text-red-950 lg:px-10">
+        <div className="text-center space-y-5 sm:px-5 text-red-950 lg:px-10">
           <p>
-            PASSIAN Education is dedicated to excellence, shaping future leaders
-            with a strong foundation in knowledge, integrity, and innovation. As
-            the #1 producer of CPAs in Western Pangasinan, we empower students
-            with skills that go beyond the classroom, preparing them for success
-            in a dynamic world.{" "}
+            PASS College was established in 1997 as the Philippine Accountancy
+            and Science School and was later renamed PASS College in 2001. As a
+            private institution in Alaminos City, it stands apart from the state
+            university system, focusing instead on delivering quality,
+            affordable education to students in Western Pangasinan. With a
+            commitment to continuous improvement, PASS College enhances its
+            academic programs, strengthens operations, and nurtures a
+            student-centered learning environment. Guided by its mission to
+            empower youth from low-income families, the college remains
+            dedicated to shaping capable, values-driven graduates who are ready
+            to contribute meaningfully to their communities and beyond.
           </p>
         </div>
       </section>
 
       <section className="bg-red-primary my-6 sm:my-14 xl:my-20">
-        <div className="text-red-50 font-bold flex flex-col justify-center items-center p-10 space-y-3">
-          <p className="text-2xl">Our Mission</p>
-          <h2 className="text-4xl">To make lives better through education</h2>
+        <div className="text-red-50  flex flex-col justify-center text-center items-center px-5 sm:p-10 space-y-3">
+          <h2 className="text-2xl font-bold pt-4">Vission Mission</h2>
+          <p className="text-sm sm:text-lg pb-2">
+            It has been an undying dream of Mrs. Adelina M. Morante to establish
+            an educational institution that will produce top-caliber graduates
+            who will not only be successful in their fields of endeavor but will
+            also be God-loving and law-abiding citizens. This dream of an
+            academic institution came into reality in 1997 when PASS College was
+            inaugurated. Initially, it was known as the Philippine Accountancy
+            and Science School (PASS). Then in 2001, the name was changed to
+            PASS College. PASS College started with four ladderized programs
+            namely: Bachelor of Science in Accountancy, Bachelor of Science in
+            Computer Science, Bachelor of Science in Commerce, and Bachelor of
+            Science in Secretarial Administration. Then additional programs were
+            offered such as Bachelor of Elementary Education, Two-Years and
+            One-Year Tourism Hotel and Restaurant Management, Two-Years Computer
+            Secretarial and Six-Month Caregiving Course. Over the years, more
+            courses and/or programs have been offered such as Bachelor of
+            Science in Business Administration, Bachelor of Science in
+            Criminology, Bachelor of Science in Hospitality Management, and
+            Bachelor of Science in Tourism Management to answer the needs of the
+            people of Western Pangasinan and the nearby Zambales towns, and
+            anyone who seeks quality learning under competent and dedicated
+            instructors and with the best facilities which are regularly updated
+            to enhance learning and improves student learning competence. In
+            2007, PASS College responded to Executive Order 358 of President
+            Gloria Macapagal-Arroyo, inaugurating the Ladderized Education
+            System in the college. The quest for academic excellence continues
+            and will always be the burning propel of PASS College to achieve its
+            mission to provide the youth with a quality well-rounded education.
+          </p>
         </div>
       </section>
 
@@ -138,7 +175,7 @@ const WhoWeAre = () => {
             <div className="container mx-auto">
               <div className="text-center pt-10 pb-5">
                 <h2 className="text-3xl font-bold tracking-wider text-red-primary">
-                  OUR SHARED VALUES
+                  OUR CORE VALUES
                 </h2>
                 <div className="w-24 border-b-2 border-red-950 mx-auto mt-2"></div>
               </div>
@@ -196,7 +233,14 @@ const WhoWeAre = () => {
                 <h2 className="text-lg text-red-primary ">{item.title}</h2>
                 <p className="text-red-950">{item.descripton}</p>
 
-                <button className="flex cursor-pointer text-sm md:text-base py-1 text-red-primary font-bold hover:underline transition-all duration-500">
+                <button
+                  onClick={() =>
+                    item.title.toLowerCase() === "the history of our school"
+                      ? navigate("/about/history-tradition")
+                      : navigate("/about/college-programs")
+                  }
+                  className="flex cursor-pointer text-sm md:text-base py-1 text-red-primary font-bold hover:underline transition-all duration-500"
+                >
                   LEARN MORE
                   <ChevronRight />
                 </button>

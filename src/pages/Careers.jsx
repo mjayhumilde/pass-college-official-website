@@ -26,7 +26,7 @@ const Careers = () => {
 
       <div className="p-5 text-center mt-7 md:mt-14 bg-red-primary">
         <h2 className="text-2xl font-bold tracking-wider md:text-3xl text-red-50">
-          JOB OPENINGS & CAREER OPPORTUNITIES
+          CAREER OPPORTUNITIES
         </h2>
         {/* <div className="w-55 border-b-2  border-[rgb(255,207,80)] mx-auto mt-2"></div> */}
       </div>

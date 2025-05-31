@@ -18,6 +18,46 @@ const HistoryAndTradition = () => {
     <>
       <HeroBgSection img={historyBG} label={"History and Traditions"} />
 
+      <section className="container pt-6 md:pt-14 mx-auto space-y-2 px-5 md:px-28 mb-28">
+        <div className="text-center  pb-1 md:pb-2">
+          <h2 className="text-2xl md:text-4xl font-bold tracking-wider text-red-primary p-1">
+            HISTORY OF PASS COLLEGE
+          </h2>
+          <div className="w-20 md:w-92 border-b-2 border-red-950 mx-auto mt-2"></div>
+        </div>
+        <div className="text-center space-y-5 px-5 text-red-950 lg:px-10">
+          <p>
+            It has been an undying dream of Mrs. Adelina M. Morante to establish
+            an educational institution that will produce top-caliber graduates
+            who will not only be successful in their fields of endeavor but will
+            also be God-loving and law-abiding citizens. This dream of an
+            academic institution came into reality in 1997 when PASS College was
+            inaugurated. Initially, it was known as the Philippine Accountancy
+            and Science School (PASS). Then in 2001, the name was changed to
+            PASS College. PASS College started with four ladderized programs
+            namely: Bachelor of Science in Accountancy, Bachelor of Science in
+            Computer Science, Bachelor of Science in Commerce, and Bachelor of
+            Science in Secretarial Administration. Then additional programs were
+            offered such as Bachelor of Elementary Education, Two-Years and
+            One-Year Tourism Hotel and Restaurant Management, Two-Years Computer
+            Secretarial and Six-Month Caregiving Course. Over the years, more
+            courses and/or programs have been offered such as Bachelor of
+            Science in Business Administration, Bachelor of Science in
+            Criminology, Bachelor of Science in Hospitality Management, and
+            Bachelor of Science in Tourism Management to answer the needs of the
+            people of Western Pangasinan and the nearby Zambales towns, and
+            anyone who seeks quality learning under competent and dedicated
+            instructors and with the best facilities which are regularly updated
+            to enhance learning and improves student learning competence. In
+            2007, PASS College responded to Executive Order 358 of President
+            Gloria Macapagal-Arroyo, inaugurating the Ladderized Education
+            System in the college. The quest for academic excellence continues
+            and will always be the burning propel of PASS College to achieve its
+            mission to provide the youth with a quality well-rounded education.
+          </p>
+        </div>
+      </section>
+
       <SectionUnbalance
         label={"A tradition of breaking with tradition"}
         description={

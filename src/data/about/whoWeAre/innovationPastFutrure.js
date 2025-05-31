@@ -5,15 +5,15 @@ export let innovationPastFuture = [
   {
     id: 1,
     img: `${pastAndFuture1}`,
-    title: "Fueling discovery",
+    title: "College Programs we Offer",
     descripton:
-      "We are a distinct community, one of ideas and inquiry, which looks across fields for new insights and lines of questioning.",
+      "Explore diverse degree programs equipping you with skills and knowledge for a successful future. From business and technology to education and hospitality, we foster academic excellence, preparing you for real-world impact.",
   },
   {
     id: 2,
     img: `${pastAndFuture2}`,
-    title: "Our History",
+    title: "The History of our School",
     descripton:
-      "Discover the University's distinct heritage and time-honored traditions",
+      "Founded in 1997 as the Philippine Accountancy and Science School, PASS College continues Mrs. Adelina M. Morante's dream of providing quality, well-rounded education to produce top-caliber, values-driven graduates.",
   },
 ];
