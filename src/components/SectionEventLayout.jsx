@@ -1,7 +1,10 @@
 import { CalendarOff } from "lucide-react";
 import EventCard from "./EventCard";
+import { useNavigate } from "react-router-dom";
 
 const SectionEventLayout = ({ data, label }) => {
+  const navigate = useNavigate();
+
   return (
     <section
       className={`container mx-auto ${
@@ -71,7 +74,10 @@ const SectionEventLayout = ({ data, label }) => {
           label === "EVENTS" || data.length === 1 ? "hidden" : ""
         }`}
       >
-        <button className="cursor-pointer rounded-2xl text-sm md:text-base px-6 py-1 border-red text-red-primary font-bold hover:bg-[rgb(128,0,0)] hover:text-white transition-colors duration-500">
+        <button
+          onClick={() => navigate("/news-events")}
+          className="cursor-pointer rounded-2xl text-sm md:text-base px-6 py-1 border-red text-red-primary font-bold hover:bg-[rgb(128,0,0)] hover:text-white transition-colors duration-500"
+        >
           SEE MORE EVENTS
         </button>
       </div>

@@ -45,7 +45,7 @@ export default function DeleteIcon({ id, itemType }) {
   return (
     <>
       <button
-        className="transition text-red-primary hover:text-red-800 hover:cursor-pointer"
+        className="transition text-red-50 hover:cursor-pointer"
         title="Delete Item"
         onClick={handleDeleteClick}
       >
@@ -54,7 +54,7 @@ export default function DeleteIcon({ id, itemType }) {
 
       {/* Confirmation Popup */}
       {isConfirmOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center text-red-950 bg-black/50">
           <div className="w-full max-w-md p-4 bg-white rounded-lg sm:p-6">
             <h2 className="mb-2 text-lg font-bold sm:text-xl sm:mb-4">
               Confirm Deletion
@@ -67,13 +67,13 @@ export default function DeleteIcon({ id, itemType }) {
             <div className="flex justify-end gap-2">
               <button
                 onClick={handleCancel}
-                className="px-3 py-2 text-sm border border-gray-300 rounded-lg sm:px-4 hover:bg-gray-50"
+                className="px-4 py-2 border rounded-full text-red-primary hover:bg-red-100 border-red-primary hover:cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={handleConfirm}
-                className="px-3 py-2 text-sm text-white rounded-lg sm:px-4 bg-red-primary hover:bg-red-800"
+                className="px-4 py-2 text-white rounded-full bg-red-primary hover-bg-red-primary hover:cursor-pointer hover:bg-red-800"
               >
                 Delete
               </button>

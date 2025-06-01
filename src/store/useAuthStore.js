@@ -10,7 +10,7 @@ const useAuthStore = create(
         course: "BSCS",
         year: "3",
       },
-      isAuthenticated: true,
+      isAuthenticated: false,
       userRole: "user",
 
       login: (role) => set({ isAuthenticated: true, userRole: role }),

@@ -64,7 +64,7 @@ export default function TransactionReport() {
         {/* Header */}
         <div className="flex items-center justify-between mb-6 print:mb-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">
+            <h1 className="text-2xl font-bold text-red-primary">
               Transaction Report
             </h1>
             <p className="text-sm text-gray-600">Document Request Summary</p>
@@ -72,7 +72,7 @@ export default function TransactionReport() {
           <div className="flex space-x-4 print:hidden">
             <button
               onClick={handlePrint}
-              className="flex items-center px-4 py-2 text-white transition-colors rounded bg-red-primary hover:bg-red-700"
+              className="flex items-center px-4 py-2 text-white transition-colors rounded-full bg-red-primary hover:bg-red-800 hover:cursor-pointer"
             >
               <Printer size={18} className="mr-2" />
               Print Report
@@ -86,7 +86,7 @@ export default function TransactionReport() {
             <button
               key={period}
               onClick={() => setActiveTimeframe(period)}
-              className={`px-4 py-2 rounded-md flex items-center ${
+              className={`hover:cursor-pointer px-4 py-2 rounded-md flex items-center ${
                 activeTimeframe === period
                   ? "bg-red-primary text-white"
                   : "bg-gray-200 text-gray-800 hover:bg-gray-300"
@@ -109,7 +109,7 @@ export default function TransactionReport() {
         {/* Summary Cards */}
         <div className="mb-8">
           <div className="mb-4">
-            <h2 className="flex items-center text-xl font-semibold">
+            <h2 className="flex items-center text-xl font-semibold text-red-950">
               <FileText size={20} className="mr-2" />
               Summary Overview - {data.timeframe}
             </h2>
@@ -142,13 +142,13 @@ export default function TransactionReport() {
         {/* Detailed Breakdown */}
         <div className="mb-8">
           <div className="mb-4">
-            <h2 className="flex items-center text-xl font-semibold">
+            <h2 className="flex items-center text-xl font-semibold text-red-950">
               <BarChart2 size={20} className="mr-2" />
               Detailed Breakdown
             </h2>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto rounded-lg">
             <table className="min-w-full bg-white border border-gray-300">
               <thead>
                 <tr className="bg-gray-100">
@@ -223,13 +223,13 @@ export default function TransactionReport() {
         {/* Document Type Breakdown */}
         <div>
           <div className="mb-4">
-            <h2 className="flex items-center text-xl font-semibold">
+            <h2 className="flex items-center text-xl font-semibold text-red-950">
               <FileText size={20} className="mr-2" />
               Document Type Breakdown
             </h2>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto rounded-lg">
             <table className="min-w-full bg-white border border-gray-300">
               <thead>
                 <tr className="bg-gray-100">

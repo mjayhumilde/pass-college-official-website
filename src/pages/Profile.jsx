@@ -6,31 +6,32 @@ import { Edit, Camera, LogOutIcon } from "lucide-react";
 
 const Profile = () => {
   const { logout } = useAuthStore();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const userRole = useAuthStore((state) => state.userRole);
+
   const navigate = useNavigate();
 
-  // State for student data
+  // use data || MOCK DATA
   const [userData, setUserData] = useState({
     firstName: "Mark John",
     lastName: "Humilde",
     email: "humildemarkjohn00@gmail.com",
     course: "Computer Science",
-    year: "3rd Year",
+    role: "Student",
     profileImage:
       "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
   });
 
-  // Edit mode state
   const [isEditing, setIsEditing] = useState(false);
 
   // File input reference
   const fileInputRef = useRef(null);
 
-  // Handle file selection
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // In a real application, you would upload this file to a server
-      // For now, we'll just create a local URL to display the image
+      // upload this file to a server
+      // for now just create a local URL to display the image
       const imageUrl = URL.createObjectURL(file);
       setUserData({
         ...userData,
@@ -39,7 +40,6 @@ const Profile = () => {
     }
   };
 
-  // Handle profile image click
   const handleProfileImageClick = () => {
     fileInputRef.current.click();
   };
@@ -49,7 +49,6 @@ const Profile = () => {
     console.log(userData);
 
     setIsEditing(false);
-    // In a real app, you would save changes to the server here
   };
 
   useEffect(() => {
@@ -97,7 +96,7 @@ const Profile = () => {
                 </h2>
                 {!isEditing ? (
                   <button
-                    className="flex items-center gap-2 px-4 py-2 mx-auto text-white bg-red-primary sm:mx-0"
+                    className="flex items-center gap-2 px-4 py-2 mx-auto font-bold text-white rounded-full bg-red-primary sm:mx-0 hover:cursor-pointer"
                     onClick={() => setIsEditing(true)}
                   >
                     <Edit size={18} />
@@ -105,7 +104,7 @@ const Profile = () => {
                   </button>
                 ) : (
                   <button
-                    className="flex items-center justify-center w-full gap-2 px-4 py-2 text-white bg-red-primary sm:w-auto"
+                    className="flex items-center justify-center w-full gap-2 px-4 py-2 font-bold text-white rounded-full bg-red-primary sm:w-auto hover:cursor-pointer"
                     onClick={handleSaveChanges}
                   >
                     Save Changes
@@ -131,7 +130,7 @@ const Profile = () => {
                               firstName: e.target.value,
                             })
                           }
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-primary focus:border-transparent"
+                          className="block w-full py-2 pl-10 pr-10 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                         />
                       </div>
                       <div>
@@ -147,7 +146,7 @@ const Profile = () => {
                               lastName: e.target.value,
                             })
                           }
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-primary focus:border-transparent"
+                          className="block w-full py-2 pl-10 pr-10 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                         />
                       </div>
                     </div>
@@ -161,7 +160,7 @@ const Profile = () => {
                         onChange={(e) =>
                           setUserData({ ...userData, email: e.target.value })
                         }
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-primary focus:border-transparent"
+                        className="block w-full py-2 pl-10 pr-10 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                       />
                     </div>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -175,20 +174,20 @@ const Profile = () => {
                           onChange={(e) =>
                             setUserData({ ...userData, course: e.target.value })
                           }
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-primary focus:border-transparent"
+                          className="block w-full py-2 pl-10 pr-10 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                         />
                       </div>
-                      <div>
+                      <div className="hidden">
                         <label className="block mb-1 text-sm font-medium text-gray-700">
-                          Year
+                          Role
                         </label>
                         <input
                           type="text"
-                          value={userData.year}
+                          value={userData.role}
                           onChange={(e) =>
                             setUserData({ ...userData, year: e.target.value })
                           }
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-primary focus:border-transparent"
+                          className="block w-full py-2 pl-10 pr-10 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                         />
                       </div>
                     </div>
@@ -201,31 +200,45 @@ const Profile = () => {
                         <p className="text-sm font-medium text-gray-500">
                           First Name
                         </p>
-                        <p className="text-gray-900">{userData.firstName}</p>
+                        <p className="font-bold text-gray-900">
+                          {userData.firstName}
+                        </p>
                       </div>
                       <div>
                         <p className="text-sm font-medium text-gray-500">
                           Last Name
                         </p>
-                        <p className="text-gray-900">{userData.lastName}</p>
+                        <p className="font-bold text-gray-900">
+                          {userData.lastName}
+                        </p>
                       </div>
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-500">Email</p>
-                      <p className="text-gray-900">{userData.email}</p>
+                      <p className="font-bold text-gray-900">
+                        {userData.email}
+                      </p>
                     </div>
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       <div>
                         <p className="text-sm font-medium text-gray-500">
                           Course
                         </p>
-                        <p className="text-gray-900">{userData.course}</p>
+                        <p className="font-bold text-gray-900">
+                          {userData.course}
+                        </p>
                       </div>
                       <div>
                         <p className="text-sm font-medium text-gray-500">
-                          Year
+                          Role
                         </p>
-                        <p className="text-gray-900">{userData.year}</p>
+                        <p className="font-bold text-gray-900">
+                          {isAuthenticated && userRole === "user"
+                            ? userData.role
+                            : isAuthenticated && userRole === "teacher"
+                            ? "Teacher"
+                            : "Admin"}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -238,7 +251,9 @@ const Profile = () => {
         {/* Password Change Card */}
         <div className="max-w-2xl p-6 mx-auto bg-white rounded-lg shadow-lg">
           <div className="container max-w-lg mx-auto space-y-4">
-            <h3 className="mb-6 text-xl font-bold">Change Password</h3>
+            <h3 className="mb-6 text-xl font-bold text-red-950">
+              Change Password
+            </h3>
             <div className="space-y-3">
               <div>
                 <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -246,7 +261,7 @@ const Profile = () => {
                 </label>
                 <input
                   type="password"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-primary focus:border-transparent"
+                  className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                   placeholder="Enter your current password"
                 />
               </div>
@@ -257,7 +272,7 @@ const Profile = () => {
                 </label>
                 <input
                   type="password"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-primary focus:border-transparent"
+                  className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                   placeholder="Enter your new password"
                 />
               </div>
@@ -268,13 +283,13 @@ const Profile = () => {
                 </label>
                 <input
                   type="password"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-primary focus:border-transparent"
+                  className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                   placeholder="Confirm your new password"
                 />
               </div>
 
               <div className="flex items-center justify-center pt-2">
-                <button className="w-full py-2 mx-5 text-white transition bg-red-primary md:mx-9 hover:bg-opacity-90 hover:cursor-pointer">
+                <button className="w-full py-2 font-bold text-white transition rounded-full bg-red-primary md:mx-9 hover:bg-opacity-90 hover:cursor-pointer">
                   Update Password
                 </button>
               </div>
@@ -282,16 +297,16 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <div className="container flex justify-center mx-auto mt-10 mb-5">
+      <div className="container flex justify-center p-5 mx-auto mt-5">
         <button
-          className="px-8 py-2 bg-red-primary text-red-50"
+          className="px-8 py-1 rounded-full bg-red-primary text-red-50"
           onClick={() => {
             logout();
             navigate("/");
           }}
         >
-          <span className="flex font-bold">
-            <LogOutIcon /> LOG OUT
+          <span className="flex items-center justify-center gap-1 font-bold hover:cursor-pointer">
+            <LogOutIcon size={20} /> Log Out
           </span>
         </button>
       </div>

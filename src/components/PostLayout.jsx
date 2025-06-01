@@ -39,12 +39,17 @@ const PostLayout = ({ data, label }) => {
     <section className="container p-3 mx-auto md:p-10">
       <div className="flex flex-col gap-10 lg:shadow-2xl lg:px-36">
         {data.map((post) => (
-          <div key={post.id} className="shadow-lg bg-red-primary">
+          <div
+            key={post.id}
+            className="overflow-hidden rounded-lg shadow-lg bg-red-primary"
+          >
             <div id={`news-${post.id}`} className="bg-gray">
               {isAuthenticated &&
                 (userRole === "admin" || userRole === "teacher") && (
                   <div className="flex items-center justify-end p-1">
-                    <DeleteIcon id={post.id} itemType={label} />
+                    <div className="flex items-center justify-center p-2 rounded-full bg-red-primary hover:bg-red-800 text-red-50">
+                      <DeleteIcon id={post.id} itemType={label} />
+                    </div>
                   </div>
                 )}
               <div className="flex justify-between p-2 py-2 md:px-10">

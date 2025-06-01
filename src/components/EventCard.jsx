@@ -26,7 +26,11 @@ const EventCard = ({ event }) => {
           <div className="absolute bottom-0 right-2">
             {(userRole === "admin" || userRole === "teacher") &&
               isAuthenticated && (
-                <DeleteIcon id={event.id} itemType={"events"} />
+                <div className="flex items-center justify-end p-1">
+                  <div className="flex items-center justify-center p-2 rounded-full bg-red-primary hover:bg-red-800 text-red-50">
+                    <DeleteIcon id={event.id} itemType={"Event"} />
+                  </div>
+                </div>
               )}
           </div>
         </div>

@@ -22,14 +22,14 @@ const WhoWeAre = () => {
     <>
       <HeroBgSection img={whoWeAreBG} label={"Who we are"} />
 
-      <section className="container pt-6 md:pt-14 mx-auto space-y-2 px-5 md:px-28">
-        <div className="text-center  pb-1 md:pb-2">
-          <h2 className="text-2xl md:text-4xl font-bold tracking-wider text-red-primary p-1">
+      <section className="container px-5 pt-6 mx-auto space-y-2 md:pt-14 md:px-28">
+        <div className="pb-1 text-center md:pb-2">
+          <h2 className="p-1 text-2xl font-bold tracking-wider md:text-4xl text-red-primary">
             ABOUT PASSIAN EDUCATION
           </h2>
-          <div className="w-20 md:w-92 border-b-2 border-red-950 mx-auto mt-2"></div>
+          <div className="w-20 mx-auto mt-2 border-b-2 md:w-92 border-red-950"></div>
         </div>
-        <div className="text-center space-y-5 sm:px-5 text-red-950 lg:px-10">
+        <div className="space-y-5 text-center sm:px-5 text-red-950 lg:px-10">
           <p>
             PASS College was established in 1997 as the Philippine Accountancy
             and Science School and was later renamed PASS College in 2001. As a
@@ -46,37 +46,15 @@ const WhoWeAre = () => {
         </div>
       </section>
 
-      <section className="bg-red-primary my-6 sm:my-14 xl:my-20">
-        <div className="text-red-50  flex flex-col justify-center text-center items-center px-5 sm:p-10 space-y-3">
-          <h2 className="text-2xl font-bold pt-4">Vission Mission</h2>
-          <p className="text-sm sm:text-lg pb-2">
-            It has been an undying dream of Mrs. Adelina M. Morante to establish
-            an educational institution that will produce top-caliber graduates
-            who will not only be successful in their fields of endeavor but will
-            also be God-loving and law-abiding citizens. This dream of an
-            academic institution came into reality in 1997 when PASS College was
-            inaugurated. Initially, it was known as the Philippine Accountancy
-            and Science School (PASS). Then in 2001, the name was changed to
-            PASS College. PASS College started with four ladderized programs
-            namely: Bachelor of Science in Accountancy, Bachelor of Science in
-            Computer Science, Bachelor of Science in Commerce, and Bachelor of
-            Science in Secretarial Administration. Then additional programs were
-            offered such as Bachelor of Elementary Education, Two-Years and
-            One-Year Tourism Hotel and Restaurant Management, Two-Years Computer
-            Secretarial and Six-Month Caregiving Course. Over the years, more
-            courses and/or programs have been offered such as Bachelor of
-            Science in Business Administration, Bachelor of Science in
-            Criminology, Bachelor of Science in Hospitality Management, and
-            Bachelor of Science in Tourism Management to answer the needs of the
-            people of Western Pangasinan and the nearby Zambales towns, and
-            anyone who seeks quality learning under competent and dedicated
-            instructors and with the best facilities which are regularly updated
-            to enhance learning and improves student learning competence. In
-            2007, PASS College responded to Executive Order 358 of President
-            Gloria Macapagal-Arroyo, inaugurating the Ladderized Education
-            System in the college. The quest for academic excellence continues
-            and will always be the burning propel of PASS College to achieve its
-            mission to provide the youth with a quality well-rounded education.
+      <section className="my-6 bg-red-primary sm:my-14 xl:my-20">
+        <div className="flex flex-col items-center justify-center px-5 space-y-3 text-center text-red-50 sm:p-10">
+          <h2 className="pt-4 text-2xl font-bold">Vission Mission</h2>
+          <p className="pb-2 text-sm sm:text-lg">
+            PASS College envisions itself as a leading Higher Educational
+            Institution committed to building a holistic and transformative
+            community through learning dedicated towards academic excellence,
+            bridging leadership and values formation that will produce globally
+            competitive professionals in today’s diverse environment.
           </p>
         </div>
       </section>
@@ -101,7 +79,7 @@ const WhoWeAre = () => {
               backgroundImage: `url('https://t3.ftcdn.net/jpg/02/26/57/24/360_F_226572424_X5ldGN8o6JqfNXMboqND2dXHSAV7eVX2.jpg')`,
             }}
           >
-            <div className="flex  justify-center items-center text-red-50 bg-gray-secondary-opacity h-full sm:p-10 sm:px-16 sm:py-6 p-5 lg:p-10  top-0 bottom-0 left-0 right-0">
+            <div className="top-0 bottom-0 left-0 right-0 flex items-center justify-center h-full p-5 text-red-50 bg-gray-secondary-opacity sm:p-10 sm:px-16 sm:py-6 lg:p-10">
               <div className="container mx-auto space-y-4 lg:space-y-7">
                 <h2 className="text-3xl font-bold">
                   We shape and define students
@@ -118,8 +96,8 @@ const WhoWeAre = () => {
 
         <section className="flex flex-col-reverse lg:grid lg:grid-cols-2">
           <div className="relative lg:h-[500px] bg-cover bg-center bg-no-repeat">
-            <div className="flex  justify-center items-center text-red-50 bg-red-primary h-full sm:p-10 sm:px-16 sm:py-6 p-5 lg:p-20  top-0 bottom-0 left-0 right-0">
-              <div className="h-auto container mx-auto space-y-4 lg:space-y-7">
+            <div className="top-0 bottom-0 left-0 right-0 flex items-center justify-center h-full p-5 text-red-50 bg-red-primary sm:p-10 sm:px-16 sm:py-6 lg:p-20">
+              <div className="container h-auto mx-auto space-y-4 lg:space-y-7">
                 <h2 className="text-3xl font-bold">
                   We believe freedom of expression is fundamental
                 </h2>
@@ -151,7 +129,7 @@ const WhoWeAre = () => {
               backgroundImage: `url('https://t3.ftcdn.net/jpg/02/26/57/24/360_F_226572424_X5ldGN8o6JqfNXMboqND2dXHSAV7eVX2.jpg`,
             }}
           >
-            <div className="flex  justify-center items-center text-red-50 bg-gray-secondary-opacity h-full sm:p-10 sm:px-16 sm:py-6 p-5 lg:p-10  top-0 bottom-0 left-0 right-0">
+            <div className="top-0 bottom-0 left-0 right-0 flex items-center justify-center h-full p-5 text-red-50 bg-gray-secondary-opacity sm:p-10 sm:px-16 sm:py-6 lg:p-10">
               <div className="container mx-auto space-y-4 lg:space-y-7">
                 <h2 className="text-3xl font-bold">
                   We tackle the communities most pressing issues
@@ -170,17 +148,24 @@ const WhoWeAre = () => {
       </section>
 
       <section>
-        <div className="bg-gray p-7 py-12 ">
+        <div className="py-12 bg-gray p-7 ">
           <div className="bg-gray-light ">
             <div className="container mx-auto">
-              <div className="text-center pt-10 pb-5">
+              <div className="pt-10 pb-5 text-center">
                 <h2 className="text-3xl font-bold tracking-wider text-red-primary">
                   OUR CORE VALUES
                 </h2>
-                <div className="w-24 border-b-2 border-red-950 mx-auto mt-2"></div>
+                <div className="w-24 mx-auto mt-2 border-b-2 border-red-950"></div>
+              </div>
+              <div className="p-5 pt-0 font-bold text-center text-red-primary">
+                <p>
+                  PASSian Education aims to IGNITE the following traits and
+                  characteristics among its stakeholders: - lagay mo to sa baba
+                  ah ng values ah
+                </p>
               </div>
 
-              <div className="flex flex-wrap justify-center items-start lg:gap-20 xl:gap-40 py-4">
+              <div className="flex flex-wrap items-start justify-center py-4 lg:gap-20 xl:gap-40">
                 {sharedValues.map((value) => (
                   <div
                     key={value.id}
@@ -188,18 +173,18 @@ const WhoWeAre = () => {
                   >
                     <div className="flex justify-center items-center  h-[300px] w-[300px] sm:h-[200px] sm:w-[200px] md:h-[230px] md:w-[230px] lg:h-[300px] lg:w-[300px] xl:h-[350px] xl:w-[350px] overflow-hidden rounded-full">
                       <img
-                        className="h-full w-full object-cover"
+                        className="object-cover w-full h-full"
                         src={value.img}
                         alt=""
                       />
                     </div>
 
-                    <div className="flex flex-col flex-grow justify-start items-center p-5">
+                    <div className="flex flex-col items-center justify-start flex-grow p-5">
                       <div className="h-16 w-[1px] bg-red-primary"></div>
-                      <div className="font-bold text-red-primary text-2xl underline">
+                      <div className="text-2xl font-bold underline text-red-primary">
                         {value.title}
                       </div>
-                      <div className="text-red-950 mt-4">
+                      <div className="mt-4 text-red-950">
                         {value.description}
                       </div>
                     </div>
@@ -212,19 +197,19 @@ const WhoWeAre = () => {
       </section>
 
       <section className="pb-10 ">
-        <div className="text-center pt-10 pb-5">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-wider text-red-primary">
+        <div className="pt-10 pb-5 text-center">
+          <h2 className="text-2xl font-bold tracking-wider md:text-3xl text-red-primary">
             LEGACY AND LEARNING AT PASS COLLEGE
           </h2>
-          <div className="w-20 md:w-32 border-b-2 border-red-950 mx-auto mt-2"></div>
+          <div className="w-20 mx-auto mt-2 border-b-2 md:w-32 border-red-950"></div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 2xl:container 2xl:mx-auto p-4  lg:px-25">
+        <div className="grid grid-cols-1 gap-3 p-4 md:grid-cols-2 2xl:container 2xl:mx-auto lg:px-25">
           {innovationPastFuture.map((item) => (
             <div className="bg-gray" key={item.id}>
               <div className="w-full lg:max-h-[400px] overflow-hidden">
                 <img
-                  className="w-full h-full object-cover"
+                  className="object-cover w-full h-full"
                   src={item.img}
                   alt=""
                 />
@@ -239,7 +224,7 @@ const WhoWeAre = () => {
                       ? navigate("/about/history-tradition")
                       : navigate("/about/college-programs")
                   }
-                  className="flex cursor-pointer text-sm md:text-base py-1 text-red-primary font-bold hover:underline transition-all duration-500"
+                  className="flex py-1 text-sm font-bold transition-all duration-500 cursor-pointer md:text-base text-red-primary hover:underline"
                 >
                   LEARN MORE
                   <ChevronRight />

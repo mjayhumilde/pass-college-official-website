@@ -155,7 +155,7 @@ export default function CreatePostPopup() {
       {/* Create Post Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center p-3 mr-3 space-x-2 text-white bg-red-primary hover-bg-red-primary"
+        className="flex items-center p-3 mr-3 space-x-2 font-bold rounded-full text-red-50 bg-red-primary hover-bg-red-primary hover:bg-red-800 hover:cursor-pointer"
       >
         <Plus size={20} />
         <span>Create Post</span>
@@ -167,12 +167,12 @@ export default function CreatePostPopup() {
           {/* Popup */}
           <div className="w-full h-auto max-w-2xl max-h-screen p-6 overflow-y-auto bg-white border border-gray-300">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-red-primary">
+              <h2 className="text-2xl font-bold text-red-primary">
                 Create New Post
               </h2>
               <button
                 onClick={closePopup}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-red-primary hover:text-red-800 hover:cursor-pointer"
               >
                 <X size={24} />
               </button>
@@ -190,7 +190,7 @@ export default function CreatePostPopup() {
                       key={type.id}
                       type="button"
                       onClick={() => setPostType(type.id)}
-                      className={`p-3 border ${
+                      className={`p-3 border shadow-md hover:cursor-pointer rounded-full text-red-primary ${
                         postType === type.id
                           ? "border-red-primary bg-red-primary text-white"
                           : "border-gray-300 hover:border-red-primary"
@@ -211,7 +211,7 @@ export default function CreatePostPopup() {
                       type="text"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
-                      className="w-full p-2 border border-gray-300"
+                      className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                       placeholder="Enter post title"
                     />
                   </div>
@@ -224,7 +224,7 @@ export default function CreatePostPopup() {
                     <textarea
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
-                      className="w-full h-32 p-2 border border-gray-300"
+                      className="w-full h-32 py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm p-2block text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                       placeholder="Enter post description"
                     ></textarea>
                   </div>
@@ -233,7 +233,7 @@ export default function CreatePostPopup() {
                   {postType === "events" && (
                     <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-2">
                       <div>
-                        <label className="flex items-center block mb-2 text-gray-700">
+                        <label className="flex items-center mb-2 text-gray-700">
                           <Calendar size={16} className="mr-1" />
                           Event Date
                         </label>
@@ -241,11 +241,11 @@ export default function CreatePostPopup() {
                           type="date"
                           value={eventDate}
                           onChange={(e) => setEventDate(e.target.value)}
-                          className="w-full p-2 border border-gray-300"
+                          className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                         />
                       </div>
                       <div>
-                        <label className="flex items-center block mb-2 text-gray-700">
+                        <label className="flex items-center mb-2 text-gray-700">
                           <Clock size={16} className="mr-1" />
                           Event Time
                         </label>
@@ -253,7 +253,7 @@ export default function CreatePostPopup() {
                           type="time"
                           value={eventTime}
                           onChange={(e) => setEventTime(e.target.value)}
-                          className="w-full p-2 border border-gray-300"
+                          className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                         />
                       </div>
                     </div>
@@ -276,11 +276,11 @@ export default function CreatePostPopup() {
                         onChange={handleImageChange}
                         accept="image/*"
                         multiple={postType !== "events"}
-                        className="hidden"
+                        className="hidden "
                       />
                       <label
                         htmlFor="image-upload"
-                        className="p-2 mr-2 bg-gray-200 border border-gray-300 cursor-pointer hover:bg-gray-300"
+                        className="p-1 px-5 mr-2 border rounded-full cursor-pointer text-red-50 bg-red-primary hover:bg-red-800"
                       >
                         Select Images
                       </label>
@@ -326,14 +326,14 @@ export default function CreatePostPopup() {
                     <button
                       type="button"
                       onClick={closePopup}
-                      className="px-4 py-2 text-gray-700 border border-gray-300"
+                      className="px-4 py-2 border rounded-full text-red-primary hover:bg-red-100 border-red-primary hover:cursor-pointer"
                     >
                       Cancel
                     </button>
                     <button
                       type="button"
                       onClick={handleSubmit}
-                      className="px-4 py-2 text-white bg-red-primary hover-bg-red-primary"
+                      className="px-4 py-2 text-white rounded-full bg-red-primary hover-bg-red-primary hover:cursor-pointer hover:bg-red-800"
                       disabled={!isFormValid()}
                     >
                       Create Post

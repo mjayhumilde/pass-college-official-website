@@ -100,7 +100,7 @@ export default function Request() {
   }, []);
 
   return (
-    <div className="w-full p-6 bg-gray-50">
+    <div className="w-full min-h-screen p-6 bg-gray-50">
       {/* Header */}
       <div className="w-full mb-6">
         <h1 className="text-2xl font-bold text-red-primary">
@@ -117,7 +117,7 @@ export default function Request() {
           <input
             type="text"
             placeholder="Search by name, course, or document..."
-            className="w-full p-2 border border-gray-300"
+            className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
@@ -127,7 +127,7 @@ export default function Request() {
         </div>
         <div className="w-full md:w-1/4">
           <select
-            className="w-full p-2 border border-gray-300"
+            className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
             value={statusFilter}
             onChange={(e) => {
               setStatusFilter(e.target.value);
@@ -142,7 +142,7 @@ export default function Request() {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto rounded-lg">
         <table className="w-full border border-collapse border-gray-300">
           <thead>
             <tr className="text-white bg-red-primary">
@@ -178,7 +178,7 @@ export default function Request() {
                   </td>
                   <td className="p-3 border border-gray-300">
                     <span
-                      className={`px-2 py-1 ${
+                      className={`px-2 py-1 rounded-full ${
                         request.status.toLowerCase() === "processing"
                           ? "bg-yellow-100 text-yellow-800"
                           : "bg-green-100 text-green-800"
@@ -193,7 +193,7 @@ export default function Request() {
                         onClick={() =>
                           handleStatusChange(request.id, request.status)
                         }
-                        className={`p-1 ${
+                        className={`p-1 rounded-full hover:cursor-pointer ${
                           request.status.toLowerCase() === "processing"
                             ? "bg-green-600"
                             : "bg-yellow-500"
@@ -213,7 +213,7 @@ export default function Request() {
 
                       <button
                         onClick={() => handleDelete(request.id)}
-                        className="flex items-center p-1 text-white bg-red-primary"
+                        className="flex items-center p-1 text-white rounded-full bg-red-primary hover:cursor-pointer"
                         title="Delete Request"
                       >
                         <Trash2 size={16} />
@@ -245,7 +245,7 @@ export default function Request() {
           <button
             onClick={() => changePage(currentPage - 1)}
             disabled={currentPage === 1}
-            className={`p-2 flex items-center ${
+            className={`p-2 flex items-center rounded-full hover:cursor-pointer ${
               currentPage === 1
                 ? "bg-gray-200 text-gray-400"
                 : "bg-red-primary text-white"
@@ -274,7 +274,7 @@ export default function Request() {
                 <button
                   key={page}
                   onClick={() => changePage(page)}
-                  className={`px-3 py-2 ${
+                  className={`px-3 py-2 rounded-full hover:cursor-pointer ${
                     currentPage === page
                       ? "bg-red-primary text-white"
                       : "bg-gray-200 text-gray-700"
@@ -288,7 +288,7 @@ export default function Request() {
           <button
             onClick={() => changePage(currentPage + 1)}
             disabled={currentPage === totalPages || totalPages === 0}
-            className={`p-2 flex items-center ${
+            className={`p-2 flex items-center rounded-full hover:cursor-pointer ${
               currentPage === totalPages || totalPages === 0
                 ? "bg-gray-200 text-gray-400"
                 : "bg-red-primary text-white"

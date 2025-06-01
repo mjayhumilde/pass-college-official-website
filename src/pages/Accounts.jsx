@@ -162,7 +162,7 @@ export default function Accounts() {
   };
 
   return (
-    <div className="max-w-6xl p-2 mx-auto sm:p-4 md:p-6">
+    <div className="max-w-6xl min-h-screen p-2 mx-auto sm:p-4 md:p-6">
       <h1 className="mb-4 text-2xl font-bold sm:text-3xl text-red-primary sm:mb-8">
         Accounts Management
       </h1>
@@ -176,7 +176,7 @@ export default function Accounts() {
             </div>
             <input
               type="text"
-              className="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 ring-red-primary"
+              className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
               placeholder="Search by name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -187,11 +187,17 @@ export default function Accounts() {
             <select
               value={courseFilter}
               onChange={(e) => setCourseFilter(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 ring-red-primary"
+              className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm hover:cursor-pointer text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
             >
-              <option value="">All Courses</option>
+              <option className="hover:cursor-pointer" value="">
+                All Courses
+              </option>
               {courses.map((course, index) => (
-                <option key={index} value={course}>
+                <option
+                  className="hover:cursor-pointer"
+                  key={index}
+                  value={course}
+                >
                   {course}
                 </option>
               ))}
@@ -204,11 +210,17 @@ export default function Accounts() {
               <select
                 value={roleFilter}
                 onChange={(e) => setRoleFilter(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 ring-red-primary"
+                className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm hover:cursor-pointer text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
               >
-                <option value="">All Roles</option>
+                <option className="hover:cursor-pointer" value="">
+                  All Roles
+                </option>
                 {roles.map((role, index) => (
-                  <option key={index} value={role}>
+                  <option
+                    className="hover:cursor-pointer"
+                    key={index}
+                    value={role}
+                  >
                     {role.charAt(0).toUpperCase() + role.slice(1)}
                   </option>
                 ))}
@@ -219,7 +231,7 @@ export default function Accounts() {
 
         <button
           onClick={() => setIsCreateModalOpen(true)}
-          className="flex items-center justify-center gap-2 px-4 py-2 text-white transition bg-red-primary hover-bg-red-primary"
+          className="flex items-center justify-center gap-2 px-4 py-2 font-bold text-white transition rounded-full bg-red-primary hover:bg-red-800 hover:cursor-pointer"
         >
           <UserPlus className="w-4 h-4 sm:h-5 sm:w-5" />
           <span>Create Account</span>
@@ -267,7 +279,7 @@ export default function Accounts() {
                   <td className="px-2 py-2 text-xs text-gray-500 sm:px-6 sm:py-4 whitespace-nowrap sm:text-sm">
                     <div className="flex space-x-2">
                       <button
-                        className="text-red-600 transition hover:text-red-800"
+                        className="p-1 transition rounded-full bg-red-primary text-red-50 hover:bg-red-800 hover:cursor-pointer"
                         title="Delete Account"
                         onClick={() => {
                           setAccountToDelete(account);
@@ -310,10 +322,10 @@ export default function Accounts() {
             <button
               onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
-              className={`p-1 sm:p-2 rounded-md border ${
+              className={`p-1 sm:p-2 rounded-full hover:cursor-pointer ${
                 currentPage === 1
-                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                  : "bg-white text-gray-700 hover:bg-gray-50"
+                  ? "bg-gray-200 text-gray-400"
+                  : "bg-red-primary text-white"
               }`}
             >
               <ChevronLeft className="w-4 h-4 sm:h-5 sm:w-5" />
@@ -336,10 +348,10 @@ export default function Accounts() {
                   onClick={() => setCurrentPage(index + 1)}
                   className={`${
                     showOnMobile ? "flex" : "hidden sm:flex"
-                  } items-center justify-center min-w-[32px] px-2 sm:px-3 py-1 rounded-md ${
+                  } px-3 py-2 rounded-full hover:cursor-pointer ${
                     currentPage === index + 1
                       ? "bg-red-primary text-white"
-                      : "bg-white text-gray-700 hover:bg-gray-50"
+                      : "bg-gray-200 text-gray-700"
                   }`}
                 >
                   {index + 1}
@@ -352,10 +364,10 @@ export default function Accounts() {
                 setCurrentPage(Math.min(totalPages, currentPage + 1))
               }
               disabled={currentPage === totalPages}
-              className={`p-1 sm:p-2 rounded-md border ${
+              className={`p-1 sm:p-2 rounded-full hover:cursor-pointer ${
                 currentPage === totalPages
-                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                  : "bg-white text-gray-700 hover:bg-gray-50"
+                  ? "bg-gray-200 text-gray-400"
+                  : "bg-red-primary text-white"
               }`}
             >
               <ChevronRight className="w-4 h-4 sm:h-5 sm:w-5" />
@@ -475,13 +487,13 @@ export default function Accounts() {
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => setIsConfirmDeleteOpen(false)}
-                className="px-3 py-2 text-sm border border-gray-300 rounded-lg sm:px-4 hover:bg-gray-50"
+                className="px-4 py-2 border rounded-full text-red-primary hover:bg-red-100 border-red-primary hover:cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDeleteAccount}
-                className="px-3 py-2 text-sm text-white rounded-lg sm:px-4 bg-red-primary hover-bg-red-primary"
+                className="px-4 py-2 text-white rounded-full bg-red-primary hover-bg-red-primary hover:cursor-pointer hover:bg-red-800"
               >
                 Delete Account
               </button>
