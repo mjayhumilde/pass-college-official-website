@@ -48,7 +48,7 @@ export let news = [
       `${news2_12}`,
     ],
     description:
-      "title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h",
+      "title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h",
     date: "March 9, 2025",
     title: "try title tiltel tilteketlei",
   },
@@ -56,7 +56,7 @@ export let news = [
     id: 1,
     images: [`${news3_1}`],
     description:
-      "title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h",
+      "title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h",
     date: "March 9, 2025",
     title: "try title tiltel tilteketlei",
   },
@@ -79,7 +79,7 @@ export let news = [
       `${news4_14}`,
     ],
     description:
-      "title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h",
+      "title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea htitle lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h",
     date: "March 9, 2025",
     title: "try title tiltel tilteketlei",
   },
@@ -87,7 +87,7 @@ export let news = [
     id: 3,
     images: [`${news5_1}`],
     description:
-      "title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h",
+      "title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h",
     date: "March 9, 2025",
     title: "try title tiltel tilteketlei",
   },

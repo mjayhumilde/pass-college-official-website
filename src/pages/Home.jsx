@@ -1,6 +1,6 @@
 import shapeYourFuture from "../assets/images/home/shapeYourFuture/shapeYourFuture.jpg";
 import weWElcomeAll from "../assets/images/home/weWelcomeAll/weWelcomeAll.jpg";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, MegaphoneOff } from "lucide-react";
 import adsVideo from "../assets/videos/pass_ads_video.mp4";
 import BtnPriWhite from "../components/BtnPriWhite";
 import CardSlider from "../components/CardSlider-choosePass";
@@ -22,6 +22,17 @@ const Home = () => {
     e.target.muted = false;
     e.target.play();
   };
+
+  const getGridCols = (itemCount) => {
+    if (itemCount === 1) return "grid-cols-1";
+    if (itemCount === 2) return "grid-cols-1 sm:grid-cols-2";
+    if (itemCount === 3) return "grid-cols-1 sm:grid-cols-3 md:grid-cols-3";
+    return "grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4";
+  };
+
+  // In your component
+
+  const gridColsClass = getGridCols(news.length);
 
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to the top on mount
@@ -63,18 +74,33 @@ const Home = () => {
         <div className="container mx-auto">
           {news.length === 0 ? (
             // No News" message
-            <div className="flex justify-center items-center h-[50vh] text-xl font-semibold">
-              No news at the moment...🤧
+            <div className="flex flex-col items-center justify-center gap-2 p-10 font-bold rounded-full">
+              <div className="rounded-full p-11 bg-red-primary text-red-50">
+                No news at the moment...
+                <span className="flex justify-center text-red-50">
+                  <MegaphoneOff size={78} />
+                </span>
+              </div>
             </div>
           ) : (
             <div>
-              <div className="grid grid-cols-1 gap-3 p-3 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 md:gap-6">
+              <div className={`grid gap-3 p-3 md:gap-6 ${gridColsClass}`}>
                 {news.slice(0, 4).map((item) => (
                   <div
                     key={item.id}
-                    className="flex flex-col h-full rounded-lg shadow-lg"
+                    className={`flex flex-col h-full rounded-lg shadow-lg ${
+                      news.length === 1 ? "lg:px-72 lg:py-5" : ""
+                    }`}
                   >
-                    <div className="h-48 overflow-hidden sm:h-56 md:h-64">
+                    <div
+                      className={`h-48 overflow-hidden sm:h-56 md:h-64 ${
+                        news.length === 3 ||
+                        news.length === 2 ||
+                        news.length === 1
+                          ? "lg:h-96 "
+                          : ""
+                      }`}
+                    >
                       <img
                         className="object-cover w-full h-full transition-all duration-500 rounded-t-lg"
                         src={item.images.slice(0, 1)}

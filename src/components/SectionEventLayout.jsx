@@ -61,7 +61,7 @@ const SectionEventLayout = ({ data, label }) => {
         </div>
       ) : (
         <div className="flex items-center justify-center p-10 text-gray-500">
-          <div className="flex flex-col items-center justify-center gap-2 p-10 rounded-full bg-gray">
+          <div className="flex flex-col items-center justify-center gap-2 p-10 font-bold rounded-full bg-gray text-red-primary">
             No events at the moment...
             <span className="text-red-primary">
               <CalendarOff size={78} />
