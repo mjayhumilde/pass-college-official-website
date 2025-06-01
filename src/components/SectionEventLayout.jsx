@@ -71,7 +71,9 @@ const SectionEventLayout = ({ data, label }) => {
       )}
       <div
         className={`flex justify-center items-center pt-5 pb-10 ${
-          label === "EVENTS" || data.length === 1 ? "hidden" : ""
+          label === "EVENTS" || data.length === 1 || data.length === 0
+            ? "hidden"
+            : ""
         }`}
       >
         <button
