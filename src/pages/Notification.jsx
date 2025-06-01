@@ -115,10 +115,10 @@ export default function NotificationPage() {
                   setActiveTab(tab.id);
                   setCurrentPage(1);
                 }}
-                className={`px-3 py-2 text-sm md:text-base rounded-md transition-colors ${
+                className={`px-3 py-2 text-sm md:text-base rounded-md transition-colors hover:cursor-pointer ${
                   activeTab === tab.id
-                    ? "bg-red-800 text-white"
-                    : "bg-white text-gray-700 hover:bg-gray-100"
+                    ? "bg-red-primary text-white"
+                    : "bg-gray-200 text-gray-800 hover:bg-gray-300"
                 }`}
               >
                 {tab.label}
@@ -178,14 +178,14 @@ export default function NotificationPage() {
                       {notification.notifStatus === "unread" && (
                         <button
                           onClick={() => markAsRead(notification.id)}
-                          className="text-xs text-red-800 hover:text-red-900"
+                          className="text-xs text-red-800 hover:text-red-900 hover:cursor-pointer"
                         >
                           Mark as read
                         </button>
                       )}
                       <button
                         onClick={() => deleteNotification(notification.id)}
-                        className="text-gray-400 hover:text-gray-500"
+                        className="text-red-primary hover:text-red-800 hover:cursor-pointer"
                       >
                         <X size={16} />
                       </button>
@@ -253,16 +253,16 @@ export default function NotificationPage() {
                   </p>
                 </div>
                 <div>
-                  <nav className="relative z-0 inline-flex -space-x-px rounded-md shadow-sm">
+                  <nav className="relative z-0 inline-flex space-x-1 rounded-md shadow-sm">
                     <button
                       onClick={() =>
                         setCurrentPage((prev) => Math.max(prev - 1, 1))
                       }
                       disabled={currentPage === 1}
-                      className={`relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium ${
+                      className={`p-1 sm:p-2 rounded-full hover:cursor-pointer ${
                         currentPage === 1
-                          ? "text-gray-300"
-                          : "text-gray-500 hover:bg-gray-50"
+                          ? "bg-gray-200 text-gray-400"
+                          : "bg-red-primary text-white"
                       }`}
                     >
                       <ChevronLeft size={16} />
@@ -271,10 +271,10 @@ export default function NotificationPage() {
                       <button
                         key={index}
                         onClick={() => setCurrentPage(index + 1)}
-                        className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                        className={`${"hidden sm:flex"} px-3 py-2 rounded-full hover:cursor-pointer ${
                           currentPage === index + 1
-                            ? "z-10 bg-red-800 border-red-800 text-white"
-                            : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50"
+                            ? "bg-red-primary text-white"
+                            : "bg-gray-200 text-gray-700"
                         }`}
                       >
                         {index + 1}
@@ -285,10 +285,10 @@ export default function NotificationPage() {
                         setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                       }
                       disabled={currentPage === totalPages}
-                      className={`relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium ${
+                      className={`p-1 sm:p-2 rounded-full hover:cursor-pointer ${
                         currentPage === totalPages
-                          ? "text-gray-300"
-                          : "text-gray-500 hover:bg-gray-50"
+                          ? "bg-gray-200 text-gray-400"
+                          : "bg-red-primary text-white"
                       }`}
                     >
                       <ChevronRight size={16} />
