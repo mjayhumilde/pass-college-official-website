@@ -31,7 +31,7 @@ export default function DeleteIcon({ id, itemType }) {
     if (dataLabel === "news") {
       deleteNews(id);
     }
-    if (dataLabel === "events") {
+    if (dataLabel === "event") {
       deleteEvents(id);
     }
     if (dataLabel === "uniforms") {
