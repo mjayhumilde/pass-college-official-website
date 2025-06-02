@@ -376,15 +376,17 @@ const Header = () => {
                 </Link>
               </div>
             ) : (
-              <button
-                onClick={() => {
-                  navigate("login");
-                  setIsMenuOpen(false);
-                }}
-                className="w-full px-6 py-2 font-bold transition-colors duration-300 border rounded-full border-red-primary text-red-primary hover:bg-red-primary hover:text-white"
-              >
-                Login
-              </button>
+              <div className="py-6">
+                <button
+                  onClick={() => {
+                    navigate("login");
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full px-6 py-2 font-bold transition-colors duration-300 border rounded-full border-white text-white hover:bg-red-primary hover:text-white"
+                >
+                  Login
+                </button>
+              </div>
             )}
           </div>
         </div>
