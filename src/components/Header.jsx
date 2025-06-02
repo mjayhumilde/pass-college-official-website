@@ -29,6 +29,20 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    // Cleanup function to reset overflow when component unmounts
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMenuOpen]);
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -275,94 +289,104 @@ const Header = () => {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="px-4 py-4 bg-white md:hidden text-red-primary">
-          <nav>
-            <ul className="flex flex-col">
-              {filteredMenuItems.map((item, index) => (
-                <li key={index} className="border-b border-gray-200">
-                  {item.hasDropdown ? (
-                    <div>
-                      <button
-                        className={`font-bold py-4 pl-3 flex justify-between items-center w-full hover:bg-gray-50 transition-colors duration-300 ${
+        <div
+          className={`fixed inset-0 md:hidden bg-white text-red-primary z-40 flex flex-col ${
+            isScrolled ? "top-13 " : "top-18"
+          }`}
+        >
+          {/*Content Container */}
+          <div className="flex-1 overflow-y-auto">
+            <nav className="p-4">
+              <ul className="flex flex-col">
+                {filteredMenuItems.map((item, index) => (
+                  <li key={index} className="border-b border-gray-200">
+                    {item.hasDropdown ? (
+                      <div>
+                        <button
+                          className={`font-bold py-4 pl-3 flex justify-between items-center w-full hover:bg-gray-50 transition-colors duration-300 ${
+                            isActive(item) ? "text-red-700" : ""
+                          }`}
+                          onClick={() => toggleAboutDropdown()}
+                        >
+                          {item.name}
+                          {isAboutDropdownOpen ? (
+                            <ChevronUp size={18} />
+                          ) : (
+                            <ChevronDown size={18} />
+                          )}
+                        </button>
+
+                        {isAboutDropdownOpen && (
+                          <ul className="bg-white">
+                            {item.dropdownItems.map(
+                              (dropdownItem, dropdownIndex) => (
+                                <li key={dropdownIndex}>
+                                  <Link
+                                    to={dropdownItem.link}
+                                    className={`block py-3 pl-8 hover:bg-gray-100 transition-colors duration-300 ${
+                                      location.pathname === dropdownItem.link
+                                        ? "font-bold text-red-700"
+                                        : ""
+                                    }`}
+                                    onClick={() => {
+                                      setIsAboutDropdownOpen(false);
+                                      setIsMenuOpen(false);
+                                    }}
+                                  >
+                                    {dropdownItem.name}
+                                  </Link>
+                                </li>
+                              )
+                            )}
+                          </ul>
+                        )}
+                      </div>
+                    ) : (
+                      <Link
+                        to={item.link}
+                        className={`font-bold py-4 pl-3 block hover:bg-gray-50 transition-colors duration-300 ${
                           isActive(item) ? "text-red-700" : ""
                         }`}
-                        onClick={() => toggleAboutDropdown()}
+                        onClick={() => setIsMenuOpen(false)}
                       >
                         {item.name}
-                        {isAboutDropdownOpen ? (
-                          <ChevronUp size={18} />
-                        ) : (
-                          <ChevronDown size={18} />
-                        )}
-                      </button>
+                      </Link>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
 
-                      {isAboutDropdownOpen && (
-                        <ul className="bg-white">
-                          {item.dropdownItems.map(
-                            (dropdownItem, dropdownIndex) => (
-                              <li key={dropdownIndex}>
-                                <Link
-                                  to={dropdownItem.link}
-                                  className={`block py-3 pl-8 hover:bg-gray-100 transition-colors duration-300 ${
-                                    location.pathname === dropdownItem.link
-                                      ? "font-bold text-red-700"
-                                      : ""
-                                  }`}
-                                  onClick={() => {
-                                    setIsAboutDropdownOpen(false);
-                                    setIsMenuOpen(false);
-                                  }}
-                                >
-                                  {dropdownItem.name}
-                                </Link>
-                              </li>
-                            )
-                          )}
-                        </ul>
-                      )}
-                    </div>
-                  ) : (
-                    <Link
-                      to={item.link}
-                      className={`font-bold py-4 pl-3 block hover:bg-gray-50 transition-colors duration-300 ${
-                        isActive(item) ? "text-red-700" : ""
-                      }`}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      {item.name}
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
-
-            {/* Mobile Login */}
-            <div className="mt-4">
-              {isAuthenticated ? (
-                <div className="relative z-50 flex items-center justify-center">
-                  <Link
-                    to="/profile"
-                    onClick={() => {
-                      setIsMenuOpen(false);
-                    }}
-                    className="block p-2 rounded-full bg-red-primary"
-                  >
-                    <User size={70} className="text-red-50" />
-                  </Link>
-                </div>
-              ) : (
-                <button
+          {/* Fixed Bottom Section for Login/Profile */}
+          <div className="flex-shrink-0 p-2 border-t border-gray-200 bg-red-primary">
+            {isAuthenticated ? (
+              <div className="relative z-50 flex items-center justify-center">
+                <Link
+                  to="/profile"
                   onClick={() => {
-                    navigate("login");
                     setIsMenuOpen(false);
                   }}
-                  className="w-full px-6 py-2 font-bold transition-colors duration-300 border rounded-full border-red-primary text-red-primary hover:bg-red-primary hover:text-white"
+                  className="block p-2 px-4 rounded-full bg-gray"
                 >
-                  Login
-                </button>
-              )}
-            </div>
-          </nav>
+                  <div className="flex justify-center items-center flex-col gap-1">
+                    <User size={60} className="text-red-primary" />
+                    <span className="font-bold">PROFILE</span>
+                  </div>
+                </Link>
+              </div>
+            ) : (
+              <button
+                onClick={() => {
+                  navigate("login");
+                  setIsMenuOpen(false);
+                }}
+                className="w-full px-6 py-2 font-bold transition-colors duration-300 border rounded-full border-red-primary text-red-primary hover:bg-red-primary hover:text-white"
+              >
+                Login
+              </button>
+            )}
+          </div>
         </div>
       )}
     </header>
