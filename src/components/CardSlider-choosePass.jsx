@@ -58,7 +58,7 @@ const ResponsiveCardSlider = ({ cards }) => {
 
   return (
     <div className="relative w-full px-3 py-0 mx-auto max-w-7xl">
-      <div className="relative h-64 overflow-hidden sm:h-80 md:h-96">
+      <div className="relative h-64 overflow-hidden rounded-lg sm:h-80 md:h-96">
         <div
           className="flex transition-transform duration-500 ease-in-out"
           style={{
@@ -66,14 +66,14 @@ const ResponsiveCardSlider = ({ cards }) => {
           }}
         >
           {cards.map((card) => (
-            <div key={card.id} className="flex-shrink-0 w-full">
-              <div className="relative shadow-lg">
+            <div key={card.id} className="flex-shrink-0 w-full px-1">
+              <div className="relative shadow-lg rounded-lg overflow-hidden">
                 <img
                   src={card.image}
                   alt={`Slide ${card.id}`}
-                  className="object-cover w-full h-64 rounded-lg sm:h-80 md:h-96 "
+                  className="object-cover w-full h-64 sm:h-80 md:h-96"
                 />
-                <div className="absolute bottom-0 left-0 right-0 p-3 text-center bg-red-primary rounded-b-lg text-red-50 ">
+                <div className="absolute bottom-0 left-0 right-0 p-3 text-center bg-red-primary text-red-50">
                   <p className="text-sm sm:text-base">{card.caption}</p>
                 </div>
               </div>
@@ -105,7 +105,7 @@ const ResponsiveCardSlider = ({ cards }) => {
             key={index}
             onClick={() => handleGoToSlide(index)}
             className={`h-3 w-3 rounded-full ${
-              activeIndex === index ? "bg-gray-700" : "bg-gray-300"
+              activeIndex === index ? "bg-red-primary" : "bg-gray-300"
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />
@@ -183,7 +183,7 @@ const DesktopCardSlider = ({ cards }) => {
           }}
         >
           {cards.map((card) => (
-            <div key={card.id} className="flex-shrink-0 w-1/3 px-2 ">
+            <div key={card.id} className="flex-shrink-0 w-1/3 px-2">
               <div className="relative overflow-hidden rounded-lg shadow-lg">
                 <img
                   src={card.image}
