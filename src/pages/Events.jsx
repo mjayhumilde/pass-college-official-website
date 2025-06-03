@@ -8,6 +8,7 @@ import SectionEventLayout from "../components/SectionEventLayout";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { MegaphoneOff } from "lucide-react";
+import NewsletterSubscription from "../components/NewsLetterSubscription";
 
 const Events = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -79,6 +80,10 @@ const Events = () => {
           </div>
         </div>
       )}
+
+      <section className="mb-10 p-5">
+        <NewsletterSubscription />
+      </section>
     </main>
   );
 };
