@@ -54,7 +54,7 @@ export default function Login() {
       </div>
 
       <div className="mt-2 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
+        <div className="px-4 py-8 bg-white shadow rounded-lg sm:px-10">
           {error && (
             <div className="p-4 mb-6 border-l-4 border-red-800 bg-red-50">
               <div className="flex">
