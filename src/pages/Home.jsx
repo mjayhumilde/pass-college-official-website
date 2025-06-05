@@ -12,6 +12,7 @@ import SectionEventLayout from "../components/SectionEventLayout";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import usePostStore from "../store/usePostStore";
+import EmptySection from "../components/EmptySection";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -74,14 +75,7 @@ const Home = () => {
         <div className="container mx-auto">
           {news.length === 0 ? (
             // No News" message
-            <div className="flex flex-col items-center justify-center gap-2 p-10 font-bold rounded-full">
-              <div className="rounded-full p-11 bg-red-primary text-red-50">
-                No news at the moment...
-                <span className="flex justify-center text-red-50">
-                  <MegaphoneOff size={78} />
-                </span>
-              </div>
-            </div>
+            <EmptySection icon={MegaphoneOff} type={"NEWS"} />
           ) : (
             <div>
               <div className={`grid gap-3 p-3 md:gap-6 ${gridColsClass}`}>

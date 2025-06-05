@@ -124,7 +124,7 @@ const ReqDocs = () => {
                 {...register("documentType", {
                   required: true,
                 })}
-                className="block w-full py-2 pl-10 pr-10 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
+                className="hover:cursor-pointer block w-full py-2 pl-10 pr-10 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
               >
                 <option value="">Select Document Type</option>
                 <option value="transcript">Transcript</option>
@@ -165,7 +165,7 @@ const ReqDocs = () => {
 
             <div className="mt-7">
               <button
-                className="w-full py-2 text-sm font-bold rounded-full bg-red-primary text-red-50"
+                className="hover:cursor-pointer w-full py-2 text-sm font-bold rounded-full bg-red-primary text-red-50"
                 type="submit"
               >
                 Submit Request

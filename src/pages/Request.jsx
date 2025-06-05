@@ -127,7 +127,7 @@ export default function Request() {
         </div>
         <div className="w-full md:w-1/4">
           <select
-            className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
+            className="hover:cursor-pointer block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
             value={statusFilter}
             onChange={(e) => {
               setStatusFilter(e.target.value);

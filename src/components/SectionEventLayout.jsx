@@ -1,6 +1,7 @@
 import { CalendarOff } from "lucide-react";
 import EventCard from "./EventCard";
 import { useNavigate } from "react-router-dom";
+import EmptySection from "./EmptySection";
 
 const SectionEventLayout = ({ data, label }) => {
   const navigate = useNavigate();
@@ -60,14 +61,7 @@ const SectionEventLayout = ({ data, label }) => {
               ))}
         </div>
       ) : (
-        <div className="flex items-center justify-center p-10 text-gray-500">
-          <div className="flex flex-col items-center justify-center gap-2 p-10 font-bold rounded-full bg-red-primary text-red-50">
-            No events at the moment...
-            <span className="text-red-50">
-              <CalendarOff size={78} />
-            </span>
-          </div>
-        </div>
+        <EmptySection icon={CalendarOff} type={label} />
       )}
       <div
         className={`flex justify-center items-center pt-5 pb-10 ${
