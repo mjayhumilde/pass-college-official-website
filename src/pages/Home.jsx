@@ -49,7 +49,7 @@ const Home = () => {
   // useInView hook
   const isNewsContentInView = useInView(newsContentRef, {
     once: true,
-    amount: 0.2,
+    amount: 0,
   });
   const isChoosePassianCardSliderInView = useInView(
     choosePassianCardSliderRef,
@@ -142,14 +142,14 @@ const Home = () => {
   };
 
   return (
-    <main className="overflow-x-hidden max-w-full">
+    <main>
       {/* SECTION: Video and Buttons */}
-      <section className="overflow-x-hidden">
-        <div className="w-full max-w-full">
-          <div className="w-full h-60 sm:h-auto bg-gradient-to-t from-[rgb(128,0,0)] to-white overflow-hidden">
+      <section>
+        <div className="w-full">
+          <div className="w-full h-60 sm:h-auto bg-gradient-to-t from-[rgb(128,0,0)] to-white">
             <video
               src={adsVideo}
-              className="block object-cover w-full h-full max-w-full"
+              className="block object-cover w-full h-full"
               muted
               autoPlay
               loop
@@ -158,7 +158,7 @@ const Home = () => {
             />
           </div>
 
-          <div className="flex flex-col items-center justify-center px-5 py-5 space-y-4 bg-red-primary sm:flex-row sm:py-4 sm:space-y-0 sm:space-x-5 max-w-full">
+          <div className="flex flex-col items-center justify-center px-5 py-5 space-y-4 bg-red-primary sm:flex-row sm:py-4 sm:space-y-0 sm:space-x-5">
             <BtnPriWhite text="ABOUT US" route={"about/who-we-are"} />
             <BtnPriWhite text="WORK WITH US " route={"careers"} />
           </div>
@@ -167,7 +167,7 @@ const Home = () => {
 
       {/* --- LATEST NEWS SECTION --- */}
       <SectionAnimator>
-        <section className="bg-gray overflow-x-hidden">
+        <section className="bg-gray">
           <div className="pt-10 pb-5 text-center md:pt-20">
             <h2 className="text-2xl font-bold tracking-wider md:text-4xl text-red-primary">
               LATEST NEWS
@@ -175,7 +175,7 @@ const Home = () => {
             <div className="w-20 mx-auto mt-2 border-b-2 md:w-32 border-red-950"></div>
           </div>
 
-          <div className="container mx-auto max-w-full overflow-x-hidden">
+          <div className="container mx-auto">
             {news.length === 0 ? (
               <EmptySection icon={MegaphoneOff} type={"NEWS"} />
             ) : (
@@ -184,16 +184,15 @@ const Home = () => {
                 variants={newsContainerVariants}
                 initial="hidden"
                 animate={isNewsContentInView ? "visible" : "hidden"}
-                className="overflow-x-hidden max-w-full"
               >
                 <motion.div
-                  className={`grid gap-3 p-3 md:gap-6 ${gridColsClass} max-w-full overflow-x-hidden`}
+                  className={`grid gap-3 p-3 md:gap-6 ${gridColsClass}`}
                 >
                   {news.slice(0, 4).map((item) => (
                     <motion.div
                       key={item.id}
-                      variants={newsItemPopVariants}
-                      className={`flex flex-col h-full rounded-lg shadow-lg max-w-full ${
+                      variants={newsItemPopVariants} // Uses the *original* faster pop
+                      className={`flex flex-col h-full rounded-lg shadow-lg ${
                         news.length === 1 ? "lg:px-72 lg:py-5" : ""
                       }`}
                     >
@@ -207,7 +206,7 @@ const Home = () => {
                         }`}
                       >
                         <img
-                          className="object-cover w-full h-full transition-all duration-500 rounded-t-lg max-w-full"
+                          className="object-cover w-full h-full transition-all duration-500 rounded-t-lg"
                           src={item.images.slice(0, 1)}
                           alt={item.title}
                         />
@@ -216,7 +215,7 @@ const Home = () => {
                       <Link to={`news-events#news-${item.id}`}>
                         <div className="flex items-center justify-center p-3 font-semibold rounded-b-lg bg-red-primary text-red-50">
                           <div className="flex items-start max-w-full gap-1 underline cursor-pointer decoration-red-300 hover:decoration-red-50">
-                            <span className="text-sm line-clamp-3 break-words">
+                            <span className="text-sm line-clamp-3">
                               {item.description}
                             </span>
                             <ExternalLink className="flex-shrink-0 w-4 h-4 mt-1 hover" />
@@ -227,12 +226,12 @@ const Home = () => {
                   ))}
                 </motion.div>
                 <motion.div
-                  variants={newsItemPopVariants}
+                  variants={newsItemPopVariants} // Uses the *original* faster pop
                   className="flex items-center justify-center pt-5 pb-10"
                 >
                   <button
                     onClick={() => navigate("news-events")}
-                    className="cursor-pointer rounded-2xl text-sm md:text-base px-6 py-1 border-red text-red-primary font-bold hover:bg-[rgb(128,0,0)] hover:text-white transition-colors duration-500 max-w-full"
+                    className="cursor-pointer rounded-2xl text-sm md:text-base px-6 py-1 border-red text-red-primary font-bold hover:bg-[rgb(128,0,0)] hover:text-white transition-colors duration-500 "
                   >
                     SEE MORE NEWS
                   </button>
@@ -245,7 +244,7 @@ const Home = () => {
 
       {/* --- CHOOSE PASSIAN EDUCATION SECTION --- */}
       <SectionAnimator>
-        <section className="container pt-10 mx-auto space-y-2 md:pt-20 max-w-full overflow-x-hidden">
+        <section className="container pt-10 mx-auto space-y-2 md:pt-20">
           <div className="pb-1 text-center md:pb-2">
             <h2 className="p-1 text-2xl font-bold tracking-wider md:text-4xl text-red-primary">
               CHOOSE PASSIAN EDUCATION
@@ -253,7 +252,7 @@ const Home = () => {
             <div className="w-20 mx-auto mt-2 border-b-2 md:w-92 border-red-950"></div>
           </div>
           <div className="px-5 space-y-5 text-center text-red-950 lg:px-10">
-            <p className="break-words">
+            <p>
               As a leading educational institution in Western Pangasinan, PASS
               College is committed to providing high-quality and accessible
               education that empowers students to achieve their dreams.
@@ -268,7 +267,7 @@ const Home = () => {
               every student, regardless of background, has the resources and
               support needed to excel.
             </p>
-            <p className="break-words">
+            <p>
               Founded with a mission to make higher education more accessible,
               PASS College has transformed the academic landscape by fostering
               excellence in various fields. Through its commitment to academic
@@ -282,15 +281,16 @@ const Home = () => {
               that success is within reach for those who dare to pursue it.
             </p>
           </div>
-          <motion.div
-            ref={choosePassianCardSliderRef}
-            variants={slideInFromLeftVariants}
-            initial="hidden"
-            animate={isChoosePassianCardSliderInView ? "visible" : "hidden"}
-            className="overflow-x-hidden max-w-full"
-          >
-            <CardSlider cards={cards} />
-          </motion.div>
+          <div className="overflow-hidden">
+            <motion.div
+              ref={choosePassianCardSliderRef}
+              variants={slideInFromLeftVariants}
+              initial="hidden"
+              animate={isChoosePassianCardSliderInView ? "visible" : "hidden"}
+            >
+              <CardSlider cards={cards} />
+            </motion.div>
+          </div>
 
           <div className="flex items-center justify-center pt-5 pb-10">
             <button
@@ -305,11 +305,11 @@ const Home = () => {
 
       {/* --- SHAPE YOUR FUTURE PROFESSION SECTION --- */}
       <SectionAnimator>
-        <section className="pt-10 pb-5 2xl:container 2xl:mx-auto overflow-x-hidden">
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] max-w-full">
-            <div className="overflow-hidden w-full h-[300px] md:h-[400px] lg:h-auto">
+        <section className="pt-10 pb-5 2xl:container 2xl:mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr]">
+            <div className="overflow-hidden w-full h-[300px] md:h-[400px] lg:h-auto ">
               <img
-                className="object-cover w-full h-full max-w-full"
+                className="object-cover w-full h-full"
                 src={shapeYourFuture}
                 alt="Descriptive text"
               />
@@ -318,10 +318,8 @@ const Home = () => {
               <div className="w-1/2 h-2 bg-red-primary"></div>
               <div className="flex items-center justify-center w-full h-full p-10">
                 <div className="space-y-5 font-bold text-red-50">
-                  <h2 className="text-4xl break-words">
-                    Shape Your Future Profession
-                  </h2>
-                  <p className="text-sm sm:text-base hover:underline break-words">
+                  <h2 className="text-4xl">Shape Your Future Profession</h2>
+                  <p className="text-sm sm:text-base hover:underline">
                     "JOIN US IN SHAPING THE FUTURE—WHERE GROUNDBREAKING IDEAS
                     BEGIN, PASSION MEETS PURPOSE, AND INNOVATION THRIVES AT PASS
                     COLLEGE."
@@ -335,7 +333,7 @@ const Home = () => {
 
       {/* --- WE FOSTER INDEPENDENT THINKING SECTION --- */}
       <SectionAnimator>
-        <section className="pb-10 mt-10 bg-gray md:mt-20 overflow-x-hidden">
+        <section className="pb-10 mt-10 bg-gray md:mt-20">
           <div className="w-1/2 h-2 bg-red-primary md:w-1/3"></div>
           <div className="pt-10 pb-5 text-center">
             <h2 className="text-2xl font-bold tracking-wider md:text-3xl text-red-primary">
@@ -344,25 +342,23 @@ const Home = () => {
             <div className="w-20 mx-auto mt-2 border-b-2 md:w-32 border-red-950"></div>
           </div>
 
-          <div className="grid grid-cols-1 gap-3 p-4 md:grid-cols-2 2xl:container 2xl:mx-auto lg:px-25 max-w-full overflow-x-hidden">
+          <div className="grid grid-cols-1 gap-3 p-4 md:grid-cols-2 2xl:container 2xl:mx-auto lg:px-25">
             {foster.map((item) => (
               <motion.div
                 key={item.id}
                 variants={newsItemPopVariants}
-                className="bg-white max-w-full"
+                className="bg-white"
               >
                 <div className="w-full lg:max-h-[400px] overflow-hidden">
                   <img
-                    className="object-cover w-full h-full max-w-full"
+                    className="object-cover w-full h-full"
                     src={item.img}
                     alt=""
                   />
                 </div>
-                <div className="p-5">
-                  <h2 className="text-lg text-red-primary break-words">
-                    {item.title}
-                  </h2>
-                  <p className="text-red-950 break-words">{item.descripton}</p>
+                <div className="p-5 ">
+                  <h2 className="text-lg text-red-primary ">{item.title}</h2>
+                  <p className="text-red-950">{item.descripton}</p>
                 </div>
               </motion.div>
             ))}
@@ -372,7 +368,7 @@ const Home = () => {
 
       {/* --- WE ADVANCE IDEAS AND HUMANITY SECTION --- */}
       <SectionAnimator>
-        <section className="overflow-x-hidden">
+        <section className="">
           <div className="pt-10 pb-5 text-center">
             <h2 className="text-2xl font-bold tracking-wider md:text-3xl text-red-primary">
               WE ADVANCE IDEAS AND HUMANITY
@@ -380,21 +376,19 @@ const Home = () => {
             <div className="w-20 mx-auto mt-2 border-b-2 md:w-32 border-red-950"></div>
           </div>
 
-          <div className="grid grid-cols-1 gap-3 p-4 md:grid-cols-3 2xl:container 2xl:mx-auto max-w-full overflow-x-hidden">
+          <div className="grid grid-cols-1 gap-3 p-4 md:grid-cols-3 2xl:container 2xl:mx-auto">
             {advIdeas.map((item) => (
               <motion.div
                 key={item.id}
                 variants={newsItemPopVariants}
-                className="bg-gray max-w-full"
+                className="bg-gray"
               >
                 <div>
-                  <img className="w-full max-w-full" src={item.img} alt="" />
+                  <img className="w-full" src={item.img} alt="" />
                 </div>
-                <div className="p-5">
-                  <h2 className="text-lg text-red-primary break-words">
-                    {item.title}
-                  </h2>
-                  <p className="text-red-950 break-words">{item.description}</p>
+                <div className="p-5 ">
+                  <h2 className="text-lg text-red-primary ">{item.title}</h2>
+                  <p className="text-red-950">{item.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -404,7 +398,7 @@ const Home = () => {
 
       {/* --- WE WELCOME ALL SECTION --- */}
       <SectionAnimator>
-        <section className="mt-10 bg-gray 2xl:container 2xl:mx-auto md:mt-20 md:ml-3 md:mr-3 overflow-x-hidden">
+        <section className="mt-10 bg-gray 2xl:container 2xl:mx-auto md:mt-20 md:ml-3 md:mr-3">
           <div className="relative">
             <div className="absolute top-0 left-0 w-1/2 h-2 bg-red-primary md:w-1/3"></div>
 
@@ -413,21 +407,21 @@ const Home = () => {
               variants={weWelcomeAllPopVariants}
               initial="hidden"
               animate={isWeWelcomeAllInView ? "visible" : "hidden"}
-              className="flex flex-col md:grid md:grid-cols-2 md:items-center max-w-full overflow-x-hidden"
+              className="flex flex-col md:grid md:grid-cols-2 md:items-center"
             >
               <div className="order-1 w-full h-full md:order-2">
                 <img
                   src={weWElcomeAll}
                   alt="Students conversing"
-                  className="object-cover w-full h-full max-w-full"
+                  className="object-cover w-full h-full"
                 />
               </div>
 
               <div className="order-2 p-5 md:order-1 lg:pl-16 md:p-7 lg:pt-0">
-                <h2 className="mb-2 text-3xl font-bold md:text-4xl text-red-primary md:mb-6 break-words">
+                <h2 className="mb-2 text-3xl font-bold md:text-4xl text-red-primary md:mb-6 ">
                   We welcome all
                 </h2>
-                <p className="mb-4 text-red-950 md:mb-8 break-words">
+                <p className="mb-4 text-red-950 md:mb-8">
                   Only when different values, experiences, and perspectives are
                   met with free and open discourse can education be truly
                   transformative. This is why we continue to work together as an
@@ -452,15 +446,15 @@ const Home = () => {
 
       {/* --- WE CALL PASS COLLEGE HOME SECTION --- */}
       <SectionAnimator>
-        <section className="mt-10 2xl:container 2xl:mx-auto md:mt-15 overflow-x-hidden">
-          <div className="lg:px-40 p-5 sm:grid sm:grid-cols-[1fr_1.5fr] md:gap-6 max-w-full">
+        <section className="mt-10 2xl:container 2xl:mx-auto md:mt-15">
+          <div className="lg:px-40 p-5 sm:grid sm:grid-cols-[1fr_1.5fr] md:gap-6">
             <div className="sm:text-center">
-              <h2 className="mb-5 text-3xl font-bold md:text-4xl text-red-primary break-words">
+              <h2 className="mb-5 text-3xl font-bold md:text-4xl text-red-primary">
                 We call Pass College home
               </h2>
             </div>
             <div className="space-y-2 sm:space-y-4">
-              <p className="break-words">
+              <p>
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magni
                 at maiores nesciunt temporibus officiis est distinctio quam sit
                 saepe ea voluptate nemo, quos fugit ab, laborum illum totam.
@@ -476,15 +470,16 @@ const Home = () => {
               </button>
             </div>
           </div>
-          <motion.div
-            ref={weCallPassCollegeHomeRef}
-            variants={weCallPassCollegeHomeVariants}
-            initial="hidden"
-            animate={isWeCallPassCollegeHomeInView ? "visible" : "hidden"}
-            className="overflow-x-hidden max-w-full"
-          >
-            <CardSlider cards={home} />
-          </motion.div>
+          <div className="overflow-hidden">
+            <motion.div
+              ref={weCallPassCollegeHomeRef}
+              variants={weCallPassCollegeHomeVariants}
+              initial="hidden"
+              animate={isWeCallPassCollegeHomeInView ? "visible" : "hidden"}
+            >
+              <CardSlider cards={home} />
+            </motion.div>
+          </div>
         </section>
       </SectionAnimator>
 
