@@ -166,8 +166,9 @@ const Home = () => {
       </section>
 
       {/* --- LATEST NEWS SECTION --- */}
-      <SectionAnimator>
-        <section className="bg-gray">
+
+      <section className="bg-gray">
+        <SectionAnimator>
           <div className="pt-10 pb-5 text-center md:pt-20">
             <h2 className="text-2xl font-bold tracking-wider md:text-4xl text-red-primary">
               LATEST NEWS
@@ -239,8 +240,8 @@ const Home = () => {
               </motion.div>
             )}
           </div>
-        </section>
-      </SectionAnimator>
+        </SectionAnimator>
+      </section>
 
       {/* --- CHOOSE PASSIAN EDUCATION SECTION --- */}
       <SectionAnimator>
