@@ -162,7 +162,7 @@ export default function Accounts() {
   };
 
   return (
-    <div className="max-w-6xl min-h-screen p-2 mx-auto sm:p-4 md:p-6">
+    <div className="max-w-6xl min-h-screen p-6 mx-auto md:py-10">
       <h1 className="mb-4 text-2xl font-bold sm:text-3xl text-red-primary sm:mb-8">
         Accounts Management
       </h1>
@@ -379,7 +379,7 @@ export default function Accounts() {
       {/* Create Account Modal */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-md p-6 bg-white rounded-lg">
+          <div className="w-full max-w-md p-6 mx-5 bg-white rounded-lg ">
             <h2 className="mb-4 text-xl font-bold">Create New Account</h2>
 
             <div className="space-y-4">
@@ -389,7 +389,7 @@ export default function Accounts() {
                 </label>
                 <input
                   type="text"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 ring-red-primary"
+                  className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                   value={newAccount.name}
                   onChange={(e) =>
                     setNewAccount({ ...newAccount, name: e.target.value })
@@ -403,7 +403,7 @@ export default function Accounts() {
                 </label>
                 <input
                   type="email"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                   value={newAccount.email}
                   onChange={(e) =>
                     setNewAccount({ ...newAccount, email: e.target.value })
@@ -416,7 +416,7 @@ export default function Accounts() {
                   Role
                 </label>
                 <select
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm hover:cursor-pointer"
                   value={newAccount.role}
                   onChange={(e) =>
                     setNewAccount({ ...newAccount, role: e.target.value })
@@ -434,7 +434,7 @@ export default function Accounts() {
                   Course
                 </label>
                 <select
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm hover:cursor-pointer"
                   value={newAccount.course}
                   onChange={(e) =>
                     setNewAccount({ ...newAccount, course: e.target.value })
@@ -453,13 +453,13 @@ export default function Accounts() {
             <div className="flex justify-end gap-2 mt-6">
               <button
                 onClick={() => setIsCreateModalOpen(false)}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="px-4 py-2 font-bold border rounded-full text-red-primary hover:bg-red-100 border-red-primary hover:cursor-pointer "
               >
                 Cancel
               </button>
               <button
                 onClick={handleCreateAccount}
-                className="px-4 py-2 text-white rounded-lg bg-red-primary hover-bg-red-primary"
+                className="px-4 py-2 text-white rounded-full bg-red-primary hover:bg-red-800 hover:cursor-pointer"
                 disabled={
                   !newAccount.name || !newAccount.email || !newAccount.course
                 }
@@ -474,7 +474,7 @@ export default function Accounts() {
       {/* Confirm Delete Modal */}
       {isConfirmDeleteOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-md p-4 bg-white rounded-lg sm:p-6">
+          <div className="w-full max-w-md p-4 mx-4 bg-white rounded-lg sm:p-6">
             <h2 className="mb-2 text-lg font-bold sm:text-xl sm:mb-4">
               Confirm Deletion
             </h2>

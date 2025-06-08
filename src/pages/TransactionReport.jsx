@@ -58,7 +58,7 @@ export default function TransactionReport() {
       {/* Main content that will be printed */}
       <div
         ref={reportRef}
-        className="px-4 py-6 mx-auto bg-white max-w-7xl print:py-2 print:px-2 print:shadow-none"
+        className="p-6 mx-auto bg-white md:py-10 max-w-7xl print:py-2 print:px-2 print:shadow-none"
         id="printableArea"
       >
         {/* Header */}

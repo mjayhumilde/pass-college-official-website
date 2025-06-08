@@ -55,7 +55,7 @@ export default function DeleteIcon({ id, itemType }) {
       {/* Confirmation Popup */}
       {isConfirmOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center text-red-950 bg-black/50">
-          <div className="w-full max-w-md p-4 bg-white rounded-lg sm:p-6">
+          <div className="w-full max-w-md p-4 mx-4 bg-white rounded-lg sm:p-6">
             <h2 className="mb-2 text-lg font-bold sm:text-xl sm:mb-4">
               Confirm Deletion
             </h2>

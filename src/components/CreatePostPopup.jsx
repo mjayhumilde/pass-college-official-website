@@ -165,7 +165,7 @@ export default function CreatePostPopup() {
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           {/* Popup */}
-          <div className="w-full h-auto max-w-2xl max-h-screen p-6 overflow-y-auto bg-white border border-gray-300">
+          <div className="w-full h-auto max-w-2xl max-h-screen p-6 mx-4 overflow-y-auto bg-white rounded-lg">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-red-primary">
                 Create New Post

@@ -56,6 +56,11 @@ const useRequestDocsStore = create(
               : request
           ),
         })),
+      // news: state.news.filter((post) => post.id != id),
+      deleteUserRequest: (id) =>
+        set((state) => ({
+          allUserRequest: state.allUserRequest.filter((req) => req.id != id),
+        })),
     }),
 
     {
