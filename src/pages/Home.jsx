@@ -16,6 +16,8 @@ import SectionEventLayout from "../components/SectionEventLayout";
 import { Link, useNavigate } from "react-router-dom";
 import usePostStore from "../store/usePostStore";
 import EmptySection from "../components/EmptySection";
+import RightAnimation from "../components/RightAnimation";
+import PopUpAnimation from "../components/PopUpAnimation";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -44,7 +46,6 @@ const Home = () => {
   const newsContentRef = useRef(null);
   const choosePassianCardSliderRef = useRef(null);
   const weWelcomeAllRef = useRef(null);
-  const weCallPassCollegeHomeRef = useRef(null);
 
   // useInView hook
   const isNewsContentInView = useInView(newsContentRef, {
@@ -59,10 +60,6 @@ const Home = () => {
     }
   );
   const isWeWelcomeAllInView = useInView(weWelcomeAllRef, {
-    once: true,
-    amount: 0.3,
-  });
-  const isWeCallPassCollegeHomeInView = useInView(weCallPassCollegeHomeRef, {
     once: true,
     amount: 0.3,
   });
@@ -107,36 +104,6 @@ const Home = () => {
         stiffness: 80,
         damping: 30,
         mass: 2,
-      },
-    },
-  };
-
-  // We welcome all section pop up ANimation
-  const weWelcomeAllPopVariants = {
-    hidden: { opacity: 0, scale: 0.7 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 80,
-        damping: 25,
-        mass: 1,
-      },
-    },
-  };
-
-  // We call pass college home section Card Animation
-  const weCallPassCollegeHomeVariants = {
-    hidden: { opacity: 0, x: 200 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        type: "spring",
-        stiffness: 80,
-        damping: 25,
-        mass: 1,
       },
     },
   };
@@ -403,44 +370,40 @@ const Home = () => {
           <div className="relative">
             <div className="absolute top-0 left-0 w-1/2 h-2 bg-red-primary md:w-1/3"></div>
 
-            <motion.div
-              ref={weWelcomeAllRef}
-              variants={weWelcomeAllPopVariants}
-              initial="hidden"
-              animate={isWeWelcomeAllInView ? "visible" : "hidden"}
-              className="flex flex-col md:grid md:grid-cols-2 md:items-center"
-            >
-              <div className="order-1 w-full h-full md:order-2">
-                <img
-                  src={weWElcomeAll}
-                  alt="Students conversing"
-                  className="object-cover w-full h-full"
-                />
-              </div>
+            <PopUpAnimation>
+              <div className="flex flex-col md:grid md:grid-cols-2 md:items-center">
+                <div className="order-1 w-full h-full md:order-2">
+                  <img
+                    src={weWElcomeAll}
+                    alt="Students conversing"
+                    className="object-cover w-full h-full"
+                  />
+                </div>
 
-              <div className="order-2 p-5 md:order-1 lg:pl-16 md:p-7 lg:pt-0">
-                <h2 className="mb-2 text-3xl font-bold md:text-4xl text-red-primary md:mb-6 ">
-                  We welcome all
-                </h2>
-                <p className="mb-4 text-red-950 md:mb-8">
-                  Only when different values, experiences, and perspectives are
-                  met with free and open discourse can education be truly
-                  transformative. This is why we continue to work together as an
-                  institution, and within our community, to promote a more
-                  inclusive environment on our campus and beyond. Lorem ipsum,
-                  dolor sit amet consectetur adipisicing elit. Impedit eligendi
-                  minima nihil tempore qui a quas! Aliquid voluptatem
-                  exercitationem inventore amet vel quis error quas nostrum
-                  provident, maxime sint debitis.
-                </p>
-                <button
-                  onClick={() => navigate("/about/who-we-are")}
-                  className="py-1 text-sm font-bold transition-all duration-500 cursor-pointer md:text-base text-red-primary hover:underline"
-                >
-                  LEARN MORE
-                </button>
+                <div className="order-2 p-5 md:order-1 lg:pl-16 md:p-7 lg:pt-0">
+                  <h2 className="mb-2 text-3xl font-bold md:text-4xl text-red-primary md:mb-6 ">
+                    We welcome all
+                  </h2>
+                  <p className="mb-4 text-red-950 md:mb-8">
+                    Only when different values, experiences, and perspectives
+                    are met with free and open discourse can education be truly
+                    transformative. This is why we continue to work together as
+                    an institution, and within our community, to promote a more
+                    inclusive environment on our campus and beyond. Lorem ipsum,
+                    dolor sit amet consectetur adipisicing elit. Impedit
+                    eligendi minima nihil tempore qui a quas! Aliquid voluptatem
+                    exercitationem inventore amet vel quis error quas nostrum
+                    provident, maxime sint debitis.
+                  </p>
+                  <button
+                    onClick={() => navigate("/about/who-we-are")}
+                    className="py-1 text-sm font-bold transition-all duration-500 cursor-pointer md:text-base text-red-primary hover:underline"
+                  >
+                    LEARN MORE
+                  </button>
+                </div>
               </div>
-            </motion.div>
+            </PopUpAnimation>
           </div>
         </section>
       </SectionAnimator>
@@ -471,16 +434,9 @@ const Home = () => {
               </button>
             </div>
           </div>
-          <div className="overflow-hidden">
-            <motion.div
-              ref={weCallPassCollegeHomeRef}
-              variants={weCallPassCollegeHomeVariants}
-              initial="hidden"
-              animate={isWeCallPassCollegeHomeInView ? "visible" : "hidden"}
-            >
-              <CardSlider cards={home} />
-            </motion.div>
-          </div>
+          <RightAnimation>
+            <CardSlider cards={home} />
+          </RightAnimation>
         </section>
       </SectionAnimator>
 
