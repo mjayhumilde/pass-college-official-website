@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { MegaphoneOff } from "lucide-react";
 import NewsletterSubscription from "../components/NewsLetterSubscription";
+import EmptySection from "../components/EmptySection";
 
 const Events = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -71,14 +72,7 @@ const Events = () => {
       {news && news.length > 0 ? (
         <PostLayout data={news} label={"NEWS"} /> // No News" message
       ) : (
-        <div className="flex flex-col items-center justify-center gap-2 p-10 font-bold rounded-full">
-          <div className="rounded-full p-11 bg-red-primary text-red-50">
-            No news at the moment...
-            <span className="flex justify-center text-red-50">
-              <MegaphoneOff size={78} />
-            </span>
-          </div>
-        </div>
+        <EmptySection icon={MegaphoneOff} type={"NEWS"} />
       )}
 
       <section className="mb-10 p-5">
