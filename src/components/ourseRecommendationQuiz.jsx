@@ -380,13 +380,13 @@ export default function CourseRecommendationQuiz() {
     <div className="relative font-sans">
       <div
         onClick={() => setIsOpen(true)}
-        className="absolute p-1 font-bold text-center -left-44 bottom-2 bg-red-primary rounded-2xl text-red-50 hover:cursor-pointer"
+        className="absolute hidden p-1 font-bold text-center -left-44 bottom-2 bg-red-primary rounded-2xl text-red-50 hover:cursor-pointer"
       >
         recommendation quiz
       </div>
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center justify-center p-3 text-white transition-shadow rounded-full shadow-lg hover:shadow-xl hover:cursor-pointer"
+        className="flex items-center justify-center p-3 text-white transition-shadow rounded-full shadow-lg animate-bounce hover:shadow-xl hover:cursor-pointer"
         style={{ backgroundColor: "rgb(128 0 0)" }}
       >
         <HelpCircle size={24} />
@@ -405,7 +405,10 @@ export default function CourseRecommendationQuiz() {
               style={{ backgroundColor: "rgb(128 0 0)" }}
             >
               <h2 className="text-xl font-bold">Course Recommendation Quiz</h2>
-              <button onClick={closeModal} className="text-white">
+              <button
+                onClick={closeModal}
+                className="text-white hover:cursor-pointer"
+              >
                 <X size={24} />
               </button>
             </div>
@@ -448,7 +451,7 @@ export default function CourseRecommendationQuiz() {
                             option.value
                           )
                         }
-                        className={`w-full p-3 rounded-md border transition-colors flex items-center ${
+                        className={`w-full p-3 rounded-md border transition-colors flex items-center hover:cursor-pointer ${
                           answers[questions[currentQuestionIndex].id] ===
                           option.value
                             ? "text-white"
@@ -489,22 +492,22 @@ export default function CourseRecommendationQuiz() {
                     <button
                       onClick={handlePrevious}
                       disabled={currentQuestionIndex === 0}
-                      className={`flex items-center ${
+                      className={`flex items-center font-bold justify-center rounded-full ${
                         currentQuestionIndex === 0
                           ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      } px-4 py-2 rounded-md`}
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:cursor-pointer"
+                      } px-4 py-2 `}
                     >
                       <ChevronLeft size={16} className="mr-1" /> Previous
                     </button>
                     <button
                       onClick={handleNext}
                       disabled={!answers[questions[currentQuestionIndex].id]}
-                      className={`flex items-center ${
+                      className={`flex items-center font-bold justify-center rounded-full ${
                         !answers[questions[currentQuestionIndex].id]
                           ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                          : "text-white hover:bg-opacity-90"
-                      } px-4 py-2 rounded-md`}
+                          : "text-white hover:bg-opacity-90 hover:cursor-pointer"
+                      } px-4 py-2 `}
                       style={
                         !answers[questions[currentQuestionIndex].id]
                           ? {}
@@ -513,7 +516,7 @@ export default function CourseRecommendationQuiz() {
                     >
                       {currentQuestionIndex < questions.length - 1
                         ? "Next"
-                        : "Finish"}{" "}
+                        : "Finish"}
                       <ChevronRight size={16} className="ml-1" />
                     </button>
                   </div>
@@ -554,7 +557,7 @@ export default function CourseRecommendationQuiz() {
                     </p>
                     <button
                       onClick={resetQuiz}
-                      className="px-6 py-2 text-white transition-colors rounded-md hover:bg-opacity-90"
+                      className="px-6 py-2 font-bold text-white transition-colors rounded-full hover:bg-opacity-90 hover:cursor-pointer"
                       style={{ backgroundColor: "rgb(128 0 0)" }}
                     >
                       Take Quiz Again
