@@ -45,7 +45,6 @@ const Home = () => {
   // Ref
   const newsContentRef = useRef(null);
   const choosePassianCardSliderRef = useRef(null);
-  const weWelcomeAllRef = useRef(null);
 
   // useInView hook
   const isNewsContentInView = useInView(newsContentRef, {
@@ -59,10 +58,6 @@ const Home = () => {
       amount: 0.6,
     }
   );
-  const isWeWelcomeAllInView = useInView(weWelcomeAllRef, {
-    once: true,
-    amount: 0.3,
-  });
 
   // variant
   // for the LATEST NEWS section animation container
@@ -125,9 +120,13 @@ const Home = () => {
             />
           </div>
 
-          <div className="flex flex-col items-center justify-center px-5 py-5 space-y-4 bg-red-primary sm:flex-row sm:py-4 sm:space-y-0 sm:space-x-5">
-            <BtnPriWhite text="ABOUT US" route={"about/who-we-are"} />
-            <BtnPriWhite text="WORK WITH US " route={"careers"} />
+          <div className="bg-red-primary">
+            <PopUpAnimation>
+              <div className="flex flex-col items-center justify-center px-5 py-5 space-y-4 sm:flex-row sm:py-4 sm:space-y-0 sm:space-x-5">
+                <BtnPriWhite text="ABOUT US" route={"about/who-we-are"} />
+                <BtnPriWhite text="WORK WITH US " route={"careers"} />
+              </div>
+            </PopUpAnimation>
           </div>
         </div>
       </section>
