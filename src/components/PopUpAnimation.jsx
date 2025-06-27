@@ -18,7 +18,7 @@ const PopUpAnimation = ({ children }) => {
     },
   };
   return (
-    <div className="overflow-hidden">
+    <div className="">
       <motion.div
         ref={ref}
         variants={variants}
