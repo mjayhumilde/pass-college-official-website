@@ -138,8 +138,8 @@ const Header = () => {
                   alt="PASS College Logo"
                 />
               </PopUpAnimation>
-              <div className="flex flex-col font-bodoni">
-                <LeftAnimation>
+              <LeftAnimation>
+                <div className="flex flex-col font-bodoni">
                   <p
                     className={` font-bold text-red-50 md:text-red-primary transition-all duration-300 ${
                       isScrolled ? "text-lg" : "text-2xl"
@@ -159,8 +159,8 @@ const Header = () => {
                       ? "TEACHER USER"
                       : "OFFICIAL WEBSITE"}
                   </span>
-                </LeftAnimation>
-              </div>
+                </div>
+              </LeftAnimation>
             </Link>
           </div>
 
