@@ -6,6 +6,9 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, ChevronDown, ChevronUp, User, Bell } from "lucide-react";
 import passLogo from "../assets/images/logo/pass_logo.png";
 import BtnPriRed from "./BtnPriRed";
+import PopUpAnimation from "./PopUpAnimation";
+import LeftAnimation from "./LeftAnimation";
+import OpacityAnimation from "./OpacityAnimation";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -124,35 +127,39 @@ const Header = () => {
               to="/"
               className="flex items-center justify-center space-x-1 font-serif text-xl "
             >
-              <img
-                className={`rounded-full transition-all duration-300 ${
-                  isScrolled
-                    ? "w-10 sm:w-12 md:w-12"
-                    : "w-16 sm:w-16 md:w-[70px]"
-                }`}
-                src={passLogo}
-                alt="PASS College Logo"
-              />
+              <PopUpAnimation>
+                <img
+                  className={`rounded-full transition-all duration-300 ${
+                    isScrolled
+                      ? "w-10 sm:w-12 md:w-12"
+                      : "w-16 sm:w-16 md:w-[70px]"
+                  }`}
+                  src={passLogo}
+                  alt="PASS College Logo"
+                />
+              </PopUpAnimation>
               <div className="flex flex-col font-bodoni">
-                <p
-                  className={` font-bold text-red-50 md:text-red-primary transition-all duration-300 ${
-                    isScrolled ? "text-lg" : "text-2xl"
-                  }`}
-                >
-                  PASS COLLEGE
-                </p>
+                <LeftAnimation>
+                  <p
+                    className={` font-bold text-red-50 md:text-red-primary transition-all duration-300 ${
+                      isScrolled ? "text-lg" : "text-2xl"
+                    }`}
+                  >
+                    PASS COLLEGE
+                  </p>
 
-                <span
-                  className={`font-bold text-red-50 md:text-red-primary -bottom-3 transition-all duration-300 ${
-                    isScrolled ? "text-xs" : "text-sm"
-                  }`}
-                >
-                  {userRole === "admin"
-                    ? "ADMIN USER"
-                    : userRole === "teacher"
-                    ? "TEACHER USER"
-                    : "OFFICIAL WEBSITE"}
-                </span>
+                  <span
+                    className={`font-bold text-red-50 md:text-red-primary -bottom-3 transition-all duration-300 ${
+                      isScrolled ? "text-xs" : "text-sm"
+                    }`}
+                  >
+                    {userRole === "admin"
+                      ? "ADMIN USER"
+                      : userRole === "teacher"
+                      ? "TEACHER USER"
+                      : "OFFICIAL WEBSITE"}
+                  </span>
+                </LeftAnimation>
               </div>
             </Link>
           </div>
@@ -161,12 +168,14 @@ const Header = () => {
             {isAuthenticated ? (
               <div className="flex items-center justify-center space-x-2 ">
                 <Link to={"/profile"}>
-                  <div className="p-1 rounded-full bg-red-primary">
-                    <User
-                      className=" hover:cursor-pointer text-red-50"
-                      size={34}
-                    />
-                  </div>
+                  <PopUpAnimation>
+                    <div className="p-1 rounded-full bg-red-primary">
+                      <User
+                        className=" hover:cursor-pointer text-red-50"
+                        size={34}
+                      />
+                    </div>
+                  </PopUpAnimation>
                 </Link>
                 {userRole === "user" && isAuthenticated && (
                   <div
@@ -175,18 +184,25 @@ const Header = () => {
                       navigate("notifications");
                     }}
                   >
-                    <Bell className="text-red-primary" size={30} />
-                    <div className="bg-red-primary px-2 -top-2 absolute -right-3 rounded-full text-red-50 text-[15px] font-bold">
-                      {
-                        notifications.filter((n) => n.notifStatus === "unread")
-                          .length
-                      }
-                    </div>
+                    <PopUpAnimation>
+                      <Bell className="text-red-primary" size={30} />
+                    </PopUpAnimation>
+                    <OpacityAnimation>
+                      <div className="bg-red-primary px-2 -top-2 absolute -right-3 rounded-full text-red-50 text-[15px] font-bold">
+                        {
+                          notifications.filter(
+                            (n) => n.notifStatus === "unread"
+                          ).length
+                        }
+                      </div>
+                    </OpacityAnimation>
                   </div>
                 )}
               </div>
             ) : (
-              <BtnPriRed text={"Login"} navi={"login"} />
+              <PopUpAnimation>
+                <BtnPriRed text={"Login"} navi={"login"} />
+              </PopUpAnimation>
             )}
           </div>
 
@@ -199,23 +215,30 @@ const Header = () => {
                   setIsMenuOpen(false);
                 }}
               >
-                <Bell className="text-red-50" size={24} />
-                <div className="bg-white px-1 sm:px-2 -top-2 -right-1 sm:-top-3 absolute sm:-right-3 rounded-full text-red-primary text-[11px] sm:text-[15px] font-bold">
-                  {
-                    notifications.filter((n) => n.notifStatus === "unread")
-                      .length
-                  }
-                </div>
+                <PopUpAnimation>
+                  {" "}
+                  <Bell className="text-red-50" size={24} />
+                </PopUpAnimation>
+                <OpacityAnimation>
+                  <div className="bg-white px-1 sm:px-2 -top-2 -right-1 sm:-top-3 absolute sm:-right-3 rounded-full text-red-primary text-[11px] sm:text-[15px] font-bold">
+                    {
+                      notifications.filter((n) => n.notifStatus === "unread")
+                        .length
+                    }
+                  </div>
+                </OpacityAnimation>
               </div>
             )}
 
-            <button
-              className="text-white "
-              onClick={toggleMenu}
-              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-            >
-              {isMenuOpen ? <X size={30} /> : <Menu size={30} />}
-            </button>
+            <PopUpAnimation>
+              <button
+                className="text-white "
+                onClick={toggleMenu}
+                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              >
+                {isMenuOpen ? <X size={30} /> : <Menu size={30} />}
+              </button>
+            </PopUpAnimation>
           </div>
         </div>
       </div>
