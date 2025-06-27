@@ -245,69 +245,73 @@ const Header = () => {
 
       {/* Main navigation - Desktop */}
       <nav className="hidden md:block bg-red-primary">
-        <div className="container mx-auto">
-          <ul className="flex items-center justify-center gap-1 text-sm ">
-            {filteredMenuItems.map((item, index) => (
-              <li
-                key={index}
-                className={`relative ${
-                  isActive(item) ? "border-b-4 border-yellow-400" : ""
-                }`}
-                onMouseEnter={() =>
-                  item.hasDropdown && setIsAboutDropdownOpen(true)
-                }
-                onMouseLeave={() =>
-                  item.hasDropdown && setIsAboutDropdownOpen(false)
-                }
-              >
-                {item.hasDropdown ? (
-                  <div className="relative">
-                    <button
-                      onClick={toggleAboutDropdown}
-                      className="flex items-center px-4 py-4 transition-colors duration-300 text-red-50 hover:text-white hover:bg-red-800"
-                      aria-expanded={isAboutDropdownOpen}
-                      aria-haspopup="true"
+        <PopUpAnimation>
+          <div className="container mx-auto">
+            <ul className="flex items-center justify-center gap-1 text-sm ">
+              {filteredMenuItems.map((item, index) => (
+                <li
+                  key={index}
+                  className={`relative ${
+                    isActive(item) ? "border-b-4 border-yellow-400" : ""
+                  }`}
+                  onMouseEnter={() =>
+                    item.hasDropdown && setIsAboutDropdownOpen(true)
+                  }
+                  onMouseLeave={() =>
+                    item.hasDropdown && setIsAboutDropdownOpen(false)
+                  }
+                >
+                  {item.hasDropdown ? (
+                    <div className="relative">
+                      <button
+                        onClick={toggleAboutDropdown}
+                        className="flex items-center px-4 py-4 transition-colors duration-300 text-red-50 hover:text-white hover:bg-red-800"
+                        aria-expanded={isAboutDropdownOpen}
+                        aria-haspopup="true"
+                      >
+                        {item.name}
+                        {isAboutDropdownOpen ? (
+                          <ChevronUp size={18} className="ml-1" />
+                        ) : (
+                          <ChevronDown size={18} className="ml-1" />
+                        )}
+                      </button>
+
+                      {isAboutDropdownOpen && (
+                        <div className="absolute left-0 z-10 w-48 shadow-lg top-full bg-red-primary">
+                          <ul className="py-1">
+                            {item.dropdownItems.map(
+                              (dropdownItem, dropdownIndex) => (
+                                <li key={dropdownIndex}>
+                                  <Link
+                                    to={dropdownItem.link}
+                                    className="block px-4 py-2 transition-colors duration-300 text-red-50 hover:bg-red-800"
+                                    onClick={() =>
+                                      setIsAboutDropdownOpen(false)
+                                    }
+                                  >
+                                    {dropdownItem.name}
+                                  </Link>
+                                </li>
+                              )
+                            )}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <Link
+                      to={item.link}
+                      className="flex items-center px-4 py-4 text-white transition-colors duration-300 hover:text-white hover:bg-red-800"
                     >
                       {item.name}
-                      {isAboutDropdownOpen ? (
-                        <ChevronUp size={18} className="ml-1" />
-                      ) : (
-                        <ChevronDown size={18} className="ml-1" />
-                      )}
-                    </button>
-
-                    {isAboutDropdownOpen && (
-                      <div className="absolute left-0 z-10 w-48 shadow-lg top-full bg-red-primary">
-                        <ul className="py-1">
-                          {item.dropdownItems.map(
-                            (dropdownItem, dropdownIndex) => (
-                              <li key={dropdownIndex}>
-                                <Link
-                                  to={dropdownItem.link}
-                                  className="block px-4 py-2 transition-colors duration-300 text-red-50 hover:bg-red-800"
-                                  onClick={() => setIsAboutDropdownOpen(false)}
-                                >
-                                  {dropdownItem.name}
-                                </Link>
-                              </li>
-                            )
-                          )}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <Link
-                    to={item.link}
-                    className="flex items-center px-4 py-4 text-white transition-colors duration-300 hover:text-white hover:bg-red-800"
-                  >
-                    {item.name}
-                  </Link>
-                )}
-              </li>
-            ))}
-          </ul>
-        </div>
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </PopUpAnimation>
       </nav>
 
       {/* Mobile Navigation */}
