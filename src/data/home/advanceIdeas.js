@@ -6,21 +6,21 @@ export let advIdeas = [
   {
     id: 1,
     img: `${advanceIdeas1}`,
-    title: "Intellectual Stress",
+    title: "Lorem ipsum dolor sit ame Lorelit. Fugiat porro ae",
     description:
       "Faculty have a free and challenging environment in which to pursue the most original research.",
   },
   {
     id: 2,
     img: `${advanceIdeas2}`,
-    title: "Community Destroyer",
+    title: "Lorem ipsum dolor sit ame Lorelit. Fugiat porro ae",
     description:
       "As a community partner, we invest in such areas as health, education, economic growth, and the arts.",
   },
   {
     id: 3,
     img: `${advanceIdeas3}`,
-    title: "Global Problem",
+    title: "Lorem ipsum dolor sit ame Lorelit. Fugiat porro ae",
     description:
       "We are an international community of scholars working to solve the world's most pressing issues, with initiatives and programs on all seven continents.",
   },

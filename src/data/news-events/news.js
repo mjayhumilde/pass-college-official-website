@@ -48,17 +48,17 @@ export let news = [
       `${news2_12}`,
     ],
     description:
-      "title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h",
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat porro ex sLorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat porro ex sapiente blanditiis amet earum soluta accusantium maiores, vel aut consequuntur nam, culpa illo ratione ab aliquam perspiciatis. Alias, recusandaeapiente blanditiis amet earum soluta accusantium maiores, vel aut consequuntur nam, culpa illo ratione ab aliquam perspiciatis. Alias, recusandae",
     date: "March 9, 2025",
-    title: "try title tiltel tilteketlei",
+    title: "NEWS TITLE",
   },
   {
     id: 1,
     images: [`${news3_1}`],
     description:
-      "title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h",
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat porrLorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat porro ex sapiente blanditiis amet earum soluta accusantium maiores, vel aut consequuntur nam, culpa illo ratione ab aliquam perspiciatis. Alias, recusandaeo ex sapiente blanditiis amet earum soluta accusantium maiores, vel aut consequuntur nam, culpa illo ratione ab aliquam perspiciatis. Alias, recusandae",
     date: "March 9, 2025",
-    title: "try title tiltel tilteketlei",
+    title: "NEWS TITLE",
   },
   {
     id: 2,
@@ -79,7 +79,7 @@ export let news = [
       `${news4_14}`,
     ],
     description:
-      "title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea htitle lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h",
+      "Lorem ipsum dolor sit amet consecteturLorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat porro ex sapiente blanditiis amet earum soluta accusantium maiores, vel aut consequuntur nam, culpa illo ratione ab aliquam perspiciatis. Alias, recusandae adipisicing elit. Fugiat porro ex sapiente blanditiis amet earum soluta accusantium maiores, vel aut consequuntur nam, culpa illo ratione ab aliquam perspiciatis. Alias, recusandae",
     date: "March 9, 2025",
     title: "try title tiltel tilteketlei",
   },
@@ -87,9 +87,9 @@ export let news = [
     id: 3,
     images: [`${news5_1}`],
     description:
-      "title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h title lies must be kind bruhhh you feuhf ehesfne esf esf esfefesfgesfesfevesv asf efwefea h",
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat porro ex sapiente blanditiis amet earum soluta accusantium maiores, vel Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat porro ex sapiente blanditiis amet earum soluta accusantium maiores, vel aut consequuntur nam, culpa illo ratione ab aliquam perspiciatis. Alias, recusandaeaut consequuntur nam, culpa illo ratione ab aliquam perspiciatis. Alias, recusandae",
     date: "March 9, 2025",
-    title: "try title tiltel tilteketlei",
+    title: "NEWS TITLE",
   },
   ////////////////////////////
   //   {
