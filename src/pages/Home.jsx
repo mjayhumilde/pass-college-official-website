@@ -452,15 +452,15 @@ const Home = () => {
         <div className="mx-auto container">
           <div className="flex justify-center items-center mt-8">
             <div>
-              <h1 className="font-bold text-4xl text-red-primary">
+              <h1 className="font-bold text-[17px] sm:text-xl md:text-4xl text-red-primary">
                 TESTIMONIALS AND SUCCESS STORIES
               </h1>
               <div className="mx-auto mt-2 border-b-2 w-56 border-red-950"></div>
             </div>
           </div>
-          <div className="flex justify-center items-center gap-7 p-5 px-20">
+          <div className="grid grid-cols-1 md:flex justify-center items-center md:gap-5 xl:gap-7 p-5 xl:px-20">
             {testimonials.map((item) => (
-              <div className="p-2 border-2 border-red-primary w-1/3">
+              <div className="p-2 border-2 border-red-primary xl:w-1/3">
                 <img className="w-full" src={item.image} alt="testimony" />
               </div>
             ))}
