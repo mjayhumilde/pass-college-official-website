@@ -8,7 +8,7 @@ export let events = [
 
     eventDate: "2025-09-01",
     eventTime: "7:00 pm",
-    title: "ACQUAINTACE 2025",
+    title: "ACQUAINTANCE 2025",
     description:
       "Join us as we welcome new and returning students in a grand celebration of friendship and camaraderie! The Acquaintance Party is a night of fun, music, and unforgettable performances. It’s the perfect opportunity to build new connections, showcase talents, and strengthen the PASS College community through exciting activities and entertainment.",
   },

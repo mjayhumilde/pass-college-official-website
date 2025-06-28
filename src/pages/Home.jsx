@@ -18,8 +18,12 @@ import usePostStore from "../store/usePostStore";
 import EmptySection from "../components/EmptySection";
 import RightAnimation from "../components/RightAnimation";
 import PopUpAnimation from "../components/PopUpAnimation";
+import { testimonials } from "../data/home/testimonial.js";
+import { div } from "framer-motion/client";
 
 const Home = () => {
+  console.log(testimonials);
+
   const navigate = useNavigate();
   const news = usePostStore((state) => state.news);
   const events = usePostStore((state) => state.events);
@@ -441,8 +445,28 @@ const Home = () => {
 
       {/* --- UPCOMING EVENTS SECTION --- */}
       <SectionAnimator>
-        <SectionEventLayout data={events} label={"UPCOMMING EVENTS"} />
+        <SectionEventLayout data={events} label={"UPCOMING EVENTS"} />
       </SectionAnimator>
+
+      <section>
+        <div className="mx-auto container">
+          <div className="flex justify-center items-center mt-8">
+            <div>
+              <h1 className="font-bold text-4xl text-red-primary">
+                TESTIMONIALS AND SUCCESS STORIES
+              </h1>
+              <div className="mx-auto mt-2 border-b-2 w-56 border-red-950"></div>
+            </div>
+          </div>
+          <div className="flex justify-center items-center gap-7 p-5 px-20">
+            {testimonials.map((item) => (
+              <div className="p-2 border-2 border-red-primary w-1/3">
+                <img className="w-full" src={item.image} alt="testimony" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </main>
   );
 };
