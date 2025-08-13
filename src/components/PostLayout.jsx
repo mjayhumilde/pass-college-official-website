@@ -4,7 +4,7 @@ import useAuthStore from "../store/useAuthStore";
 import ImageCarousel from "./ImageCorousel";
 import { useState } from "react";
 import EmptySection from "./EmptySection";
-import { CircleOff } from "lucide-react";
+import { CircleOff, Heart, MessageCircle } from "lucide-react";
 
 const PostLayout = ({ data, label }) => {
   const userRole = useAuthStore((state) => state.userRole);
@@ -236,6 +236,29 @@ const PostLayout = ({ data, label }) => {
                         </div>
                       </div>
                     ))}
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between align-items-center p-2 sm:px-20">
+                  <Heart
+                    color="white"
+                    fill="white"
+                    className="hover:cursor-pointer"
+                  />
+                  <p className="text-white hover:cursor-pointer hover:underline">
+                    <span className="text-white">4</span> comments
+                  </p>
+                </div>
+                <hr className="text-white" />
+                <div className="flex justify-around align-items-center px-10 py-2">
+                  <Heart
+                    color="white"
+                    className="hover:cursor-pointer hover:scale-125 transition-all"
+                  />
+                  <MessageCircle
+                    color="white"
+                    className="hover:cursor-pointer hover:scale-125 transition-all"
+                  />
                 </div>
               </div>
             </div>
