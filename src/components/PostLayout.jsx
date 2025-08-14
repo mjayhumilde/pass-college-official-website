@@ -239,14 +239,29 @@ const PostLayout = ({ data, label }) => {
                 </div>
               </div>
               <div>
-                <div className="flex justify-between align-items-center p-2 sm:px-20">
-                  <Heart
-                    color="white"
-                    fill="white"
-                    className="hover:cursor-pointer"
-                  />
-                  <p className="text-white hover:cursor-pointer hover:underline">
-                    <span className="text-white">4</span> comments
+                <div class="flex justify-between items-center p-2 sm:px-20">
+                  <div class="flex items-center px-2">
+                    <div class="relative w-8 h-8">
+                      <div class="absolute top-0 left-0 z-10">
+                        <Heart
+                          className="w-full h-full text-white"
+                          fill="white"
+                          strokeWidth={0}
+                        />
+                      </div>
+
+                      <div class="absolute top-0 left-0 z-20 -translate-x-3">
+                        <Heart
+                          className="w-full h-full text-white"
+                          fill="red"
+                          strokeWidth={0}
+                        />
+                      </div>
+                    </div>
+                    <p class="text-white">130</p>
+                  </div>
+                  <p class="text-white hover:cursor-pointer hover:underline">
+                    <span class="text-white">4</span> comments
                   </p>
                 </div>
                 <hr className="text-white" />
