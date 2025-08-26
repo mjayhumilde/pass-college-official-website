@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Eye, EyeOff, Mail, Lock, User, AlertTriangle } from "lucide-react";
 import logo from "../assets/images/pass_log-removebg-preview.png";
 import { useNavigate } from "react-router-dom";
+import MusicButton from "../components/MusicButton";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -223,6 +224,7 @@ export default function Login() {
           </button>
         </div>
       </div>
+      <MusicButton />
     </div>
   );
 }
