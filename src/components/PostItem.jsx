@@ -38,6 +38,7 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
           {post.description}
         </div>
       </div>
+
       <div className="grid grid-cols-2 gap-1">
         <div
           className={`grid gap-1 
@@ -68,37 +69,56 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
               </div>
             ))}
 
-          {post.images.length === 2 &&
-            post.images.slice(0, 1).map((src, index) => (
-              <div
-                key={index}
-                className="overflow-hidden h-[210px] sm:h-[300px] cursor-pointer"
-                onClick={() => openCarousel(post.images, index)}
-              >
-                {/* Left top image */}
-                <img
-                  className="object-cover w-full h-full"
-                  src={src}
-                  alt="Left top image"
-                />
-              </div>
-            ))}
+          {/* Two Images Layout - Side by side */}
+          {post.images.length === 2 && (
+            <div className="grid grid-cols-2 gap-1">
+              {post.images.map((src, index) => (
+                <div
+                  key={index}
+                  className="overflow-hidden h-[210px] sm:h-[300px] cursor-pointer"
+                  onClick={() => openCarousel(post.images, index)}
+                >
+                  <img
+                    className="object-cover w-full h-full"
+                    src={src}
+                    alt={`Post image ${index + 1}`}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
 
-          {post.images.length === 3 &&
-            post.images.slice(0, 1).map((src, index) => (
+          {/* Three Images Layout*/}
+          {post.images.length === 3 && (
+            <div className="grid gap-1">
               <div
-                key={index}
                 className="overflow-hidden h-[210px] sm:h-[300px] cursor-pointer"
-                onClick={() => openCarousel(post.images, index)}
+                onClick={() => openCarousel(post.images, 0)}
               >
-                {/* Left top image */}
                 <img
                   className="object-cover w-full h-full"
-                  src={src}
-                  alt="Left top image"
+                  src={post.images[0]}
+                  alt="Post image 1"
                 />
               </div>
-            ))}
+              {/* Second and third images side by side */}
+              <div className="grid grid-cols-2 gap-1">
+                {post.images.slice(1, 3).map((src, index) => (
+                  <div
+                    key={index + 1}
+                    className="overflow-hidden h-[210px] sm:h-[300px] cursor-pointer"
+                    onClick={() => openCarousel(post.images, index + 1)}
+                  >
+                    <img
+                      className="object-cover w-full h-full"
+                      src={src}
+                      alt={`Post image ${index + 2}`}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {post.images.length > 3 &&
             post.images.slice(0, 2).map((src, index) => (
@@ -120,63 +140,20 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
         <div
           className={`
           
-          ${post.images.length === 2 ? "grid  gap-1  col-span-2" : ""}
-          ${
-            post.images.length === 3
-              ? "grid  gap-1  grid-cols-2 col-span-2"
-              : ""
-          }
-          ${post.images.length === 4 ? "grid  gap-1  grid-rows-2" : ""} 
-          ${post.images.length >= 5 ? "grid  gap-1  grid-rows-3" : ""}`}
+          ${post.images.length === 2 ? "hidden" : ""}
+          ${post.images.length === 3 ? "hidden" : ""}
+          ${post.images.length === 4 ? "grid  gap-1  grid-rows-2" : ""} 
+          ${post.images.length >= 5 ? "grid  gap-1  grid-rows-3" : ""}`}
         >
           {/* Right column with 3 images */}
-          {post.images.length === 2 &&
-            post.images.slice(1, 2).map((src, index) => (
-              <div
-                key={index}
-                className={`overflow-hidden cursor-pointer
-              ${post.images.length === 2 ? " h-[210px] sm:h-[300px]" : ""}
-              ${post.images.length === 3 ? " h-[210px] sm:h-[300px]" : ""}
-              ${post.images.length >= 5 ? " h-[139px] sm:h-[199px]" : ""}
-              ${post.images.length === 4 ? " h-[210px] sm:h-[300px]" : ""}
-              ${index === 2 && post.images.length > 5 ? "relative" : ""}`}
-                onClick={() => openCarousel(post.images, index + 1)}
-              >
-                <img
-                  className="object-cover w-full h-full"
-                  src={src}
-                  alt={`Announcement image ${index + 3}`}
-                />
-              </div>
-            ))}
-
-          {post.images.length === 3 &&
-            post.images.slice(1, 3).map((src, index) => (
-              <div
-                key={index}
-                className={`overflow-hidden cursor-pointer
-                ${post.images.length === 3 ? " h-[210px] sm:h-[300px]" : ""}
-                ${post.images.length >= 5 ? " h-[139px] sm:h-[199px]" : ""}
-                ${post.images.length === 4 ? " h-[210px] sm:h-[300px]" : ""}
-                ${index === 2 && post.images.length > 5 ? "relative" : ""}`}
-                onClick={() => openCarousel(post.images, index + 1)}
-              >
-                <img
-                  className="object-cover w-full h-full"
-                  src={src}
-                  alt={`Announcement image ${index + 3}`}
-                />
-              </div>
-            ))}
-
           {post.images.length >= 4 &&
             post.images.slice(2, 5).map((src, index) => (
               <div
                 key={index}
                 className={`overflow-hidden cursor-pointer
-                ${post.images.length >= 5 ? " h-[139px] sm:h-[199px]" : ""}
-                ${post.images.length === 4 ? " h-[210px] sm:h-[300px]" : ""}
-                ${index === 2 && post.images.length > 5 ? "relative" : ""}`}
+              ${post.images.length >= 5 ? " h-[139px] sm:h-[199px]" : ""}
+              ${post.images.length === 4 ? " h-[210px] sm:h-[300px]" : ""}
+              ${index === 2 && post.images.length > 5 ? "relative" : ""}`}
                 onClick={() => openCarousel(post.images, index + 2)}
               >
                 <img
@@ -200,11 +177,12 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
             ))}
         </div>
       </div>
+
       <div>
-        <div class="flex justify-between items-center p-2 sm:px-20">
-          <div class="flex items-center px-2">
-            <div class="relative w-8 h-8">
-              <div class="absolute top-0 left-0 z-10">
+        <div className="flex justify-between items-center p-2 sm:px-20">
+          <div className="flex items-center px-2">
+            <div className="relative w-8 h-8">
+              <div className="absolute top-0 left-0 z-10">
                 <Heart
                   className="w-full h-full text-white"
                   fill="#FFBABA"
@@ -212,14 +190,14 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
                 />
               </div>
 
-              <div class="absolute top-0 left-0 z-20 -translate-x-3">
+              <div className="absolute top-0 left-0 z-20 -translate-x-3">
                 <Heart
                   className="w-full h-full text-white"
                   fill="#FF5252"
                   strokeWidth={0}
                 />
               </div>
-              <div class="absolute top-0 left-0 z-20 -translate-x-7">
+              <div className="absolute top-0 left-0 z-20 -translate-x-7">
                 <Heart
                   className="w-full h-full text-white"
                   fill="red"
@@ -227,10 +205,10 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
                 />
               </div>
             </div>
-            <p class="text-white">130</p>
+            <p className="text-white">130</p>
           </div>
-          <p class="text-white hover:cursor-pointer hover:underline">
-            <span class="text-white">4</span> comments
+          <p className="text-white hover:cursor-pointer hover:underline">
+            <span className="text-white">4</span> comments
           </p>
         </div>
         <hr className="text-white" />
