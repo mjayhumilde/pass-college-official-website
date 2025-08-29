@@ -1,9 +1,151 @@
 import { useState } from "react";
-import { Heart, MessageCircle } from "lucide-react";
+import { Heart, MessageCircle, Reply } from "lucide-react";
 import DeleteIcon from "./DeleteIcon";
+
+// Comment component (handles both main comments + replies)
+const Comment = ({ comment, depth = 0, onReply }) => {
+  const [likes, setLikes] = useState(comment.likes || 0);
+  const [showReply, setShowReply] = useState(false);
+  const [replyText, setReplyText] = useState("");
+
+  // Cap indentation at 2 levels
+  const maxDepth = 2;
+  const indent = Math.min(depth * 20, maxDepth * 20); // 20px per level
+
+  const handleReply = () => {
+    if (!replyText.trim()) return;
+    onReply(comment.id, {
+      id: Date.now(),
+      author: "You", // Replace with actual logged-in user
+      role: "Student",
+      text: replyText,
+      replies: [],
+    });
+    setReplyText("");
+    setShowReply(false);
+  };
+
+  return (
+    <div className="flex gap-1 m-2" style={{ paddingLeft: indent }}>
+      <img
+        src="https://www.shutterstock.com/image-vector/user-profile-icon-vector-avatar-600nw-2558760599.jpg"
+        className="w-6 h-6 rounded-full"
+        alt="profile"
+      />
+      <div className="bg-white p-1 rounded text-red-950 w-full">
+        <p>
+          <b>{comment.author}</b> <span>{comment.role}</span>
+        </p>
+        <p className="text-sm">{comment.text}</p>
+
+        {/* Comment Actions (Like + Reply) */}
+        <div className="flex items-center gap-3 mt-1 text-sm text-gray-600">
+          <div
+            className="flex items-center gap-1 cursor-pointer hover:text-red-500"
+            onClick={() => setLikes(likes + 1)}
+          >
+            <Heart
+              size={14}
+              fill={likes > 0 ? "#FF5252" : "transparent"}
+              strokeWidth={2}
+            />
+            <span>{likes}</span>
+          </div>
+
+          {/*  Hide Reply button if depth === maxDepth */}
+          {depth < maxDepth && (
+            <div
+              className="flex items-center gap-1 cursor-pointer hover:text-blue-500"
+              onClick={() => setShowReply(!showReply)}
+            >
+              <Reply size={14} />
+              <span>Reply</span>
+            </div>
+          )}
+        </div>
+
+        {/* Reply Input */}
+        {showReply && (
+          <div className="flex gap-2 mt-2">
+            <input
+              type="text"
+              placeholder="Write a reply..."
+              className="flex-1 p-1 text-sm border border-gray-300 rounded"
+              value={replyText}
+              onChange={(e) => setReplyText(e.target.value)}
+            />
+            <button
+              className="bg-red-primary text-white px-2 text-sm rounded hover:bg-red-800"
+              onClick={handleReply}
+            >
+              Post
+            </button>
+          </div>
+        )}
+
+        {/* Render replies recursively */}
+        {comment.replies?.length > 0 && (
+          <div>
+            {comment.replies.map((reply) => (
+              <Comment
+                key={reply.id}
+                comment={reply}
+                depth={depth + 1}
+                onReply={onReply}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [likes, setLikes] = useState(post.likes || 0);
+
+  // Example comments (replace later with API data)
+  const [comments, setComments] = useState([
+    {
+      id: 1,
+      author: "Shien Meng Goh",
+      role: "BSCS-4",
+      text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+      replies: [],
+    },
+    {
+      id: 3,
+      author: "Shane Kyla Cosme",
+      role: "BSCS-4",
+      text: "Another main comment here, very insightful!",
+      replies: [],
+    },
+  ]);
+  const [newComment, setNewComment] = useState("");
+
+  const handleAddComment = () => {
+    if (!newComment.trim()) return;
+    const newCommentObj = {
+      id: Date.now(),
+      author: "You",
+      role: "Student",
+      text: newComment,
+      replies: [],
+    };
+    setComments([...comments, newCommentObj]);
+    setNewComment("");
+  };
+
+  const handleReply = (commentId, reply) => {
+    const addReply = (items) =>
+      items.map((item) =>
+        item.id === commentId
+          ? { ...item, replies: [...(item.replies || []), reply] }
+          : { ...item, replies: addReply(item.replies || []) }
+      );
+    setComments(addReply(comments));
+  };
 
   return (
     <div
@@ -178,37 +320,25 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
         </div>
       </div>
 
+      {/* Likes + Comments */}
       <div>
         <div className="flex justify-between items-center p-2 sm:px-20">
           <div className="flex items-center px-2">
             <div className="relative w-8 h-8">
-              <div className="absolute top-0 left-0 z-10">
-                <Heart
-                  className="w-full h-full text-white"
-                  fill="#FFBABA"
-                  strokeWidth={0}
-                />
-              </div>
-
-              <div className="absolute top-0 left-0 z-20 -translate-x-3">
-                <Heart
-                  className="w-full h-full text-white"
-                  fill="#FF5252"
-                  strokeWidth={0}
-                />
-              </div>
-              <div className="absolute top-0 left-0 z-20 -translate-x-7">
-                <Heart
-                  className="w-full h-full text-white"
-                  fill="red"
-                  strokeWidth={0}
-                />
-              </div>
+              <Heart
+                className="w-full h-full text-white cursor-pointer"
+                fill={likes > 0 ? "#FF5252" : "transparent"}
+                strokeWidth={2}
+                onClick={() => setLikes(likes + 1)}
+              />
             </div>
-            <p className="text-white">130</p>
+            <p className="text-white ml-2">{likes}</p>
           </div>
-          <p className="text-white hover:cursor-pointer hover:underline">
-            <span className="text-white">4</span> comments
+          <p
+            onClick={() => setIsOpen(!isOpen)}
+            className="text-white hover:cursor-pointer hover:underline"
+          >
+            <span className="text-white">{comments.length}</span> comments
           </p>
         </div>
         <hr className="text-white" />
@@ -216,6 +346,7 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
           <Heart
             color="white"
             className="hover:cursor-pointer hover:scale-125 transition-all"
+            onClick={() => setLikes(likes + 1)}
           />
           <MessageCircle
             color="white"
@@ -224,11 +355,32 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
           />
         </div>
         {isOpen && (
-          <div className="modal-overlay">
+          <div className="modal-overlay p-1">
             <div className="modal-content">
-              <h2>Modal Title</h2>
-              <p>This is the content of the modal.</p>
-              <button onClick={() => setIsOpen(false)}>Close</button>
+              {comments.map((comment) => (
+                <Comment
+                  key={comment.id}
+                  comment={comment}
+                  onReply={handleReply}
+                />
+              ))}
+
+              {/* Add new comment */}
+              <div className="flex gap-2 mt-3 p-2 border-t border-gray-300">
+                <input
+                  type="text"
+                  placeholder="Write a comment..."
+                  className="flex-1 p-2 rounded border border-gray-300"
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                />
+                <button
+                  className="bg-red-primary text-white px-3 rounded hover:bg-red-800"
+                  onClick={handleAddComment}
+                >
+                  Post
+                </button>
+              </div>
             </div>
           </div>
         )}
