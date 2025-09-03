@@ -10,36 +10,34 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
 
-  const { login } = useAuthStore();
+  // Get the login function, isAuthenticated status, and error from the store.
+  const { login, isAuthenticated, error: authError } = useAuthStore();
 
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
-    setError("");
-
-    if (!email.trim()) {
-      setError("Email is required");
-      return;
+  // Use an effect to handle navigation after a successful login.
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
     }
+  }, [isAuthenticated, navigate]);
 
-    if (!password) {
-      setError("Password is required");
-      return;
+  useEffect(() => {
+    if (authError) {
+      console.log("Login failed:", authError);
     }
+  }, [authError]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission
 
     setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
+    // Call the login function from your Zustand store.
+    await login(email, password);
 
-      if (email === "test@example.com" && password === "wrongpassword") {
-        setError("Invalid email or password");
-      } else {
-        console.log("Login successful!", { email, password });
-      }
-    }, 1500);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -56,14 +54,15 @@ export default function Login() {
 
       <div className="mt-2 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="px-4 py-8 bg-white shadow rounded-lg sm:px-10">
-          {error && (
+          {/* Use the error state from the Zustand store */}
+          {authError && (
             <div className="p-4 mb-6 border-l-4 border-red-800 bg-red-50">
               <div className="flex">
                 <div className="flex-shrink-0">
                   <AlertTriangle className="w-5 h-5 text-red-800" />
                 </div>
                 <div className="ml-3">
-                  <p className="text-sm text-red-800">{error}</p>
+                  <p className="text-sm text-red-800">{authError}</p>
                 </div>
               </div>
             </div>
@@ -147,7 +146,7 @@ export default function Login() {
                 type="button"
                 onClick={handleSubmit}
                 disabled={isLoading}
-                className={`font-bold hover:cursor-pointer rounded-full w-full flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm  text-white bg-red-800 hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-800 ${
+                className={`font-bold hover:cursor-pointer rounded-full w-full flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm text-white bg-red-800 hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-800 ${
                   isLoading ? "opacity-70 cursor-not-allowed" : ""
                 }`}
               >
