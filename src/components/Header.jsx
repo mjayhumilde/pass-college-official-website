@@ -17,8 +17,7 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const userRole = useAuthStore((state) => state.userRole);
+  const { isAuthenticated, userRole } = useAuthStore();
   const { notifications } = useNotificationStore();
 
   //  scroll event listener
@@ -77,7 +76,7 @@ const Header = () => {
     } else if (userRole === "teacher") {
       // For teachers, show Accounts and Request but hide ReqDocs and Transaction Report
       return itemName !== "ReqDocs" && itemName !== "Transaction Report";
-    } else if (userRole === "user") {
+    } else if (userRole === "student") {
       // For regular users, show ReqDocs but hide Accounts and Request
       return !["Accounts", "Request", "Transaction Report"].includes(itemName);
     } else if (userRole === "admin") {
@@ -177,7 +176,7 @@ const Header = () => {
                     </div>
                   </PopUpAnimation>
                 </Link>
-                {userRole === "user" && isAuthenticated && (
+                {userRole === "student" && isAuthenticated && (
                   <div
                     className="relative hover:cursor-pointer"
                     onClick={() => {
@@ -207,7 +206,7 @@ const Header = () => {
           </div>
 
           <div className="flex items-center justify-center space-x-4 md:hidden">
-            {isAuthenticated && userRole === "user" && (
+            {isAuthenticated && userRole === "student" && (
               <div
                 className="relative hover:cursor-pointer"
                 onClick={() => {
