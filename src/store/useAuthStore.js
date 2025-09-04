@@ -8,7 +8,7 @@ const useAuthStore = create(
       user: null,
       isAuthenticated: false,
       token: null,
-      userRole: "guest",
+      userRole: null,
       error: null,
 
       // Login function to authenticate and store the response
@@ -54,7 +54,13 @@ const useAuthStore = create(
 
       // Logout function to reset state and clear stored data
       logout: () => {
-        set({ isAuthenticated: false, user: null, token: null, error: null });
+        set({
+          isAuthenticated: false,
+          user: null,
+          token: null,
+          error: null,
+          userRole: null,
+        });
         localStorage.removeItem("authToken"); // Clear token from localStorage
       },
 
