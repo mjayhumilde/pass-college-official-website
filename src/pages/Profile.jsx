@@ -4,10 +4,17 @@ import useAuthStore from "../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
-  const { logout, isAuthenticated, user, updateMe } = useAuthStore();
+  const { logout, isAuthenticated, user, updateMe, updateCurrentUserPassword } =
+    useAuthStore();
   const navigate = useNavigate();
 
   const [isEditing, setIsEditing] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState();
+  const [newPassword, setNewPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   // To ensure that we always have the updated user in the UI
   const [userData, setUserData] = useState({
@@ -45,6 +52,52 @@ const Profile = () => {
     );
 
     setIsEditing(false);
+  };
+
+  const handleUpdatePassword = async (e) => {
+    e.preventDefault(); // Prevent default form submission
+
+    // Reset previous error messages
+    setError("");
+    setSuccessMessage("");
+
+    // Basic form validation
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      setError("All fields are required.");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setError("New password and confirmation do not match.");
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      setError("New password should be at least 8 characters long.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await updateCurrentUserPassword(
+        currentPassword,
+        newPassword,
+        confirmPassword
+      );
+
+      if (response) {
+        setSuccessMessage("Password updated successfully.");
+        logout(); // Assuming `logout()` is defined elsewhere
+        navigate("/login"); // Assuming `navigate()` is from react-router
+      } else {
+        setError("Failed to update password.");
+      }
+    } catch (err) {
+      setError("An error occurred. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -248,6 +301,15 @@ const Profile = () => {
             <h3 className="mb-6 text-xl font-bold text-red-950">
               Change Password
             </h3>
+
+            {/* Error Message */}
+            {error && <p className="text-red-600 text-sm">{error}</p>}
+
+            {/* Success Message */}
+            {successMessage && (
+              <p className="text-green-600 text-sm">{successMessage}</p>
+            )}
+
             <div className="space-y-3">
               <div>
                 <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -257,6 +319,7 @@ const Profile = () => {
                   type="password"
                   className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                   placeholder="Enter your current password"
+                  onChange={(e) => setCurrentPassword(e.target.value)}
                 />
               </div>
 
@@ -268,6 +331,7 @@ const Profile = () => {
                   type="password"
                   className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                   placeholder="Enter your new password"
+                  onChange={(e) => setNewPassword(e.target.value)}
                 />
               </div>
 
@@ -279,12 +343,21 @@ const Profile = () => {
                   type="password"
                   className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                   placeholder="Confirm your new password"
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                 />
               </div>
 
               <div className="flex items-center justify-center pt-2">
-                <button className="w-full py-2 font-bold text-white transition rounded-full bg-red-primary md:mx-9 hover:bg-opacity-90 hover:cursor-pointer">
-                  Update Password
+                <button
+                  onClick={handleUpdatePassword}
+                  disabled={isLoading}
+                  className={`w-full py-2 font-bold text-white transition rounded-full bg-red-primary md:mx-9 hover:bg-opacity-90 ${
+                    isLoading
+                      ? "cursor-not-allowed opacity-50"
+                      : "hover:cursor-pointer"
+                  }`}
+                >
+                  {isLoading ? "Updating..." : "Update Password"}
                 </button>
               </div>
             </div>
@@ -294,13 +367,16 @@ const Profile = () => {
       <div className="container flex justify-center p-5 mx-auto mt-5">
         <button
           className="px-8 py-1 rounded-full bg-red-primary text-red-50"
+          disabled={isLoading}
           onClick={() => {
             logout();
             navigate("/");
           }}
         >
           <span className="flex items-center justify-center gap-1 font-bold hover:cursor-pointer">
-            <LogOutIcon size={20} /> Log Out
+            {isLoading
+              ? `${(<LogOutIcon size={20} />)} Logging out...`
+              : "Log out"}
           </span>
         </button>
       </div>

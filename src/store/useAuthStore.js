@@ -102,6 +102,63 @@ const useAuthStore = create(
           });
         }
       },
+
+      updateCurrentUserPassword: async (
+        passwordCurrent,
+        password,
+        passwordConfirm
+      ) => {
+        try {
+          // Check if passwords match
+          if (password !== passwordConfirm) {
+            throw new Error("Passwords do not match.");
+          }
+
+          // Get the token from local storage
+          const token = localStorage.getItem("authToken");
+          if (!token) {
+            throw new Error("Authorization token is missing.");
+          }
+
+          // Prepare the data to send in the request
+          const requestData = {
+            passwordCurrent,
+            password,
+            passwordConfirm,
+          };
+
+          // Send the PATCH request with JSON content type
+          const response = await axios.patch(
+            "http://127.0.0.1:5000/api/v1/user/updateMyPassword",
+            requestData, // Send data as JSON
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json", // Set Content-Type to application/json
+              },
+            }
+          );
+
+          // Check if response was successful
+          if (response && response.data.status === "success") {
+            console.log("Password updated successfully");
+            return response.data; // return data if needed
+          } else {
+            throw new Error(
+              response.data.message || "Failed to update password."
+            );
+          }
+        } catch (error) {
+          // Log the error details for easier debugging
+          console.error(
+            "Error updating password:",
+            error.response || error.message
+          );
+          return {
+            error: error.response ? error.response.data.message : error.message,
+          };
+        }
+      },
     }),
     {
       name: "auth-store",
