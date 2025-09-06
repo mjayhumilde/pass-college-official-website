@@ -6,14 +6,16 @@ import useAuthStore from "../store/useAuthStore";
 import usePostStore from "../store/usePostStore";
 
 const Careers = () => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const userRole = useAuthStore((state) => state.userRole);
-
-  const careers = usePostStore((state) => state.careers);
+  const { userRole, isAuthenticated } = useAuthStore();
+  const { careers, getAllPost } = usePostStore();
 
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to the top on mount
   }, []);
+
+  useEffect(() => {
+    getAllPost();
+  }, [getAllPost]);
 
   return (
     <main>

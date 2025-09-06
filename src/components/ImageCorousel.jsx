@@ -195,7 +195,7 @@ const ImageCarousel = ({ images = [], isOpen, onClose, initialIndex = 0 }) => {
         {images && images.length > 0 && images[currentIndex] && (
           <img
             ref={imageRef}
-            src={images[currentIndex].url}
+            src={`http://127.0.0.1:5000${images[currentIndex].url}`}
             alt={images[currentIndex].alt || `Image ${currentIndex + 1}`}
             className="object-contain max-w-full max-h-full cursor-move select-none"
             style={{
