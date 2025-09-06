@@ -386,7 +386,7 @@ const Header = () => {
           </div>
 
           {/* Fixed Bottom Section for Login/Profile */}
-          <div className="flex-shrink-0 p-2 border-t border-gray-200 bg-red-primary">
+          <div className="flex-shrink-0 p-2 border-t border-gray-200 bg-red-primary py-5">
             {isAuthenticated ? (
               <div className="relative z-50 flex items-center justify-center text-center">
                 <Link
@@ -394,18 +394,18 @@ const Header = () => {
                   onClick={() => {
                     setIsMenuOpen(false);
                   }}
-                  className=""
+                  className="flex flex-col justify-center items-center"
                 >
-                  <div className="bg-gray overflow-hidden rounded-full">
+                  <div className="w-32 bg-gray overflow-hidden rounded-full">
                     <img
-                      className="w-32"
+                      className=""
                       src={`http://127.0.0.1:5000${user.photo}`}
                       alt={`User ${user.firsName}`}
                     />
                   </div>
-                  <span className="text-white text-lg font-bold">
-                    {user.firstName + " " + user.lastName}
-                  </span>
+                  <p className="text-white text-lg font-bold pt-2">
+                    {user.firstName} {user.lastName}
+                  </p>
                 </Link>
               </div>
             ) : (
