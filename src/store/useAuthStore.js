@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import api from "./api"; // Import your pre-configured api instance
+import api from "./api";
 
 const useAuthStore = create(
   persist(
@@ -49,16 +49,35 @@ const useAuthStore = create(
         }
       },
 
-      // Logout function to reset state and clear stored data
-      logout: () => {
-        set({
-          isAuthenticated: false,
-          user: null,
-          token: null,
-          error: null,
-          userRole: null,
-        });
-        localStorage.removeItem("authToken"); // Clear token from localStorage
+      logout: async () => {
+        try {
+          // logout request to the backend
+          const response = await api.get("/user/logout");
+
+          if (response.data.status === "success") {
+            console.log(response.data.message); //  log the success message from the server
+          }
+
+          // Reset the application state
+          set({
+            isAuthenticated: false,
+            user: null,
+            token: null,
+            error: null,
+            userRole: null,
+          });
+
+          // Remove the token from localStorage
+          localStorage.removeItem("authToken");
+        } catch (error) {
+          // Handle errors (e.g., network issues, server errors)
+          console.error("Logout failed:", error);
+          set({
+            error: error.response
+              ? error.response.data.message
+              : "An error occurred while logging out. Please try again.",
+          });
+        }
       },
 
       // Update function to update the current logged-in user
