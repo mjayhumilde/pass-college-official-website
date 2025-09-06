@@ -17,7 +17,7 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { isAuthenticated, userRole } = useAuthStore();
+  const { isAuthenticated, userRole, user } = useAuthStore();
   const { notifications } = useNotificationStore();
 
   //  scroll event listener
@@ -168,10 +168,11 @@ const Header = () => {
               <div className="flex items-center justify-center space-x-2 ">
                 <Link to={"/profile"}>
                   <PopUpAnimation>
-                    <div className="p-1 rounded-full bg-red-primary">
-                      <User
-                        className=" hover:cursor-pointer text-red-50"
-                        size={34}
+                    <div className=" bg-red-900 overflow-hidden rounded-full">
+                      <img
+                        className="w-12"
+                        src={`http://127.0.0.1:5000${user.photo}`}
+                        alt={`User ${user.firsName}`}
                       />
                     </div>
                   </PopUpAnimation>
@@ -387,18 +388,24 @@ const Header = () => {
           {/* Fixed Bottom Section for Login/Profile */}
           <div className="flex-shrink-0 p-2 border-t border-gray-200 bg-red-primary">
             {isAuthenticated ? (
-              <div className="relative z-50 flex items-center justify-center">
+              <div className="relative z-50 flex items-center justify-center text-center">
                 <Link
                   to="/profile"
                   onClick={() => {
                     setIsMenuOpen(false);
                   }}
-                  className="block p-2 px-4 rounded-full bg-gray"
+                  className=""
                 >
-                  <div className="flex justify-center items-center flex-col gap-1">
-                    <User size={60} className="text-red-primary" />
-                    <span className="font-bold">PROFILE</span>
+                  <div className="bg-gray overflow-hidden rounded-full">
+                    <img
+                      className="w-32"
+                      src={`http://127.0.0.1:5000${user.photo}`}
+                      alt={`User ${user.firsName}`}
+                    />
                   </div>
+                  <span className="text-white text-lg font-bold">
+                    {user.firstName + " " + user.lastName}
+                  </span>
                 </Link>
               </div>
             ) : (
