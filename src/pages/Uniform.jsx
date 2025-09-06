@@ -7,14 +7,16 @@ import usePostStore from "../store/usePostStore";
 import { useEffect } from "react";
 
 const Uniform = () => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const userRole = useAuthStore((state) => state.userRole);
-
-  const uniforms = usePostStore((state) => state.uniforms);
+  const { userRole, isAuthenticated } = useAuthStore();
+  const { uniforms, getAllPost } = usePostStore();
 
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to the top on mount
   }, []);
+
+  useEffect(() => {
+    getAllPost();
+  }, [getAllPost]);
   return (
     <main>
       <HeroBgSection
