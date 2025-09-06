@@ -19,14 +19,10 @@ import EmptySection from "../components/EmptySection";
 import RightAnimation from "../components/RightAnimation";
 import PopUpAnimation from "../components/PopUpAnimation";
 import { testimonials } from "../data/home/testimonial.js";
-import { div } from "framer-motion/client";
 
 const Home = () => {
-  console.log(testimonials);
-
   const navigate = useNavigate();
-  const news = usePostStore((state) => state.news);
-  const events = usePostStore((state) => state.events);
+  const { news, events, getAllPost } = usePostStore();
 
   const playVideo = (e) => {
     e.target.muted = false;
@@ -41,10 +37,6 @@ const Home = () => {
   };
 
   const gridColsClass = getGridCols(news.length);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   // Ref
   const newsContentRef = useRef(null);
@@ -106,6 +98,14 @@ const Home = () => {
       },
     },
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    getAllPost();
+  }, [getAllPost]);
 
   return (
     <main>
@@ -178,7 +178,10 @@ const Home = () => {
                       >
                         <img
                           className="object-cover w-full h-full transition-all duration-500 rounded-t-lg"
-                          src={item.images.slice(0, 1)}
+                          src={`http://127.0.0.1:5000${item.images.slice(
+                            0,
+                            1
+                          )}`}
                           alt={item.title}
                         />
                       </div>
