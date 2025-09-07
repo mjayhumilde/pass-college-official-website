@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Plus, X, Calendar, Clock, Image, FileText } from "lucide-react";
+import {
+  Plus,
+  X,
+  Calendar,
+  Clock,
+  Image as ImageIcon,
+  FileText,
+} from "lucide-react";
 
 import usePostStore from "../store/usePostStore";
 import useNotificationStore from "../store/useNotificationStore";
@@ -9,125 +16,49 @@ export default function CreatePostPopup() {
   const [postType, setPostType] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [eventDate, setEventDate] = useState("");
-  const [eventTime, setEventTime] = useState("");
-  const [images, setImages] = useState([]);
+  const [eventDate, setEventDate] = useState(""); // yyyy-mm-dd from <input type="date">
+  const [eventTime, setEventTime] = useState(""); // e.g. "6:00pm"
+  const [images, setImages] = useState([]); // [{ file, path (base64) }]
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
+  const createPost = usePostStore((s) => s.createPost);
+  const { addNewNotification } = useNotificationStore();
+
+  // Make sure IDs match backend expectations
   const postTypes = [
     { id: "announcement", label: "Announcement", minImages: 1 },
     { id: "news", label: "News", minImages: 1 },
-    { id: "events", label: "Events", maxImages: 1 },
-    { id: "uniforms", label: "Uniforms Update", minImages: 1 },
+    { id: "events", label: "Events", maxImages: 1, minImages: 1 },
+    { id: "uniforms-update", label: "Uniforms Update", minImages: 1 },
     { id: "careers", label: "Careers", minImages: 1 },
   ];
 
-  const {
-    addNewAnnouncement,
-    addNewEvents,
-    addNewNews,
-    addNewUniforms,
-    addNewCareers,
-  } = usePostStore();
-
-  const announcements = usePostStore((state) => state.announcements);
-  const events = usePostStore((state) => state.events);
-  const news = usePostStore((state) => state.news);
-  const uniforms = usePostStore((state) => state.uniforms);
-  const careers = usePostStore((state) => state.careers);
-
-  const { addNewNotification } = useNotificationStore();
-
   const handleImageChange = (e) => {
-    const selectedFiles = Array.from(e.target.files);
-    const currentPostType = postTypes.find((p) => p.id === postType);
+    const selectedFiles = Array.from(e.target.files || []);
+    const def = postTypes.find((p) => p.id === postType);
 
-    const processFile = (file) => {
-      return new Promise((resolve) => {
+    const processFile = (file) =>
+      new Promise((resolve) => {
         const reader = new FileReader();
-        reader.onloadend = () => {
-          resolve({
-            file,
-            path: reader.result, // Base64 string
-          });
-        };
+        reader.onloadend = () => resolve({ file, path: reader.result }); // base64 preview
         reader.readAsDataURL(file);
       });
-    };
 
-    if (currentPostType && currentPostType.maxImages === 1) {
-      // For events, only allow one image
-      const filesToProcess = selectedFiles.slice(0, 1);
+    if (!selectedFiles.length) return;
 
-      Promise.all(filesToProcess.map(processFile)).then((processedImages) => {
-        setImages(processedImages);
-      });
+    // Events: only one image
+    if (def?.maxImages === 1) {
+      Promise.all(selectedFiles.slice(0, 1).map(processFile)).then(setImages);
     } else {
-      // For other post types, allow multiple images
-      const filesToProcess = selectedFiles;
-
-      Promise.all(filesToProcess.map(processFile)).then((processedImages) => {
-        setImages([...images, ...processedImages]);
-      });
+      Promise.all(selectedFiles.map(processFile)).then((processed) =>
+        setImages((prev) => [...prev, ...processed])
+      );
     }
   };
 
   const removeImage = (index) => {
-    // No need to revoke URL for base64 strings
-    setImages(images.filter((_, i) => i !== index));
-  };
-
-  const handleSubmit = () => {
-    // Here you would handle the actual submission
-    const data = {
-      postType,
-      title,
-      description,
-      eventDate: postType === "events" ? eventDate : null,
-      date: Date.now(),
-      eventTime: postType === "events" ? eventTime : null,
-      images: images.map((img) => img.path),
-    };
-
-    const dataWithId = {
-      ...(postType === "announcement" && { id: announcements.length + 1 }),
-      ...(postType === "events" && { id: events.length + 1 }),
-      ...(postType === "news" && { id: news.length + 1 }),
-      ...(postType === "careers" && { id: careers.length + 1 }),
-      ...(postType === "uniforms" && { id: uniforms.length + 1 }),
-      ...data,
-    };
-
-    console.log(dataWithId);
-
-    switch (postType) {
-      case "announcement":
-        addNewAnnouncement(dataWithId);
-
-        break;
-      case "events":
-        addNewEvents(dataWithId);
-        break;
-      case "news":
-        addNewNews(dataWithId);
-
-        break;
-      case "careers":
-        addNewCareers(dataWithId);
-        break;
-      case "uniforms":
-        addNewUniforms(dataWithId);
-        break;
-      default:
-        break;
-    }
-
-    // added a status property for notif
-    const dataForNotif = { notifStatus: "unread", ...dataWithId };
-    addNewNotification(dataForNotif);
-
-    // Reset form and close popup
-    resetForm();
-    setIsOpen(false);
+    setImages((imgs) => imgs.filter((_, i) => i !== index));
   };
 
   const resetForm = () => {
@@ -137,6 +68,7 @@ export default function CreatePostPopup() {
     setEventDate("");
     setEventTime("");
     setImages([]);
+    setErrorMsg("");
   };
 
   const closePopup = () => {
@@ -145,9 +77,52 @@ export default function CreatePostPopup() {
   };
 
   const isFormValid = () => {
-    if (!title || !description || images.length === 0) return false;
-    if (postType === "events" && (!eventDate || !eventTime)) return false;
+    if (!postType || !title.trim() || !description.trim()) return false;
+    const def = postTypes.find((p) => p.id === postType);
+    const min = def?.minImages ?? 0;
+    if (images.length < min) return false;
+    if (postType === "events" && (!eventDate || !eventTime.trim()))
+      return false;
     return true;
+  };
+
+  const handleSubmit = async () => {
+    if (!isFormValid() || submitting) return;
+
+    setSubmitting(true);
+    setErrorMsg("");
+
+    try {
+      // Build FormData (your backend expects files under "images")
+      const fd = new FormData();
+      fd.append("postType", postType);
+      fd.append("title", title);
+      fd.append("description", description);
+
+      if (postType === "events") {
+        // Convert yyyy-mm-dd -> ISO at 00:00:00Z
+        const isoDate = `${eventDate}T00:00:00.000Z`;
+        fd.append("eventDate", isoDate);
+        fd.append("eventTime", eventTime);
+      }
+
+      images.forEach(({ file }) => fd.append("images", file));
+
+      const result = await createPost(fd);
+
+      if (result.success) {
+        // Optional: push a notification into your local store
+        addNewNotification({ notifStatus: "unread", ...result.post });
+        closePopup();
+      } else {
+        setErrorMsg(result.error || "Failed to create post.");
+      }
+    } catch (err) {
+      console.error("Create post error:", err);
+      setErrorMsg("An unexpected error occurred while creating the post.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -155,7 +130,7 @@ export default function CreatePostPopup() {
       {/* Create Post Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center p-3 mr-3 space-x-2 font-bold rounded-full text-red-50 bg-red-primary hover-bg-red-primary hover:bg-red-800 hover:cursor-pointer"
+        className="flex items-center p-3 mr-3 space-x-2 font-bold rounded-full text-red-50 bg-red-primary hover:bg-red-800 hover:cursor-pointer"
       >
         <Plus size={20} />
         <span>Create Post</span>
@@ -172,11 +147,18 @@ export default function CreatePostPopup() {
               </h2>
               <button
                 onClick={closePopup}
-                className="text-red-primary hover:text-red-800 hover:cursor-pointer"
+                className="text-red-primary hover:text-red-800"
               >
                 <X size={24} />
               </button>
             </div>
+
+            {/* Error banner */}
+            {errorMsg && (
+              <div className="mb-4 p-3 rounded bg-red-50 text-red-700 border border-red-200 text-sm">
+                {errorMsg}
+              </div>
+            )}
 
             <div>
               {/* Post Type Selection */}
@@ -190,10 +172,10 @@ export default function CreatePostPopup() {
                       key={type.id}
                       type="button"
                       onClick={() => setPostType(type.id)}
-                      className={`p-3 border shadow-md hover:cursor-pointer rounded-full text-red-primary ${
+                      className={`p-3 border shadow-md rounded-full ${
                         postType === type.id
                           ? "border-red-primary bg-red-primary text-white"
-                          : "border-gray-300 hover:border-red-primary"
+                          : "border-gray-300 text-red-primary hover:border-red-primary"
                       }`}
                     >
                       {type.label}
@@ -211,7 +193,7 @@ export default function CreatePostPopup() {
                       type="text"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
-                      className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
+                      className="block w-full py-2 px-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                       placeholder="Enter post title"
                     />
                   </div>
@@ -224,9 +206,9 @@ export default function CreatePostPopup() {
                     <textarea
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
-                      className="w-full h-32 py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm p-2block text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
+                      className="w-full h-32 p-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                       placeholder="Enter post description"
-                    ></textarea>
+                    />
                   </div>
 
                   {/* Event Date and Time (only for events) */}
@@ -241,7 +223,7 @@ export default function CreatePostPopup() {
                           type="date"
                           value={eventDate}
                           onChange={(e) => setEventDate(e.target.value)}
-                          className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
+                          className="block w-full py-2 px-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                         />
                       </div>
                       <div>
@@ -250,10 +232,11 @@ export default function CreatePostPopup() {
                           Event Time
                         </label>
                         <input
-                          type="time"
+                          type="text"
                           value={eventTime}
                           onChange={(e) => setEventTime(e.target.value)}
-                          className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
+                          placeholder="e.g. 6:00pm"
+                          className="block w-full py-2 px-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                         />
                       </div>
                     </div>
@@ -261,9 +244,11 @@ export default function CreatePostPopup() {
 
                   {/* Image Upload */}
                   <div className="mb-6">
-                    <label className="items-center block mb-2 text-gray-700">
-                      <Image size={16} className="mr-1" />
-                      Upload Images
+                    <label className="block mb-2 text-gray-700">
+                      <span className="inline-flex items-center gap-1">
+                        <ImageIcon size={16} />
+                        Upload Images
+                      </span>
                       {postType === "events"
                         ? " (1 image only)"
                         : " (multiple images allowed)"}
@@ -276,7 +261,7 @@ export default function CreatePostPopup() {
                         onChange={handleImageChange}
                         accept="image/*"
                         multiple={postType !== "events"}
-                        className="hidden "
+                        className="hidden"
                       />
                       <label
                         htmlFor="image-upload"
@@ -293,16 +278,16 @@ export default function CreatePostPopup() {
                     {/* Preview Images */}
                     {images.length > 0 && (
                       <div className="grid grid-cols-2 gap-2 mt-4 md:grid-cols-4">
-                        {images.map((image, index) => (
-                          <div key={index} className="relative">
+                        {images.map((img, idx) => (
+                          <div key={idx} className="relative">
                             <img
-                              src={image.path}
-                              alt={`Preview ${index}`}
+                              src={img.path}
+                              alt={`Preview ${idx}`}
                               className="object-cover w-full h-24 border border-gray-300"
                             />
                             <button
                               type="button"
-                              onClick={() => removeImage(index)}
+                              onClick={() => removeImage(idx)}
                               className="absolute top-0 right-0 p-1 text-white bg-red-primary"
                             >
                               <X size={14} />
@@ -326,17 +311,22 @@ export default function CreatePostPopup() {
                     <button
                       type="button"
                       onClick={closePopup}
-                      className="px-4 py-2 border rounded-full text-red-primary hover:bg-red-100 border-red-primary hover:cursor-pointer"
+                      className="px-4 py-2 border rounded-full text-red-primary hover:bg-red-100 border-red-primary"
+                      disabled={submitting}
                     >
                       Cancel
                     </button>
                     <button
                       type="button"
                       onClick={handleSubmit}
-                      className="px-4 py-2 text-white rounded-full bg-red-primary hover-bg-red-primary hover:cursor-pointer hover:bg-red-800"
-                      disabled={!isFormValid()}
+                      className={`px-4 py-2 text-white rounded-full ${
+                        isFormValid() && !submitting
+                          ? "bg-red-primary hover:bg-red-800"
+                          : "bg-gray-400 cursor-not-allowed"
+                      }`}
+                      disabled={!isFormValid() || submitting}
                     >
-                      Create Post
+                      {submitting ? "Creating..." : "Create Post"}
                     </button>
                   </div>
                 </>

@@ -139,42 +139,68 @@ const usePostStore = create(
         }
       },
 
-      // --FUNCITONS FOR PROTOTYPING-- will remove it sooner or later
-      // Add functions
-      addNewAnnouncement: (newAnnouncement) =>
-        set((state) => ({
-          announcements: [newAnnouncement, ...state.announcements],
-        })),
-      addNewEvent: (newEvent) =>
-        set((state) => ({ events: [newEvent, ...state.events] })),
-      addNewNews: (newNews) =>
-        set((state) => ({ news: [newNews, ...state.news] })),
-      addNewUniforms: (newUniforms) =>
-        set((state) => ({ uniforms: [newUniforms, ...state.uniforms] })),
-      addNewCareer: (newCareer) =>
-        set((state) => ({ careers: [newCareer, ...state.careers] })),
+      createPost: async (payload, opts) => {
+        try {
+          const res = await api.post("/post", payload); // JSON or FormData
+          const newPost = res?.data?.data?.doc;
 
-      // Delete functions
-      deleteAnnouncement: (id) =>
-        set((state) => ({
-          announcements: state.announcements.filter((post) => post._id !== id),
-        })),
-      deleteEvent: (id) =>
-        set((state) => ({
-          events: state.events.filter((post) => post._id !== id),
-        })),
-      deleteNews: (id) =>
-        set((state) => ({
-          news: state.news.filter((post) => post._id !== id),
-        })),
-      deleteUniforms: (id) =>
-        set((state) => ({
-          uniforms: state.uniforms.filter((post) => post._id !== id),
-        })),
-      deleteCareer: (id) =>
-        set((state) => ({
-          careers: state.careers.filter((post) => post._id !== id),
-        })),
+          if (!newPost || ![200, 201].includes(res.status)) {
+            throw new Error(
+              res?.data?.message || `Unexpected status ${res?.status}`
+            );
+          }
+
+          set((state) => {
+            const dedupe = (arr) => [
+              newPost,
+              ...arr.filter((p) => (p._id ?? p.id) !== newPost._id),
+            ];
+            const next = {
+              posts: dedupe(state.posts),
+              announcements: state.announcements,
+              events: state.events,
+              news: state.news,
+              uniforms: state.uniforms,
+              careers: state.careers,
+            };
+
+            switch (newPost.postType) {
+              case "announcement":
+                next.announcements = dedupe(state.announcements);
+                break;
+              case "events":
+                next.events = dedupe(state.events);
+                break;
+              case "news":
+                next.news = dedupe(state.news);
+                break;
+              case "uniforms-update":
+                next.uniforms = dedupe(state.uniforms);
+                break;
+              case "careers":
+                next.careers = dedupe(state.careers);
+                break;
+              default:
+                /* unknown type -> only in posts */ break;
+            }
+
+            return next;
+          });
+
+          if (opts?.revalidate) {
+            await usePostStore.getState().getAllPost();
+          }
+          return { success: true, post: newPost };
+        } catch (error) {
+          const message =
+            error.response?.data?.message ||
+            error.message ||
+            "Failed to create post. Please try again.";
+          console.error("Create post failed:", message);
+          set({ error: message });
+          return { success: false, error: message };
+        }
+      },
     }),
     {
       name: "post-store",
