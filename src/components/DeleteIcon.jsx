@@ -24,11 +24,11 @@ export default function DeleteIcon({ id, itemType }) {
   return (
     <>
       <button
-        className="transition text-red-50 hover:cursor-pointer"
-        title="Delete Item"
         onClick={handleDeleteClick}
+        className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-red-primary rounded-lg hover:bg-red-700 transition-colors duration-200 cursor-pointer"
       >
-        <Trash2 className="w-5 h-5 sm:h-5 sm:w-5" />
+        <Trash2 className="w-4 h-4" />
+        <span>delete</span>
       </button>
 
       {/* Confirmation Popup */}
@@ -39,7 +39,7 @@ export default function DeleteIcon({ id, itemType }) {
               Confirm Deletion
             </h2>
             <p className="mb-4 text-sm sm:mb-6 sm:text-base">
-              Are you sure you want to delete this {itemType}? This action
+              Are you sure you want to delete this {itemType} post? This action
               cannot be undone.
             </p>
 
