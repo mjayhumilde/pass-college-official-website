@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Eye, EyeOff, Mail, Lock, User, AlertTriangle } from "lucide-react";
 import logo from "../assets/images/pass_log-removebg-preview.png";
 import { useNavigate } from "react-router-dom";
-import MusicButton from "../components/MusicButton";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -190,40 +189,7 @@ export default function Login() {
             Contact Support
           </a>
         </div>
-        <div className="mt-10 space-x-2 space-y-2 bg-blue-100">
-          <p className="text-xl text-red-700">
-            *for development navigation only bayybiii!😉*
-          </p>
-          <button
-            onClick={() => {
-              login("user");
-              navigate("/");
-            }}
-            className="px-2 py-2 text-blue-100 bg-blue-400 sm:px-7 hover:cursor-pointer hover:bg-blue-800"
-          >
-            Log in as USER
-          </button>
-          <button
-            onClick={() => {
-              login("teacher");
-              navigate("/");
-            }}
-            className="px-2 py-2 text-blue-100 bg-blue-400 sm:px-7 hover:cursor-pointer hover:bg-blue-800"
-          >
-            Log in as TEACHER
-          </button>
-          <button
-            onClick={() => {
-              login("admin");
-              navigate("/");
-            }}
-            className="px-2 py-2 text-blue-100 bg-blue-400 sm:px-7 hover:cursor-pointer hover:bg-blue-800 "
-          >
-            Log in as ADMIN
-          </button>
-        </div>
       </div>
-      <MusicButton />
     </div>
   );
 }
