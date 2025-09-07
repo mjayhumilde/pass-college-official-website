@@ -83,6 +83,62 @@ const usePostStore = create(
         }
       },
 
+      editPost: async (postId, updateData, hasFiles = false) => {
+        const id = String(postId);
+
+        try {
+          let response;
+          if (hasFiles) {
+            // FormData: let axios set Content-Type with boundary
+            response = await api.patch(
+              `/post/${encodeURIComponent(id)}`,
+              updateData
+            );
+          } else {
+            // JSON updates
+            response = await api.patch(
+              `/post/${encodeURIComponent(id)}`,
+              updateData
+            );
+          }
+
+          // Expect: { status: "success", data: { doc: {...} } }
+          const updatedPost = response?.data?.data?.doc;
+          if (response.status === 200 && updatedPost) {
+            set((state) => {
+              const replaceIn = (arr) =>
+                arr.map((p) => (p._id === id || p.id === id ? updatedPost : p));
+
+              return {
+                posts: replaceIn(state.posts),
+                announcements: replaceIn(state.announcements),
+                events: replaceIn(state.events),
+                news: replaceIn(state.news),
+                uniforms: replaceIn(state.uniforms),
+                careers: replaceIn(state.careers),
+              };
+            });
+
+            return { success: true, post: updatedPost };
+          }
+
+          // Helpful debug when shape is unexpected
+          console.warn("Unexpected editPost response:", response?.data);
+          throw new Error(
+            response?.data?.message || `Unexpected status ${response?.status}`
+          );
+        } catch (error) {
+          console.error("Edit post failed:", error);
+          const errorMessage =
+            error.response?.data?.message ||
+            error.message ||
+            "Failed to update post. Please try again.";
+
+          set({ error: errorMessage });
+          return { success: false, error: errorMessage };
+        }
+      },
+
       // --FUNCITONS FOR PROTOTYPING-- will remove it sooner or later
       // Add functions
       addNewAnnouncement: (newAnnouncement) =>
