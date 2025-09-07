@@ -1,5 +1,6 @@
 import useAuthStore from "../store/useAuthStore";
 import DeleteIcon from "./DeleteIcon";
+import EditComponent from "./EditIcon";
 
 const API_BASE = import.meta?.env?.VITE_API_BASE_URL || "http://127.0.0.1:5000";
 
@@ -63,10 +64,9 @@ const EventCard = ({ event }) => {
           <div className="absolute bottom-0 right-2">
             {(userRole === "admin" || userRole === "teacher") &&
               isAuthenticated && (
-                <div className="flex items-center justify-end p-1">
-                  <div className="flex items-center justify-center p-2 rounded-full bg-red-primary hover:bg-red-800 text-red-50">
-                    <DeleteIcon id={event?._id} itemType={"Event"} />
-                  </div>
+                <div className="flex items-center justify-end p-1 gap-1">
+                  <EditComponent post={event} />
+                  <DeleteIcon id={event._id} />
                 </div>
               )}
           </div>

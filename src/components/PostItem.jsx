@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Heart, MessageCircle, Reply } from "lucide-react";
+import { Heart, MessageCircle, Pen, Reply } from "lucide-react";
 import DeleteIcon from "./DeleteIcon";
+import EditComponent from "./EditIcon";
 
 // Comment component (handles both main comments + replies)
 const Comment = ({ comment, depth = 0, onReply }) => {
@@ -155,10 +156,9 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
       <div id={`news-${post.id}`} className="bg-gray">
         {isAuthenticated &&
           (userRole === "admin" || userRole === "teacher") && (
-            <div className="flex items-center justify-end p-1">
-              <div className="flex items-center justify-center p-2 rounded-full bg-red-primary hover:bg-red-800 text-red-50">
-                <DeleteIcon id={post._id} itemType={label} />
-              </div>
+            <div className="flex items-center justify-end p-1 gap-1">
+              <EditComponent post={post} itemType={label} />
+              <DeleteIcon id={post._id} itemType={label} />
             </div>
           )}
         <div className="flex justify-between p-2 py-2 md:px-10">
