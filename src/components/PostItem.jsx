@@ -157,7 +157,7 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
           (userRole === "admin" || userRole === "teacher") && (
             <div className="flex items-center justify-end p-1">
               <div className="flex items-center justify-center p-2 rounded-full bg-red-primary hover:bg-red-800 text-red-50">
-                <DeleteIcon id={post.id} itemType={label} />
+                <DeleteIcon id={post._id} itemType={label} />
               </div>
             </div>
           )}

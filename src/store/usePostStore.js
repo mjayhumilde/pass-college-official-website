@@ -43,6 +43,45 @@ const usePostStore = create(
           });
         }
       },
+      deletePost: async (postId) => {
+        const id = String(postId);
+
+        // optimistic remove from all slices
+        set((state) => {
+          const notId = (p) => p._id !== id && p.id !== id; // supports _id or id
+          return {
+            posts: state.posts.filter(notId),
+            announcements: state.announcements.filter(notId),
+            events: state.events.filter(notId),
+            news: state.news.filter(notId),
+            uniforms: state.uniforms.filter(notId),
+            careers: state.careers.filter(notId),
+          };
+        });
+
+        try {
+          // api request
+          const res = await api.delete(`/post/${encodeURIComponent(id)}`);
+          if (res.status !== 200 && res.status !== 204) {
+            throw new Error(
+              res.data?.message || `Unexpected status ${res.status}`
+            );
+          }
+
+          return true;
+        } catch (e) {
+          console.error("Delete failed:", e);
+          // restore from server truth
+          await usePostStore.getState().getAllPost();
+          set({
+            error:
+              e.response?.data?.message ||
+              e.message ||
+              "Failed to delete post.",
+          });
+          return false;
+        }
+      },
 
       // --FUNCITONS FOR PROTOTYPING-- will remove it sooner or later
       // Add functions

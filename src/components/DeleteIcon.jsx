@@ -4,14 +4,9 @@ import { useState } from "react";
 import { Trash2 } from "lucide-react";
 
 export default function DeleteIcon({ id, itemType }) {
+  const { deletePost } = usePostStore();
+
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const {
-    deleteAnnouncement,
-    deleteNews,
-    deleteEvents,
-    deleteUniforms,
-    deleteCareers,
-  } = usePostStore();
 
   const handleDeleteClick = () => {
     setIsConfirmOpen(true);
@@ -21,25 +16,9 @@ export default function DeleteIcon({ id, itemType }) {
     setIsConfirmOpen(false);
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async (postId) => {
+    await deletePost(postId);
     setIsConfirmOpen(false);
-
-    const dataLabel = itemType.toLowerCase();
-    if (dataLabel === "announcement") {
-      deleteAnnouncement(id);
-    }
-    if (dataLabel === "news") {
-      deleteNews(id);
-    }
-    if (dataLabel === "event") {
-      deleteEvents(id);
-    }
-    if (dataLabel === "uniforms") {
-      deleteUniforms(id);
-    }
-    if (dataLabel === "careers") {
-      deleteCareers(id);
-    }
   };
 
   return (
@@ -72,7 +51,9 @@ export default function DeleteIcon({ id, itemType }) {
                 Cancel
               </button>
               <button
-                onClick={handleConfirm}
+                onClick={() => {
+                  handleConfirm(id);
+                }}
                 className="px-4 py-2 text-white rounded-full bg-red-primary hover-bg-red-primary hover:cursor-pointer hover:bg-red-800"
               >
                 Delete
