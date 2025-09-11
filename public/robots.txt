@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+Disallow: /login
+Disallow: /accounts
+Disallow: /profile
+Disallow: /notifications
+Disallow: /request
+Disallow: /transaction-report
+
+Sitemap: https://pass-college.netlify.app/sitemap.xml
