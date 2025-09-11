@@ -16,7 +16,10 @@ const useAuthStore = create(
         set({ isAuthenticated: false, user: null, token: null, error: null });
 
         try {
-          const response = await api.post("/user/login", { email, password });
+          const response = await api.post("/api/v1/user/login", {
+            email,
+            password,
+          });
 
           if (response.data.status === "success") {
             const { token, data } = response.data;
@@ -52,7 +55,7 @@ const useAuthStore = create(
       logout: async () => {
         try {
           // logout request to the backend
-          const response = await api.get("/user/logout");
+          const response = await api.get("/api/v1/user/logout");
 
           if (response.data.status === "success") {
             console.log(response.data.message); //  log the success message from the server
@@ -92,7 +95,7 @@ const useAuthStore = create(
             formData.append("photo", photo);
           }
 
-          const response = await api.patch("/user/updateMe", formData, {
+          const response = await api.patch("/api/v1/user/updateMe", formData, {
             headers: {
               "Content-Type": "multipart/form-data", // Ensure correct content type for file upload
             },
@@ -136,7 +139,7 @@ const useAuthStore = create(
           };
 
           const response = await api.patch(
-            "/user/updateMyPassword",
+            "/api/v1/user/updateMyPassword",
             requestData, // Send data as JSON
             {
               headers: {

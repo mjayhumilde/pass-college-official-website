@@ -1,8 +1,15 @@
 import axios from "axios";
 
+const apiUrl =
+  import.meta.env.VITE_APP_ENV === "production"
+    ? import.meta.env.VITE_API_URL_PROD
+    : import.meta.env.VITE_API_URL_DEV;
+
+console.log(apiUrl);
+
 //axios instance
 const api = axios.create({
-  baseURL: "http://127.0.0.1:5000/api/v1",
+  baseURL: `${apiUrl}`,
 });
 
 // attach token if present

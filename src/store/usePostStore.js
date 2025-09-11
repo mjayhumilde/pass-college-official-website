@@ -15,7 +15,7 @@ const usePostStore = create(
       getAllPost: async () => {
         try {
           // api request
-          const response = await api.get("/post");
+          const response = await api.get("/api/v1/post");
 
           if (response.status === 200 && response.data?.data?.posts) {
             const posts = response.data.data.posts;
@@ -61,7 +61,9 @@ const usePostStore = create(
 
         try {
           // api request
-          const res = await api.delete(`/post/${encodeURIComponent(id)}`);
+          const res = await api.delete(
+            `/api/v1/post/${encodeURIComponent(id)}`
+          );
           if (res.status !== 200 && res.status !== 204) {
             throw new Error(
               res.data?.message || `Unexpected status ${res.status}`
@@ -91,13 +93,13 @@ const usePostStore = create(
           if (hasFiles) {
             // FormData: let axios set Content-Type with boundary
             response = await api.patch(
-              `/post/${encodeURIComponent(id)}`,
+              `/api/v1/post/${encodeURIComponent(id)}`,
               updateData
             );
           } else {
             // JSON updates
             response = await api.patch(
-              `/post/${encodeURIComponent(id)}`,
+              `/api/v1/post/${encodeURIComponent(id)}`,
               updateData
             );
           }
@@ -141,7 +143,7 @@ const usePostStore = create(
 
       createPost: async (payload, opts) => {
         try {
-          const res = await api.post("/post", payload); // JSON or FormData
+          const res = await api.post("/api/v1/post", payload); // JSON or FormData
           const newPost = res?.data?.data?.doc;
 
           if (!newPost || ![200, 201].includes(res.status)) {

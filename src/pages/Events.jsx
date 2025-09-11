@@ -16,7 +16,6 @@ const Events = () => {
   const userRole = useAuthStore((state) => state.userRole);
 
   const { getAllPost, news, events } = usePostStore();
-  console.log(news);
 
   const location = useLocation();
 

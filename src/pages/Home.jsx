@@ -161,7 +161,7 @@ const Home = () => {
                 >
                   {news.slice(0, 4).map((item) => (
                     <motion.div
-                      key={item.id}
+                      key={item._id}
                       variants={newsItemPopVariants} // Uses the *original* faster pop
                       className={`flex flex-col h-full rounded-lg shadow-lg ${
                         news.length === 1 ? "lg:px-72 lg:py-5" : ""
@@ -178,10 +178,7 @@ const Home = () => {
                       >
                         <img
                           className="object-cover w-full h-full transition-all duration-500 rounded-t-lg"
-                          src={`http://127.0.0.1:5000${item.images.slice(
-                            0,
-                            1
-                          )}`}
+                          src={`${item.images.slice(0, 1)}`}
                           alt={item.title}
                         />
                       </div>
@@ -462,8 +459,11 @@ const Home = () => {
             </div>
           </div>
           <div className="grid grid-cols-1 md:flex justify-center items-center md:gap-5 xl:gap-7 p-5 xl:px-20">
-            {testimonials.map((item) => (
-              <div className="p-2 border-2 border-red-primary xl:w-1/3">
+            {testimonials.map((item, index) => (
+              <div
+                key={index}
+                className="p-2 border-2 border-red-primary xl:w-1/3"
+              >
                 <img className="w-full" src={item.image} alt="testimony" />
               </div>
             ))}

@@ -205,7 +205,7 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
                 {/* Left top image */}
                 <img
                   className="object-cover w-full h-full"
-                  src={`http://127.0.0.1:5000${src}`}
+                  src={`${src}`}
                   alt="Left top image"
                 />
               </div>
@@ -222,7 +222,7 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
                 >
                   <img
                     className="object-cover w-full h-full"
-                    src={`http://127.0.0.1:5000${src}`}
+                    src={`${src}`}
                     alt={`Post image ${index + 1}`}
                   />
                 </div>
@@ -239,7 +239,7 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
               >
                 <img
                   className="object-cover w-full h-full"
-                  src={`http://127.0.0.1:5000${post.images[0]}`}
+                  src={`${post.images[0]}`}
                   alt="Post image 1"
                 />
               </div>
@@ -253,7 +253,7 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
                   >
                     <img
                       className="object-cover w-full h-full"
-                      src={`http://127.0.0.1:5000${src}`}
+                      src={`{src}`}
                       alt={`Post image ${index + 2}`}
                     />
                   </div>
@@ -272,7 +272,7 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
                 {/* Left top image */}
                 <img
                   className="object-cover w-full h-full"
-                  src={`http://127.0.0.1:5000${src}`}
+                  src={`${src}`}
                   alt="Left top image"
                 />
               </div>
@@ -300,7 +300,7 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
               >
                 <img
                   className="object-cover w-full h-full"
-                  src={`http://127.0.0.1:5000${src}`}
+                  src={`${src}`}
                   alt={`Announcement image ${index + 3}`}
                 />
                 <div
