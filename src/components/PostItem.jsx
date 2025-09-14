@@ -1,157 +1,46 @@
 import { useState } from "react";
-import { Heart, MessageCircle, Pen, Reply } from "lucide-react";
+import { Heart } from "lucide-react";
 import DeleteIcon from "./DeleteIcon";
 import EditComponent from "./EditIcon";
-
-// Comment component (handles both main comments + replies)
-const Comment = ({ comment, depth = 0, onReply }) => {
-  const [likes, setLikes] = useState(comment.likes || 0);
-  const [showReply, setShowReply] = useState(false);
-  const [replyText, setReplyText] = useState("");
-
-  // Cap indentation at 2 levels
-  const maxDepth = 2;
-  const indent = Math.min(depth * 20, maxDepth * 20); // 20px per level
-
-  const handleReply = () => {
-    if (!replyText.trim()) return;
-    onReply(comment.id, {
-      id: Date.now(),
-      author: "You", // Replace with actual logged-in user
-      role: "Student",
-      text: replyText,
-      replies: [],
-    });
-    setReplyText("");
-    setShowReply(false);
-  };
-
-  return (
-    <div className="flex gap-1 m-2" style={{ paddingLeft: indent }}>
-      <img
-        src="https://www.shutterstock.com/image-vector/user-profile-icon-vector-avatar-600nw-2558760599.jpg"
-        className="w-6 h-6 rounded-full"
-        alt="profile"
-      />
-      <div className="bg-white p-1 rounded text-red-950 w-full">
-        <p>
-          <b>{comment.author}</b> <span>{comment.role}</span>
-        </p>
-        <p className="text-sm">{comment.text}</p>
-
-        {/* Comment Actions (Like + Reply) */}
-        <div className="flex items-center gap-3 mt-1 text-sm text-gray-600">
-          <div
-            className="flex items-center gap-1 cursor-pointer hover:text-red-500"
-            onClick={() => setLikes(likes + 1)}
-          >
-            <Heart
-              size={14}
-              fill={likes > 0 ? "#FF5252" : "transparent"}
-              strokeWidth={2}
-            />
-            <span>{likes}</span>
-          </div>
-
-          {/*  Hide Reply button if depth === maxDepth */}
-          {depth < maxDepth && (
-            <div
-              className="flex items-center gap-1 cursor-pointer hover:text-blue-500"
-              onClick={() => setShowReply(!showReply)}
-            >
-              <Reply size={14} />
-              <span>Reply</span>
-            </div>
-          )}
-        </div>
-
-        {/* Reply Input */}
-        {showReply && (
-          <div className="flex gap-2 mt-2">
-            <input
-              type="text"
-              placeholder="Write a reply..."
-              className="flex-1 p-1 text-sm border border-gray-300 rounded"
-              value={replyText}
-              onChange={(e) => setReplyText(e.target.value)}
-            />
-            <button
-              className="bg-red-primary text-white px-2 text-sm rounded hover:bg-red-800"
-              onClick={handleReply}
-            >
-              Post
-            </button>
-          </div>
-        )}
-
-        {/* Render replies recursively */}
-        {comment.replies?.length > 0 && (
-          <div>
-            {comment.replies.map((reply) => (
-              <Comment
-                key={reply.id}
-                comment={reply}
-                depth={depth + 1}
-                onReply={onReply}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
+import useCommentStore from "../store/useCommentStore";
+import useAuthStore from "../store/useAuthStore";
+import Comment from "./Comment";
 
 const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [likes, setLikes] = useState(post.likes || 0);
 
-  // Example comments (replace later with API data)
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      author: "Shien Meng Goh",
-      role: "BSCS-4",
-      text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-      replies: [],
-    },
-    {
-      id: 3,
-      author: "Shane Kyla Cosme",
-      role: "BSCS-4",
-      text: "Another main comment here, very insightful!",
-      replies: [],
-    },
-  ]);
   const [newComment, setNewComment] = useState("");
 
-  const handleAddComment = () => {
-    if (!newComment.trim()) return;
-    const newCommentObj = {
-      id: Date.now(),
-      author: "You",
-      role: "Student",
-      text: newComment,
-      replies: [],
-    };
-    setComments([...comments, newCommentObj]);
-    setNewComment("");
+  const { user } = useAuthStore();
+  const { fetchCommentsByPost, commentsByPost, loading, createComment } =
+    useCommentStore();
+
+  const handleOpenComments = async () => {
+    await fetchCommentsByPost(post._id);
+    setIsOpen(!isOpen);
   };
 
-  const handleReply = (commentId, reply) => {
-    const addReply = (items) =>
-      items.map((item) =>
-        item.id === commentId
-          ? { ...item, replies: [...(item.replies || []), reply] }
-          : { ...item, replies: addReply(item.replies || []) }
-      );
-    setComments(addReply(comments));
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+
+    return date
+      .toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      })
+      .replace(",", "")
+      .toLowerCase();
   };
 
   return (
     <div
       key={post.id}
-      className="overflow-hidden rounded-lg shadow-lg bg-red-primary"
+      className="overflow-hidden rounded-lg shadow-lg bg-red-primary my-5"
     >
       <div id={`news-${post.id}`} className="bg-gray">
         {isAuthenticated &&
@@ -164,13 +53,7 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
         <div className="flex justify-between p-2 py-2 md:px-10">
           <h3 className="text-xl font-bold text-red-primary">{label}!!</h3>
           <p className="font-semibold text-red-primary">
-            {Number.isFinite(post.date)
-              ? new Date(post.date).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })
-              : post.date}
+            {formatDate(post.date)}
           </p>
         </div>
         <div className="text-3xl font-bold text-center text-red-primary">
@@ -332,56 +215,66 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
                 onClick={() => setLikes(likes + 1)}
               />
             </div>
-            <p className="text-white ml-2">{likes}</p>
+            <p className="text-white ml-2">{post.likeCount}</p>
           </div>
           <p
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={handleOpenComments}
             className="text-white hover:cursor-pointer hover:underline"
           >
-            <span className="text-white">{comments.length}</span> comments
+            <span className="text-white">
+              {post.latestComments?.length || 0}
+            </span>{" "}
+            comments
           </p>
         </div>
         <hr className="text-white" />
-        <div className="flex justify-around items-center px-10 py-2">
-          <Heart
-            color="white"
-            className="hover:cursor-pointer hover:scale-125 transition-all"
-            onClick={() => setLikes(likes + 1)}
-          />
-          <MessageCircle
-            color="white"
-            className="hover:cursor-pointer hover:scale-125 transition-all"
-            onClick={() => setIsOpen(!isOpen)}
-          />
-        </div>
+
         {isOpen && (
           <div className="modal-overlay p-1">
             <div className="modal-content">
-              {comments.map((comment) => (
-                <Comment
-                  key={comment.id}
-                  comment={comment}
-                  onReply={handleReply}
-                />
-              ))}
-
-              {/* Add new comment */}
+              {loading ? (
+                <p className="text-center text-gray-500">Loading comments...</p>
+              ) : (
+                (commentsByPost[post._id] || []).map((comment) => (
+                  <Comment
+                    key={comment._id}
+                    comment={{
+                      id: comment._id,
+                      postId: post._id,
+                      userId: comment.user._id,
+                      photo: comment.user.photo,
+                      author: `${comment.user?.firstName} ${comment.user?.lastName}`,
+                      role: comment.user?.course || "",
+                      text: comment.text,
+                      replies: comment.replies || [],
+                      date: comment.updatedAt,
+                    }}
+                  />
+                ))
+              )}
+            </div>
+            {/* Add new comment */}
+            {user && (
               <div className="flex gap-2 mt-3 p-2 border-t border-gray-300">
                 <input
                   type="text"
                   placeholder="Write a comment..."
-                  className="flex-1 p-2 rounded border border-gray-300"
+                  className="flex-1 p-2 rounded border border-gray-300 text-red-50"
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                 />
                 <button
-                  className="bg-red-primary text-white px-3 rounded hover:bg-red-800"
-                  onClick={handleAddComment}
+                  className="bg-white text-red-primary px-3 rounded hover:cursor-pointer "
+                  onClick={async () => {
+                    if (!newComment.trim()) return;
+                    await createComment(post._id, newComment);
+                    setNewComment("");
+                  }}
                 >
                   Post
                 </button>
               </div>
-            </div>
+            )}
           </div>
         )}
       </div>
