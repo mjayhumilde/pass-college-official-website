@@ -143,13 +143,16 @@ const usePostStore = create(
 
       createPost: async (payload, opts) => {
         try {
-          const res = await api.post("/api/v1/post", payload); // JSON or FormData
-          const newPost = res?.data?.data?.doc;
+          const res = await api.post("/api/v1/post", payload);
+          const newPost = res?.data?.data?.post;
 
-          if (!newPost || ![200, 201].includes(res.status)) {
-            throw new Error(
-              res?.data?.message || `Unexpected status ${res?.status}`
-            );
+          if (res.status !== 201 || !newPost || !newPost._id) {
+            throw new Error("Invalid response from server");
+          }
+
+          // Validate minimum fields
+          if (!newPost.title || !newPost.postType) {
+            throw new Error("Post data is incomplete");
           }
 
           set((state) => {
@@ -157,14 +160,7 @@ const usePostStore = create(
               newPost,
               ...arr.filter((p) => (p._id ?? p.id) !== newPost._id),
             ];
-            const next = {
-              posts: dedupe(state.posts),
-              announcements: state.announcements,
-              events: state.events,
-              news: state.news,
-              uniforms: state.uniforms,
-              careers: state.careers,
-            };
+            const next = { ...state, posts: dedupe(state.posts) };
 
             switch (newPost.postType) {
               case "announcement":
@@ -182,23 +178,30 @@ const usePostStore = create(
               case "careers":
                 next.careers = dedupe(state.careers);
                 break;
-              default:
-                /* unknown type -> only in posts */ break;
             }
-
             return next;
           });
 
           if (opts?.revalidate) {
             await usePostStore.getState().getAllPost();
           }
+
           return { success: true, post: newPost };
         } catch (error) {
+          const status = error.response?.status;
           const message =
             error.response?.data?.message ||
             error.message ||
             "Failed to create post. Please try again.";
-          console.error("Create post failed:", message);
+
+          console.error("Create post failed:", status, message);
+
+          if (status === 401) {
+            // token expired -> force logout
+            localStorage.removeItem("authToken");
+            window.location.href = "/login";
+          }
+
           set({ error: message });
           return { success: false, error: message };
         }
