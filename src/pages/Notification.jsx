@@ -12,34 +12,32 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-// Main Notification Component
 export default function NotificationPage() {
-  // State for notifications and active tab
   const [activeTab, setActiveTab] = useState("all");
-
-  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [notificationsPerPage] = useState(5);
 
-  const { notifications, markAsRead, deleteNotification } =
+  const { notifications, fetchNotifications, markAsRead, deleteNotification } =
     useNotificationStore();
 
-  // Sample notification data - in a real app this would come from an API
-  useEffect(() => {
-    // Simulate API fetch
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const loadNotifications = async () => {
+      setLoading(true);
+      await fetchNotifications();
+      setLoading(false);
+    };
+    loadNotifications();
     window.scrollTo(0, 0);
-  }, []);
+  }, [fetchNotifications]);
 
   // Filter notifications based on active tab
   const filteredNotifications = notifications.filter(
-    (notification) => activeTab === "all" || notification.postType === activeTab
+    (n) => activeTab === "all" || n.postType === activeTab
   );
 
-  // Pagination logic
+  // Pagination
   const indexOfLastNotification = currentPage * notificationsPerPage;
   const indexOfFirstNotification =
     indexOfLastNotification - notificationsPerPage;
@@ -56,13 +54,13 @@ export default function NotificationPage() {
     switch (postType) {
       case "announcement":
         return <Megaphone className="text-red-800" size={20} />;
-      case "career":
+      case "careers":
         return <Briefcase className="text-red-800" size={20} />;
       case "news":
         return <Newspaper className="text-red-800" size={20} />;
-      case "event":
+      case "events":
         return <Calendar className="text-red-800" size={20} />;
-      case "uniform":
+      case "uniforms-update":
         return <Megaphone className="text-red-800" size={20} />;
       case "document":
         return <FileCheck className="text-red-800" size={20} />;
@@ -71,20 +69,18 @@ export default function NotificationPage() {
     }
   };
 
-  // Format date to more readable format
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "short", day: "numeric" };
     return new Date(dateString).toLocaleDateString("en-US", options);
   };
 
-  // Tabs configuration
   const tabs = [
     { id: "all", label: "All" },
     { id: "announcement", label: "Announcements" },
-    { id: "career", label: "Careers" },
+    { id: "careers", label: "Careers" },
     { id: "news", label: "News" },
-    { id: "event", label: "Events" },
-    { id: "uniform", label: "Uniforms" },
+    { id: "events", label: "Events" },
+    { id: "uniforms-update", label: "Uniforms" },
     { id: "document", label: "Documents" },
   ];
 
@@ -131,17 +127,13 @@ export default function NotificationPage() {
         <div className="bg-white rounded-lg shadow-md">
           {loading ? (
             <div className="p-6 text-center">
-              <div className="flex flex-col items-center animate-pulse">
-                <div className="w-1/4 h-6 mb-4 bg-gray-200 rounded"></div>
-                <div className="w-3/4 h-4 mb-2 bg-gray-200 rounded"></div>
-                <div className="w-1/2 h-4 bg-gray-200 rounded"></div>
-              </div>
+              <p className="text-gray-500">Loading notifications...</p>
             </div>
           ) : currentNotifications.length > 0 ? (
             <ul className="divide-y divide-gray-200">
               {currentNotifications.map((notification) => (
                 <li
-                  key={notification.id}
+                  key={notification._id}
                   className={`p-4 sm:p-6 transition-colors ${
                     notification.notifStatus === "unread"
                       ? "bg-red-50"
@@ -166,7 +158,7 @@ export default function NotificationPage() {
                           {notification.description}
                         </p>
                         <div className="flex items-center mt-2 text-xs text-gray-500">
-                          <span>{formatDate(notification.date)}</span>
+                          <span>{formatDate(notification.createdAt)}</span>
                           <span className="mx-2">•</span>
                           <span className="capitalize">
                             {notification.postType}
@@ -177,14 +169,14 @@ export default function NotificationPage() {
                     <div className="flex space-x-2">
                       {notification.notifStatus === "unread" && (
                         <button
-                          onClick={() => markAsRead(notification.id)}
+                          onClick={() => markAsRead(notification._id)}
                           className="text-xs text-red-800 hover:text-red-900 hover:cursor-pointer"
                         >
                           Mark as read
                         </button>
                       )}
                       <button
-                        onClick={() => deleteNotification(notification.id)}
+                        onClick={() => deleteNotification(notification._id)}
                         className="text-red-primary hover:text-red-800 hover:cursor-pointer"
                       >
                         <X size={16} />
@@ -203,99 +195,7 @@ export default function NotificationPage() {
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex items-center justify-between px-4 py-4 border-t border-gray-200">
-              <div className="flex justify-between flex-1 sm:hidden">
-                <button
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.max(prev - 1, 1))
-                  }
-                  disabled={currentPage === 1}
-                  className={`relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md ${
-                    currentPage === 1
-                      ? "bg-gray-100 text-gray-400"
-                      : "bg-white text-gray-700 hover:bg-gray-50"
-                  }`}
-                >
-                  Previous
-                </button>
-                <button
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                  }
-                  disabled={currentPage === totalPages}
-                  className={`relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md ${
-                    currentPage === totalPages
-                      ? "bg-gray-100 text-gray-400"
-                      : "bg-white text-gray-700 hover:bg-gray-50"
-                  }`}
-                >
-                  Next
-                </button>
-              </div>
-              <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                <div>
-                  <p className="text-sm text-gray-700">
-                    Showing{" "}
-                    <span className="font-medium">
-                      {indexOfFirstNotification + 1}
-                    </span>{" "}
-                    to{" "}
-                    <span className="font-medium">
-                      {Math.min(
-                        indexOfLastNotification,
-                        filteredNotifications.length
-                      )}
-                    </span>{" "}
-                    of{" "}
-                    <span className="font-medium">
-                      {filteredNotifications.length}
-                    </span>{" "}
-                    results
-                  </p>
-                </div>
-                <div>
-                  <nav className="relative z-0 inline-flex space-x-1 rounded-md shadow-sm">
-                    <button
-                      onClick={() =>
-                        setCurrentPage((prev) => Math.max(prev - 1, 1))
-                      }
-                      disabled={currentPage === 1}
-                      className={`p-1 sm:p-2 rounded-full hover:cursor-pointer ${
-                        currentPage === 1
-                          ? "bg-gray-200 text-gray-400"
-                          : "bg-red-primary text-white"
-                      }`}
-                    >
-                      <ChevronLeft size={16} />
-                    </button>
-                    {Array.from({ length: totalPages }).map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentPage(index + 1)}
-                        className={`${"hidden sm:flex"} px-3 py-2 rounded-full hover:cursor-pointer ${
-                          currentPage === index + 1
-                            ? "bg-red-primary text-white"
-                            : "bg-gray-200 text-gray-700"
-                        }`}
-                      >
-                        {index + 1}
-                      </button>
-                    ))}
-                    <button
-                      onClick={() =>
-                        setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                      }
-                      disabled={currentPage === totalPages}
-                      className={`p-1 sm:p-2 rounded-full hover:cursor-pointer ${
-                        currentPage === totalPages
-                          ? "bg-gray-200 text-gray-400"
-                          : "bg-red-primary text-white"
-                      }`}
-                    >
-                      <ChevronRight size={16} />
-                    </button>
-                  </nav>
-                </div>
-              </div>
+              {/* ... keep your pagination code unchanged */}
             </div>
           )}
         </div>

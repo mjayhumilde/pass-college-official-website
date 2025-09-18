@@ -18,7 +18,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const { isAuthenticated, userRole, user } = useAuthStore();
-  const { notifications } = useNotificationStore();
+  const { notifications, fetchNotifications } = useNotificationStore();
 
   //  scroll event listener
   useEffect(() => {
@@ -30,6 +30,14 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    fetchNotifications();
+  }, [fetchNotifications]);
+
+  const unreadCount = notifications.filter(
+    (n) => n.notifStatus === "unread"
+  ).length;
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -193,11 +201,7 @@ const Header = () => {
                     </PopUpAnimation>
                     <OpacityAnimation>
                       <div className="bg-red-primary px-2 -top-2 absolute -right-3 rounded-full text-red-50 text-[15px] font-bold">
-                        {
-                          notifications.filter(
-                            (n) => n.notifStatus === "unread"
-                          ).length
-                        }
+                        {unreadCount}
                       </div>
                     </OpacityAnimation>
                   </div>
@@ -225,10 +229,7 @@ const Header = () => {
                 </PopUpAnimation>
                 <OpacityAnimation>
                   <div className="bg-white px-1 sm:px-2 -top-2 -right-1 sm:-top-3 absolute sm:-right-3 rounded-full text-red-primary text-[11px] sm:text-[15px] font-bold">
-                    {
-                      notifications.filter((n) => n.notifStatus === "unread")
-                        .length
-                    }
+                    {unreadCount}
                   </div>
                 </OpacityAnimation>
               </div>
