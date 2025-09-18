@@ -1,20 +1,52 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Heart } from "lucide-react";
 import DeleteIcon from "./DeleteIcon";
 import EditComponent from "./EditIcon";
 import useCommentStore from "../store/useCommentStore";
 import useAuthStore from "../store/useAuthStore";
+import useLikeStore from "../store/useLikeStore";
 import Comment from "./Comment";
 
 const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [likes, setLikes] = useState(post.likes || 0);
-
   const [newComment, setNewComment] = useState("");
 
   const { user } = useAuthStore();
   const { fetchCommentsByPost, commentsByPost, loading, createComment } =
     useCommentStore();
+
+  const {
+    likesByPost,
+    fetchLikes,
+    addLike,
+    removeLike,
+    currentUserId,
+    setCurrentUser,
+  } = useLikeStore();
+
+  const likes = likesByPost[post._id] || [];
+
+  useEffect(() => {
+    if (user?._id) setCurrentUser(user._id);
+  }, [user, setCurrentUser]);
+
+  useEffect(() => {
+    fetchLikes(post._id);
+  }, [post._id, fetchLikes]);
+
+  const userLike = likes.find(
+    (like) => like.user === currentUserId || like.user?._id === currentUserId
+  );
+  const isLiked = !!userLike;
+
+  const handleLikeToggle = async () => {
+    if (!user) return alert("You must be logged in to like posts.");
+    if (isLiked) {
+      await removeLike(userLike._id, post._id);
+    } else {
+      await addLike(post._id);
+    }
+  };
 
   const handleOpenComments = async () => {
     await fetchCommentsByPost(post._id);
@@ -77,7 +109,7 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
           ${post.images.length > 3 ? "grid-rows-2 " : ""}
           `}
         >
-          {/* Left column with 2 images */}
+          {/* One Image */}
           {post.images.length === 1 &&
             post.images.map((src, index) => (
               <div
@@ -85,7 +117,6 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
                 className="overflow-hidden h-[320px] sm:h-[600px] cursor-pointer"
                 onClick={() => openCarousel(post.images, index)}
               >
-                {/* Left top image */}
                 <img
                   className="object-cover w-full h-full"
                   src={`${src}`}
@@ -94,7 +125,7 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
               </div>
             ))}
 
-          {/* Two Images Layout - Side by side */}
+          {/* Two Images */}
           {post.images.length === 2 && (
             <div className="grid grid-cols-2 gap-1">
               {post.images.map((src, index) => (
@@ -113,7 +144,7 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
             </div>
           )}
 
-          {/* Three Images Layout*/}
+          {/* Three Images */}
           {post.images.length === 3 && (
             <div className="grid gap-1">
               <div
@@ -126,7 +157,6 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
                   alt="Post image 1"
                 />
               </div>
-              {/* Second and third images side by side */}
               <div className="grid grid-cols-2 gap-1">
                 {post.images.slice(1, 3).map((src, index) => (
                   <div
@@ -136,7 +166,7 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
                   >
                     <img
                       className="object-cover w-full h-full"
-                      src={`{src}`}
+                      src={`${src}`}
                       alt={`Post image ${index + 2}`}
                     />
                   </div>
@@ -145,6 +175,7 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
             </div>
           )}
 
+          {/* More than 3 Images */}
           {post.images.length > 3 &&
             post.images.slice(0, 2).map((src, index) => (
               <div
@@ -152,7 +183,6 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
                 className="overflow-hidden h-[210px] sm:h-[300px] cursor-pointer"
                 onClick={() => openCarousel(post.images, index)}
               >
-                {/* Left top image */}
                 <img
                   className="object-cover w-full h-full"
                   src={`${src}`}
@@ -164,13 +194,12 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
 
         <div
           className={`
-          
           ${post.images.length === 2 ? "hidden" : ""}
           ${post.images.length === 3 ? "hidden" : ""}
-          ${post.images.length === 4 ? "grid  gap-1  grid-rows-2" : ""} 
-          ${post.images.length >= 5 ? "grid  gap-1  grid-rows-3" : ""}`}
+          ${post.images.length === 4 ? "grid gap-1 grid-rows-2" : ""} 
+          ${post.images.length >= 5 ? "grid gap-1 grid-rows-3" : ""}
+        `}
         >
-          {/* Right column with 3 images */}
           {post.images.length >= 4 &&
             post.images.slice(2, 5).map((src, index) => (
               <div
@@ -187,12 +216,11 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
                   alt={`Announcement image ${index + 3}`}
                 />
                 <div
-                  className={`
-                          ${
-                            index === 2 && post.images.length > 5
-                              ? "text-red-50 text-4xl absolute top-0 bottom-0 right-0 left-0 flex justify-center items-center bg-[rgb(128,0,0)]/50"
-                              : ""
-                          }`}
+                  className={`${
+                    index === 2 && post.images.length > 5
+                      ? "text-red-50 text-4xl absolute top-0 bottom-0 right-0 left-0 flex justify-center items-center bg-[rgb(128,0,0)]/50"
+                      : ""
+                  }`}
                 >
                   {index === 2 && post.images.length > 5
                     ? `+ ${post.images.length - 5}`
@@ -203,19 +231,19 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
         </div>
       </div>
 
-      {/* Likes + Comments */}
+      {/* Likes / Comments */}
       <div>
         <div className="flex justify-between items-center p-2 sm:px-20">
           <div className="flex items-center px-2">
             <div className="relative w-8 h-8">
               <Heart
                 className="w-full h-full text-white cursor-pointer"
-                fill={likes > 0 ? "#FF5252" : "transparent"}
+                fill={isLiked ? "white" : "transparent"}
                 strokeWidth={2}
-                onClick={() => setLikes(likes + 1)}
+                onClick={handleLikeToggle}
               />
             </div>
-            <p className="text-white ml-2">{post.likeCount}</p>
+            <p className="text-white ml-2">{likes.length}</p>
           </div>
           <p
             onClick={handleOpenComments}
