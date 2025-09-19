@@ -189,23 +189,24 @@ const Header = () => {
                     </div>
                   </PopUpAnimation>
                 </Link>
-                {userRole === "student" && isAuthenticated && (
-                  <div
-                    className="relative hover:cursor-pointer"
-                    onClick={() => {
-                      navigate("notifications");
-                    }}
-                  >
-                    <PopUpAnimation>
-                      <Bell className="text-red-primary" size={30} />
-                    </PopUpAnimation>
-                    <OpacityAnimation>
-                      <div className="bg-red-primary px-2 -top-2 absolute -right-3 rounded-full text-red-50 text-[15px] font-bold">
-                        {unreadCount}
-                      </div>
-                    </OpacityAnimation>
-                  </div>
-                )}
+                {userRole === "student" ||
+                  (userRole === "teacher" && isAuthenticated && (
+                    <div
+                      className="relative hover:cursor-pointer"
+                      onClick={() => {
+                        navigate("notifications");
+                      }}
+                    >
+                      <PopUpAnimation>
+                        <Bell className="text-red-primary" size={30} />
+                      </PopUpAnimation>
+                      <OpacityAnimation>
+                        <div className="bg-red-primary px-2 -top-2 absolute -right-3 rounded-full text-red-50 text-[15px] font-bold">
+                          {unreadCount}
+                        </div>
+                      </OpacityAnimation>
+                    </div>
+                  ))}
               </div>
             ) : (
               <PopUpAnimation>
@@ -215,25 +216,26 @@ const Header = () => {
           </div>
 
           <div className="flex items-center justify-center space-x-4 md:hidden">
-            {isAuthenticated && userRole === "student" && (
-              <div
-                className="relative hover:cursor-pointer"
-                onClick={() => {
-                  navigate("notifications");
-                  setIsMenuOpen(false);
-                }}
-              >
-                <PopUpAnimation>
-                  {" "}
-                  <Bell className="text-red-50" size={24} />
-                </PopUpAnimation>
-                <OpacityAnimation>
-                  <div className="bg-white px-1 sm:px-2 -top-2 -right-1 sm:-top-3 absolute sm:-right-3 rounded-full text-red-primary text-[11px] sm:text-[15px] font-bold">
-                    {unreadCount}
-                  </div>
-                </OpacityAnimation>
-              </div>
-            )}
+            {(isAuthenticated && userRole === "student") ||
+              (userRole === "teacher" && (
+                <div
+                  className="relative hover:cursor-pointer"
+                  onClick={() => {
+                    navigate("notifications");
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  <PopUpAnimation>
+                    {" "}
+                    <Bell className="text-red-50" size={24} />
+                  </PopUpAnimation>
+                  <OpacityAnimation>
+                    <div className="bg-white px-1 sm:px-2 -top-2 -right-1 sm:-top-3 absolute sm:-right-3 rounded-full text-red-primary text-[11px] sm:text-[15px] font-bold">
+                      {unreadCount}
+                    </div>
+                  </OpacityAnimation>
+                </div>
+              ))}
 
             <PopUpAnimation>
               <button
