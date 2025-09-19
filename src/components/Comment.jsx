@@ -71,7 +71,10 @@ const Comment = ({ comment, depth = 0, onReply }) => {
       <div className="flex gap-3  px-2 py-1 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-gray-200 transition-all duration-200">
         <div className="flex-shrink-0">
           <img
-            src={comment.photo}
+            src={
+              comment?.photo ||
+              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+            }
             className="w-10 h-10 rounded-full object-cover ring-2 ring-gray-50 hover:ring-gray-200 transition-all"
             alt="profile"
           />
@@ -80,12 +83,16 @@ const Comment = ({ comment, depth = 0, onReply }) => {
         {/* Comment Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center">
-            <span className="font-semibold text-gray-900 text-sm">
+            <span className="font-semibold text-gray-900 text-sm mr-1">
               {comment.author}
             </span>
-            {comment.role && (
+            {comment.userRole === "teacher" || comment.userRole === "admin" ? (
               <span className="px-2 py-0.5 bg-gradient-to-r from-red-50 to-pink-50 text-red-700 text-[12px] font-medium rounded-full border border-red-100">
-                {comment.role}
+                {comment.userRole && comment.userRole.toUpperCase()}
+              </span>
+            ) : (
+              <span className="px-2 py-0.5 bg-gradient-to-r from-red-50 to-pink-50 text-red-700 text-[12px] font-medium rounded-full border border-red-100">
+                {comment.department}
               </span>
             )}
           </div>
@@ -198,7 +205,8 @@ const Comment = ({ comment, depth = 0, onReply }) => {
                 author: reply.user
                   ? `${reply.user.firstName || ""} ${reply.user.lastName || ""}`
                   : reply.author || "Unknown",
-                role: reply.user?.course || reply.role || "",
+                department: reply.user?.course || reply.role || "",
+                userRole: comment.user?.role || "",
                 text: reply.text,
                 replies: reply.replies || [],
                 date: reply.updatedAt,

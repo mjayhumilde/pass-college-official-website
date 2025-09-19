@@ -15,6 +15,8 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
   const { fetchCommentsByPost, commentsByPost, loading, createComment } =
     useCommentStore();
 
+  console.log(commentsByPost);
+
   const {
     likesByPost,
     fetchLikes,
@@ -272,7 +274,8 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
                       userId: comment.user._id,
                       photo: comment.user.photo,
                       author: `${comment.user?.firstName} ${comment.user?.lastName}`,
-                      role: comment.user?.course || "",
+                      department: comment.user?.course || "",
+                      userRole: comment.user?.role || "",
                       text: comment.text,
                       replies: comment.replies || [],
                       date: comment.updatedAt,
