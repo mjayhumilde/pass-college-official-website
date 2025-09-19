@@ -86,7 +86,9 @@ const Comment = ({ comment, depth = 0, onReply }) => {
             <span className="font-semibold text-gray-900 text-sm mr-1">
               {comment.author}
             </span>
-            {comment.userRole === "teacher" || comment.userRole === "admin" ? (
+            {comment.userRole === "teacher" ||
+            comment.userRole === "admin" ||
+            comment.userRole === "registrar" ? (
               <span className="px-2 py-0.5 bg-gradient-to-r from-red-50 to-pink-50 text-red-700 text-[12px] font-medium rounded-full border border-red-100">
                 {comment.userRole && comment.userRole.toUpperCase()}
               </span>

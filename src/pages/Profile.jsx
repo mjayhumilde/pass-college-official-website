@@ -4,8 +4,7 @@ import useAuthStore from "../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
-  const { logout, isAuthenticated, user, updateMe, updateCurrentUserPassword } =
-    useAuthStore();
+  const { logout, user, updateMe, updateCurrentUserPassword } = useAuthStore();
   const navigate = useNavigate();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -31,7 +30,6 @@ const Profile = () => {
     : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
 
   useEffect(() => {
-    // Update userData state whenever the user in the store is updated
     setUserData({
       firstName: user.firstName,
       lastName: user.lastName,
@@ -39,7 +37,7 @@ const Profile = () => {
       course: user.course,
       photo: user.photo,
     });
-  }, [user]); // Dependency on 'user' will trigger when user changes in the store
+  }, [user]);
 
   // Handle save changes and update user
   const handleSaveChanges = async () => {
@@ -61,7 +59,6 @@ const Profile = () => {
     setError("");
     setSuccessMessage("");
 
-    // Basic form validation
     if (!currentPassword || !newPassword || !confirmPassword) {
       setError("All fields are required.");
       return;
@@ -88,8 +85,8 @@ const Profile = () => {
 
       if (response) {
         setSuccessMessage("Password updated successfully.");
-        logout(); // Assuming `logout()` is defined elsewhere
-        navigate("/login"); // Assuming `navigate()` is from react-router
+        logout();
+        navigate("/login");
       } else {
         setError("Failed to update password.");
       }
@@ -280,11 +277,7 @@ const Profile = () => {
                           Role
                         </p>
                         <p className="font-bold text-gray-900">
-                          {isAuthenticated && user.role === "student"
-                            ? user.role
-                            : isAuthenticated && user.role === "teacher"
-                            ? "Teacher"
-                            : "Admin"}
+                          {user.role.toUpperCase() || ""}
                         </p>
                       </div>
                     </div>

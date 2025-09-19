@@ -66,7 +66,7 @@ const Events = () => {
         </h2>
       </div>
 
-      {isAuthenticated && (userRole === "admin" || userRole === "teacher") ? (
+      {isAuthenticated && (userRole === "admin" || userRole === "registrar") ? (
         <div className="container flex justify-end mx-auto mt-5 mb-10">
           <CreatePostPopup />
         </div>

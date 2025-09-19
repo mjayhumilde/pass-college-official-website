@@ -78,7 +78,7 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
     >
       <div id={`news-${post.id}`} className="bg-gray">
         {isAuthenticated &&
-          (userRole === "admin" || userRole === "teacher") && (
+          (userRole === "admin" || userRole === "registrar") && (
             <div className="flex items-center justify-end p-1 gap-1">
               <EditComponent post={post} itemType={label} />
               <DeleteIcon id={post._id} itemType={label} />

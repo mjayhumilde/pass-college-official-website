@@ -33,7 +33,7 @@ const Uniform = () => {
         {/* <div className="w-55 border-b-2  border-[rgb(255,207,80)] mx-auto mt-2"></div> */}
       </div>
 
-      {isAuthenticated && (userRole === "admin" || userRole === "teacher") ? (
+      {isAuthenticated && (userRole === "admin" || userRole === "registrar") ? (
         <div className="container flex justify-end mx-auto mt-5 mb-10">
           <CreatePostPopup />
         </div>

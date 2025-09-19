@@ -47,7 +47,7 @@ const EventCard = ({ event }) => {
 
           {/* Admin / Teacher Controls */}
           <div className="absolute bottom-0 right-2">
-            {(userRole === "admin" || userRole === "teacher") &&
+            {(userRole === "admin" || userRole === "registrar") &&
               isAuthenticated && (
                 <div className="flex items-center justify-end p-1 gap-1">
                   <EditComponent post={event} />
