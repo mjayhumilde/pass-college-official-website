@@ -206,7 +206,7 @@ const Comment = ({ comment, depth = 0, onReply }) => {
                   ? `${reply.user.firstName || ""} ${reply.user.lastName || ""}`
                   : reply.author || "Unknown",
                 department: reply.user?.course || reply.role || "",
-                userRole: comment.user?.role || "",
+                userRole: reply.user?.role || "",
                 text: reply.text,
                 replies: reply.replies || [],
                 date: reply.updatedAt,
