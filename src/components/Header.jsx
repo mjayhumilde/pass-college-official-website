@@ -86,9 +86,16 @@ const Header = () => {
       return itemName !== "ReqDocs" && itemName !== "Transaction Report";
     } else if (userRole === "student") {
       // For regular users, show ReqDocs but hide Accounts and Request
-      return !["Accounts", "Request", "Transaction Report"].includes(itemName);
+      return ![
+        "Accounts",
+        "Document Request",
+        "Transaction Report",
+        "Account Request",
+      ].includes(itemName);
     } else if (userRole === "admin") {
-      return !["ReqDocs", "Request"].includes(itemName);
+      return !["ReqDocs", "Document Request", "Account Request"].includes(
+        itemName
+      );
     } else {
       // For other roles (admin, etc.)
       return true; // Show all menu items
@@ -112,8 +119,9 @@ const Header = () => {
     { name: "ReqDocs", link: "/reqdocs" },
     { name: "Careers", link: "/careers" },
     { name: "Accounts", link: "/accounts" },
-    { name: "Request", link: "/request" },
+    { name: "Document Request", link: "/request" },
     { name: "Transaction Report", link: "/transaction-report" },
+    { name: "Account Request", link: "/account-request" },
   ];
 
   // Filter menu items based on authentication and user role
