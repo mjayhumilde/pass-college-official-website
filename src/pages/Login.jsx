@@ -40,11 +40,11 @@ export default function Login() {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0); // Scroll to the top on mount
+    window.scrollTo(0, 0);
   }, []);
 
   return (
-    <div className="flex flex-col justify-center px-4 py-3 bg-gray sm:px-6 lg:px-8">
+    <div className="flex min-h-screen flex-col justify-center px-4 bg-gray sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex items-center justify-center mx-auto mb-1 rounded-full ">
           <img src={logo} alt="" className="w-2/5" />
@@ -161,14 +161,17 @@ export default function Login() {
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-2 text-gray-500 bg-white">
-                  New student?
+                  New student? / No account?
                 </span>
               </div>
             </div>
 
             <div className="mt-6 text-center">
-              <p href="#" className="text-sm font-medium text-red-950">
-                Go to school registrar office
+              <p
+                onClick={() => navigate("create-account-request")}
+                className="text-sm font-medium text-red-950 hover:underline hover:cursor-pointer"
+              >
+                request for an account creation
               </p>
             </div>
           </div>

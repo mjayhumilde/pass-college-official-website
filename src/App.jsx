@@ -17,6 +17,7 @@ import Accounts from "./pages/Accounts";
 import Request from "./pages/Request";
 import TransactionReport from "./pages/TransactionReport";
 import AccountRequest from "./pages/AccountRequest";
+import CreateAccountRequest from "./pages/CreateAccountRequest";
 
 const App = () => {
   return (
@@ -38,6 +39,10 @@ const App = () => {
           <Route path="profile" element={<Profile />} />
           <Route path="notifications" element={<Notification />} />
           <Route path="login" element={<Login />} />
+          <Route
+            path="login/create-account-request"
+            element={<CreateAccountRequest />}
+          />
           <Route path="accounts" element={<Accounts />} />
           <Route path="request" element={<Request />} />
           <Route path="transaction-report" element={<TransactionReport />} />
