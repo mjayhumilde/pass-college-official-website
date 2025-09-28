@@ -91,11 +91,15 @@ const Header = () => {
         "Document Request",
         "Transaction Report",
         "Account Request",
+        "AI Knowledge",
       ].includes(itemName);
     } else if (userRole === "admin") {
-      return !["ReqDocs", "Document Request", "Account Request"].includes(
-        itemName
-      );
+      return ![
+        "ReqDocs",
+        "Document Request",
+        // "Account Request",
+        // "AI Knowledge",
+      ].includes(itemName);
     } else {
       // For other roles (admin, etc.)
       return true; // Show all menu items
@@ -122,6 +126,7 @@ const Header = () => {
     { name: "Document Request", link: "/request" },
     { name: "Transaction Report", link: "/transaction-report" },
     { name: "Account Request", link: "/account-request" },
+    { name: "AI Knowledge", link: "/ai-knowledge" },
   ];
 
   // Filter menu items based on authentication and user role
