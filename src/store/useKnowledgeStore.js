@@ -15,7 +15,7 @@ const useKnowledgeStore = create(
         set({ loading: true, error: null });
         try {
           const res = await api.get("/api/v1/knowledge");
-          set({ knowledges: res.data.data, loading: false });
+          set({ knowledges: res.data.data.doc || [], loading: false });
         } catch (err) {
           console.error("Error fetching knowledge:", err);
           set({
@@ -30,8 +30,9 @@ const useKnowledgeStore = create(
         set({ error: null });
         try {
           const res = await api.post("/api/v1/knowledge", { question, answer });
+          const currentKnowledges = get().knowledges || [];
           set({
-            knowledges: [...get().knowledges, res.data.data],
+            knowledges: [...currentKnowledges, res.data.data],
           });
         } catch (err) {
           console.error("Error creating knowledge:", err);
@@ -46,8 +47,9 @@ const useKnowledgeStore = create(
         set({ error: null });
         try {
           const res = await api.patch(`/api/v1/knowledge/${id}`, updates);
+          const currentKnowledges = get().knowledges || [];
           set({
-            knowledges: get().knowledges.map((k) =>
+            knowledges: currentKnowledges.map((k) =>
               k._id === id ? res.data.data : k
             ),
           });
@@ -64,8 +66,9 @@ const useKnowledgeStore = create(
         set({ error: null });
         try {
           await api.delete(`/api/v1/knowledge/${id}`);
+          const currentKnowledges = get().knowledges || [];
           set({
-            knowledges: get().knowledges.filter((k) => k._id !== id),
+            knowledges: currentKnowledges.filter((k) => k._id !== id),
           });
         } catch (err) {
           console.error("Error deleting knowledge:", err);
