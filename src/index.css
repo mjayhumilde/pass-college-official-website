@@ -44,9 +44,9 @@ rgb(255 207 80)
     background-color: rgb(217 217 217);
   }
 
-  /* .text-red-primary {
+  .text-red-primary {
     color: var(--color-primary);
-  } */
+  }
   .text-white {
     color: var(--color-background);
   }
@@ -74,9 +74,9 @@ rgb(255 207 80)
     background-color: rgb(100 0 0);
   }
 
-  /* .border-red-primary {
+  .border-red-primary {
     border-color: var(--color-primary);
-  } */
+  }
 
   .btn-primary-white {
     background-color: var(--color-primary);
