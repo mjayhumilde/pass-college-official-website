@@ -20,7 +20,9 @@ const Announce = () => {
   return (
     <main>
       <HeroBgSection
-        img={"https://up.phinma.edu.ph/wp-content/uploads/2023/04/news.jpg"}
+        img={
+          "https://media.istockphoto.com/id/2189054299/photo/red-and-white-megaphone-on-a-pure-red-background-illustration-of-the-concept-of-freedom-of.jpg?s=612x612&w=0&k=20&c=7U1LEKToRnI5GDGRxv4xRYsD1Bzg8380OKLUhzAdplE="
+        }
         label={"Announcements"}
       />
 

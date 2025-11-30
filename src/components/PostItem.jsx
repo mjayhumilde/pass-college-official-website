@@ -85,15 +85,15 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
             </div>
           )}
         <div className="flex justify-between p-2 py-2 md:px-10">
-          <h3 className="text-xl font-bold text-red-primary">{label}!!</h3>
+          <h4 className="font-bold text-red-primary">{label}</h4>
           <p className="font-semibold text-red-primary">
-            {formatDate(post.date)}
+            {formatDate(post.date).toUpperCase()}
           </p>
         </div>
-        <div className="text-3xl font-bold text-center text-red-primary">
+        <div className="text-3xl font-bold text-center text-red-primary pb-3">
           {post.title}
         </div>
-        <div className="container p-2 px-5 pt-0 pb-2 mx-auto text-red-950 md:px-13">
+        <div className="container flex justify-center p-2 px-5 pt-0 pb-2 mx-auto text-red-950 md:px-13 whitespace-pre-wrap">
           {post.description}
         </div>
       </div>
