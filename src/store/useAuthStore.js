@@ -166,6 +166,77 @@ const useAuthStore = create(
           };
         }
       },
+
+      // Forgot Password function
+      forgotPassword: async (email) => {
+        try {
+          const response = await api.post("/api/v1/user/forgotPassword", {
+            email,
+          });
+
+          if (response.data.status === "success") {
+            return {
+              success: true,
+              message:
+                response.data.message ||
+                "Password reset link sent to your email",
+            };
+          } else {
+            throw new Error(
+              response.data.message || "Failed to send reset email"
+            );
+          }
+        } catch (error) {
+          console.error("Forgot password failed:", error);
+          return {
+            success: false,
+            error: error.response
+              ? error.response.data.message
+              : "An error occurred while sending reset email. Please try again.",
+          };
+        }
+      },
+
+      // Reset Password function
+      resetPassword: async (token, password, passwordConfirm) => {
+        try {
+          if (password !== passwordConfirm) {
+            throw new Error("Passwords do not match");
+          }
+
+          if (password.length < 8) {
+            throw new Error("Password must be at least 8 characters long");
+          }
+
+          const response = await api.patch(
+            `/api/v1/user/resetPassword/${token}`,
+            {
+              password,
+              passwordConfirm,
+            }
+          );
+
+          if (response.data.status === "success") {
+            return {
+              success: true,
+              message: "Password reset successful",
+            };
+          } else {
+            throw new Error(
+              response.data.message || "Failed to reset password"
+            );
+          }
+        } catch (error) {
+          console.error("Reset password failed:", error);
+          return {
+            success: false,
+            error: error.response
+              ? error.response.data.message
+              : error.message ||
+                "An error occurred while resetting password. Please try again.",
+          };
+        }
+      },
     }),
     {
       name: "auth-store",

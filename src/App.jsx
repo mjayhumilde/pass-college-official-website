@@ -19,6 +19,7 @@ import TransactionReport from "./pages/TransactionReport";
 import AccountRequest from "./pages/AccountRequest";
 import CreateAccountRequest from "./pages/CreateAccountRequest";
 import KnowledgeManagement from "./pages/AiKnowledge";
+import ResetPassword from "./pages/ResetPassword";
 
 const App = () => {
   return (
@@ -44,6 +45,7 @@ const App = () => {
             path="login/create-account-request"
             element={<CreateAccountRequest />}
           />
+          <Route path="/resetPassword/:token" element={<ResetPassword />} />
           <Route path="ai-knowledge" element={<KnowledgeManagement />} />
           <Route path="accounts" element={<Accounts />} />
           <Route path="request" element={<Request />} />
