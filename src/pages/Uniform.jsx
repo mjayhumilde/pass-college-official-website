@@ -5,10 +5,13 @@ import useAuthStore from "../store/useAuthStore";
 import usePostStore from "../store/usePostStore";
 
 import { useEffect } from "react";
+import { useScrollToPost } from "../hook/useScrollPost";
 
 const Uniform = () => {
   const { userRole, isAuthenticated } = useAuthStore();
   const { uniforms, getAllPost } = usePostStore();
+
+  useScrollToPost();
 
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to the top on mount

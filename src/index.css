@@ -118,6 +118,50 @@ body {
 h1 {
   line-height: 1.1;
 }
+
+/* Highlight animation for posts navigated from notifications */
+.highlight-post {
+  animation: highlight 2s ease-in-out;
+  position: relative;
+}
+
+@keyframes highlight {
+  0% {
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+  }
+  25% {
+    box-shadow: 0 0 0 8px rgba(220, 38, 38, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 16px rgba(220, 38, 38, 0.2);
+  }
+  75% {
+    box-shadow: 0 0 0 8px rgba(220, 38, 38, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+  }
+}
+
+/* Ensure scroll position accounts for fixed headers */
+.scroll-mt-20 {
+  scroll-margin-top: 5rem;
+}
+
+/* Alternative highlight effect with background color */
+@keyframes highlight-bg {
+  0%,
+  100% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: rgba(220, 38, 38, 0.1);
+  }
+}
+
+.highlight-post-bg {
+  animation: highlight-bg 2s ease-in-out;
+}
 /* 
 button {
   border-radius: 8px;

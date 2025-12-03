@@ -15,8 +15,6 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
   const { fetchCommentsByPost, commentsByPost, loading, createComment } =
     useCommentStore();
 
-  console.log(commentsByPost);
-
   const {
     likesByPost,
     fetchLikes,
@@ -73,10 +71,10 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
 
   return (
     <div
-      key={post.id}
-      className="overflow-hidden rounded-lg shadow-lg bg-red-primary my-5"
+      id={`post-${post._id}`}
+      className="overflow-hidden rounded-lg shadow-lg bg-red-primary my-5 scroll-mt-20"
     >
-      <div id={`news-${post.id}`} className="bg-gray">
+      <div className="bg-gray">
         {isAuthenticated &&
           (userRole === "admin" || userRole === "registrar") && (
             <div className="flex items-center justify-end p-1 gap-1">

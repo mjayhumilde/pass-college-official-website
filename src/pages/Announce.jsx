@@ -4,10 +4,13 @@ import HeroBgSection from "../components/HeroBgSection";
 import PostLayout from "../components/PostLayout";
 import useAuthStore from "../store/useAuthStore";
 import usePostStore from "../store/usePostStore";
+import { useScrollToPost } from "../hook/useScrollPost";
 
 const Announce = () => {
   const { userRole, isAuthenticated } = useAuthStore();
   const { announcements, getAllPost } = usePostStore();
+
+  useScrollToPost();
 
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to the top on mount

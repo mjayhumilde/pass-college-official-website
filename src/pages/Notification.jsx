@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useNotificationStore from "../store/useNotificationStore";
 import {
   Bell,
@@ -13,6 +14,7 @@ import {
 } from "lucide-react";
 
 export default function NotificationPage() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [notificationsPerPage] = useState(5);
@@ -72,6 +74,43 @@ export default function NotificationPage() {
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "short", day: "numeric" };
     return new Date(dateString).toLocaleDateString("en-US", options);
+  };
+
+  // navigate to related post
+  const handleNotificationClick = async (notification) => {
+    // Mark as read if unread
+    if (notification.notifStatus === "unread") {
+      await markAsRead(notification._id);
+    }
+
+    // Navigate based on post type
+    const postId = notification.relatedPost || notification.relatedDocument;
+
+    if (!postId) {
+      console.warn("No related post/document found for this notification");
+      return;
+    }
+
+    switch (notification.postType) {
+      case "announcement":
+        navigate(`/announcements?postId=${postId}`);
+        break;
+      case "careers":
+        navigate(`/careers?postId=${postId}`);
+        break;
+      case "news":
+      case "events":
+        navigate(`/news-events?postId=${postId}`);
+        break;
+      case "uniforms-update":
+        navigate(`/uniforms?postId=${postId}`);
+        break;
+      case "document":
+        navigate(`/reqdocs?docId=${postId}`);
+        break;
+      default:
+        console.warn("Unknown post type:", notification.postType);
+    }
   };
 
   const tabs = [
@@ -141,11 +180,14 @@ export default function NotificationPage() {
                   }`}
                 >
                   <div className="flex items-start justify-between">
-                    <div className="flex items-start space-x-3 sm:space-x-4">
+                    <div
+                      className="flex items-start space-x-3 sm:space-x-4 flex-1 cursor-pointer hover:opacity-80"
+                      onClick={() => handleNotificationClick(notification)}
+                    >
                       <div className="flex-shrink-0 p-2 bg-red-100 rounded-full">
                         {getIcon(notification.postType)}
                       </div>
-                      <div>
+                      <div className="flex-1">
                         <div className="flex items-center">
                           <h3 className="font-medium text-gray-900">
                             {notification.title}
@@ -166,17 +208,23 @@ export default function NotificationPage() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex space-x-2">
+                    <div className="flex space-x-2 ml-2">
                       {notification.notifStatus === "unread" && (
                         <button
-                          onClick={() => markAsRead(notification._id)}
-                          className="text-xs text-red-800 hover:text-red-900 hover:cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            markAsRead(notification._id);
+                          }}
+                          className="text-xs text-red-800 hover:text-red-900 hover:cursor-pointer whitespace-nowrap"
                         >
                           Mark as read
                         </button>
                       )}
                       <button
-                        onClick={() => deleteNotification(notification._id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deleteNotification(notification._id);
+                        }}
                         className="text-red-primary hover:text-red-800 hover:cursor-pointer"
                       >
                         <X size={16} />
@@ -195,7 +243,27 @@ export default function NotificationPage() {
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex items-center justify-between px-4 py-4 border-t border-gray-200">
-              {/* ... keep your pagination code unchanged */}
+              <button
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <ChevronLeft size={16} className="mr-1" />
+                Previous
+              </button>
+              <span className="text-sm text-gray-700">
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
+                disabled={currentPage === totalPages}
+                className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Next
+                <ChevronRight size={16} className="ml-1" />
+              </button>
             </div>
           )}
         </div>

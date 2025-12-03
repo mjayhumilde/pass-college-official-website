@@ -10,6 +10,7 @@ import { useLocation } from "react-router-dom";
 import { MegaphoneOff } from "lucide-react";
 import NewsletterSubscription from "../components/NewsLetterSubscription";
 import EmptySection from "../components/EmptySection";
+import { useScrollToPost } from "../hook/useScrollPost";
 
 const Events = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -18,6 +19,8 @@ const Events = () => {
   const { getAllPost, news, events } = usePostStore();
 
   const location = useLocation();
+
+  useScrollToPost();
 
   useEffect(() => {
     getAllPost();
