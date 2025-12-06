@@ -504,9 +504,7 @@ const CreateAccountRequest = () => {
                   onChange={handleInputChange}
                   className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm bg-white"
                 >
-                  <option value="none" disabled>
-                    Select your course
-                  </option>
+                  <option value="none">Select your course</option>
                   {/* <option value="none">NOT STUDENT</option> */}
                   <option value="BSCS">BSCS</option>
                   <option value="BSA">BSA</option>
