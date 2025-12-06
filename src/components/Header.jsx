@@ -78,14 +78,17 @@ const Header = () => {
 
   // Helper function to determine if a menu item should be visible based on auth status and role
   const shouldShowMenuItem = (itemName) => {
-    if (!isAuthenticated || userRole === null) {
-      // When not authenticated, only show Home, About, News & Events, and Careers
+    if (!isAuthenticated || !userRole) {
       return ["Home", "About", "News & Events", "Careers"].includes(itemName);
-    } else if (userRole === "registrar") {
-      // For teachers, show Accounts and Request but hide ReqDocs and Transaction Report
-      return itemName !== "ReqDocs" && itemName !== "Transaction Report";
-    } else if (userRole === "student") {
-      // For regular users, show ReqDocs but hide Accounts and Request
+    }
+
+    // REGISTRAR
+    if (userRole === "registrar") {
+      return !["ReqDocs", "Transaction Report"].includes(itemName);
+    }
+
+    // STUDENT
+    if (userRole === "student") {
       return ![
         "Accounts",
         "Document Request",
@@ -93,17 +96,26 @@ const Header = () => {
         "Account Request",
         "AI Knowledge",
       ].includes(itemName);
-    } else if (userRole === "admin") {
-      return ![
-        "ReqDocs",
-        "Document Request",
-        // "Account Request",
-        // "AI Knowledge",
-      ].includes(itemName);
-    } else {
-      // For other roles (admin, etc.)
-      return true; // Show all menu items
     }
+
+    // TEACHER same as student, but hide ReqDocs
+    if (userRole === "teacher") {
+      return ![
+        "ReqDocs", // teacher should NOT see this
+        "Accounts",
+        "Document Request",
+        "Transaction Report",
+        "Account Request",
+        "AI Knowledge",
+      ].includes(itemName);
+    }
+
+    // ADMIN
+    if (userRole === "admin") {
+      return !["ReqDocs", "Document Request"].includes(itemName);
+    }
+
+    return true;
   };
 
   const menuItems = [
