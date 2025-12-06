@@ -25,6 +25,13 @@ export default function Accounts() {
   const [accountToDelete, setAccountToDelete] = useState(null);
   const [formError, setFormError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+
+  // Deactivated accounts search
+  const [deactivatedSearchTerm, setDeactivatedSearchTerm] = useState("");
+  const [deactivatedCourseFilter, setDeactivatedCourseFilter] = useState("");
+  const [filteredDeactivatedAccounts, setFilteredDeactivatedAccounts] =
+    useState([]);
+
   const [newAccount, setNewAccount] = useState({
     firstName: "",
     lastName: "",
@@ -33,6 +40,7 @@ export default function Accounts() {
     passwordConfirm: "",
     role: "student",
     course: "BSCS",
+    studentNumber: "",
   });
 
   const itemsPerPage = 5;
@@ -60,7 +68,7 @@ export default function Accounts() {
   ];
   const AVAILABLE_ROLES = ["student", "teacher", "admin", "registrar"];
 
-  const filteredDeactivatedUsers =
+  const baseDeactivatedUsers =
     userRole === "registrar"
       ? deactivatedUsers.filter((u) => u.role === "student")
       : deactivatedUsers;
@@ -82,9 +90,11 @@ export default function Accounts() {
     results = results.filter((account) => {
       const fullName = `${account.firstName} ${account.lastName}`.toLowerCase();
       const emailMatch = account.email.toLowerCase();
+      const studentNumberMatch = account.studentNumber?.toLowerCase() || "";
       const searchMatch =
         fullName.includes(searchTerm.toLowerCase()) ||
-        emailMatch.includes(searchTerm.toLowerCase());
+        emailMatch.includes(searchTerm.toLowerCase()) ||
+        studentNumberMatch.includes(searchTerm.toLowerCase());
       const courseMatch =
         courseFilter === "" || account.course === courseFilter;
       const roleMatch = roleFilter === "" || account.role === roleFilter;
@@ -95,6 +105,28 @@ export default function Accounts() {
     setFilteredAccounts(results);
     setCurrentPage(1);
   }, [searchTerm, courseFilter, roleFilter, users, userRole]);
+
+  // Filter deactivated accounts
+  useEffect(() => {
+    let results = baseDeactivatedUsers;
+
+    results = results.filter((account) => {
+      const fullName = `${account.firstName} ${account.lastName}`.toLowerCase();
+      const emailMatch = account.email.toLowerCase();
+      const studentNumberMatch = account.studentNumber?.toLowerCase() || "";
+      const searchMatch =
+        fullName.includes(deactivatedSearchTerm.toLowerCase()) ||
+        emailMatch.includes(deactivatedSearchTerm.toLowerCase()) ||
+        studentNumberMatch.includes(deactivatedSearchTerm.toLowerCase());
+      const courseMatch =
+        deactivatedCourseFilter === "" ||
+        account.course === deactivatedCourseFilter;
+
+      return searchMatch && courseMatch;
+    });
+
+    setFilteredDeactivatedAccounts(results);
+  }, [deactivatedSearchTerm, deactivatedCourseFilter, baseDeactivatedUsers]);
 
   const totalPages = Math.ceil(filteredAccounts.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -131,9 +163,16 @@ export default function Accounts() {
       return false;
     }
 
-    if (newAccount.role === "student" && !newAccount.course) {
-      setFormError("Course is required for students");
-      return false;
+    if (newAccount.role === "student") {
+      if (!newAccount.studentNumber.trim()) {
+        setFormError("Student Number is required for students");
+        return false;
+      }
+
+      if (!newAccount.course) {
+        setFormError("Course is required for students");
+        return false;
+      }
     }
 
     if (!newAccount.password) {
@@ -174,6 +213,7 @@ export default function Accounts() {
 
       if (newAccount.role === "student") {
         userData.course = newAccount.course;
+        userData.studentNumber = newAccount.studentNumber.trim();
       }
 
       await createUser(userData);
@@ -190,6 +230,7 @@ export default function Accounts() {
         passwordConfirm: "",
         role: "student",
         course: "BSCS",
+        studentNumber: "",
       });
 
       setTimeout(() => setSuccessMessage(""), 5000);
@@ -233,6 +274,7 @@ export default function Accounts() {
       ...newAccount,
       role,
       course: role === "student" ? "BSCS" : "",
+      studentNumber: role === "student" ? newAccount.studentNumber : "",
     });
   };
 
@@ -248,7 +290,7 @@ export default function Accounts() {
           className="flex items-center gap-2 px-4 py-2 hover:cursor-pointer text-sm font-medium transition border rounded-full text-red-primary border-red-primary hover:bg-red-50"
         >
           <UserCheck className="w-4 h-4" />
-          <span>View Deactivated ({filteredDeactivatedUsers.length})</span>
+          <span>View Deactivated ({baseDeactivatedUsers.length})</span>
         </button>
       </div>
 
@@ -275,7 +317,7 @@ export default function Accounts() {
             <input
               type="text"
               className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
-              placeholder="Search by name or email..."
+              placeholder="Search by name, email, or student number..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -363,6 +405,9 @@ export default function Accounts() {
                   <th className="hidden px-2 py-2 text-xs font-medium tracking-wider text-left text-gray-500 uppercase sm:px-6 sm:py-3 md:table-cell">
                     Department
                   </th>
+                  <th className="hidden px-2 py-2 text-xs font-medium tracking-wider text-left text-gray-500 uppercase sm:px-6 sm:py-3 lg:table-cell">
+                    Student ID
+                  </th>
                   <th className="px-2 py-2 text-xs font-medium tracking-wider text-left text-gray-500 uppercase sm:px-6 sm:py-3">
                     Actions
                   </th>
@@ -398,6 +443,9 @@ export default function Accounts() {
                           ? account.course
                           : "N/A"}
                       </td>
+                      <td className="hidden px-2 py-2 text-xs text-gray-500 sm:px-6 sm:py-4 whitespace-nowrap sm:text-sm lg:table-cell">
+                        {account.studentNumber || "N/A"}
+                      </td>
                       <td className="px-2 py-2 text-xs text-gray-500 sm:px-6 sm:py-4 whitespace-nowrap sm:text-sm">
                         <button
                           className="p-1 transition rounded-full bg-red-primary text-red-50 hover:bg-red-800 hover:cursor-pointer"
@@ -415,7 +463,7 @@ export default function Accounts() {
                 ) : (
                   <tr>
                     <td
-                      colSpan="5"
+                      colSpan="6"
                       className="px-2 py-8 text-xs text-center text-gray-500 sm:px-6 sm:py-8 sm:text-sm"
                     >
                       No accounts found matching your search criteria.
@@ -571,12 +619,10 @@ export default function Accounts() {
                   value={newAccount.role}
                   onChange={(e) => handleRoleChange(e.target.value)}
                 >
-                  {/* Registrar can only create students */}
                   {userRole === "registrar" && (
                     <option value="student">Student</option>
                   )}
 
-                  {/* Admin can create all roles */}
                   {userRole === "admin" && (
                     <>
                       <option value="student">Student</option>
@@ -589,27 +635,50 @@ export default function Accounts() {
               </div>
 
               {newAccount.role === "student" && (
-                <div>
-                  <label className="block mb-1 text-sm font-medium text-gray-700">
-                    Department <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    className="block w-full py-2 pl-3 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-2 focus:ring-red-800 focus:border-red-800 sm:text-sm hover:cursor-pointer"
-                    value={newAccount.course}
-                    onChange={(e) =>
-                      setNewAccount({ ...newAccount, course: e.target.value })
-                    }
-                  >
-                    {AVAILABLE_COURSES.map((course) => (
-                      <option key={course} value={course}>
-                        {course}
-                      </option>
-                    ))}
-                  </select>
-                  <p className="mt-1 text-xs text-gray-500">
-                    Required for student accounts
-                  </p>
-                </div>
+                <>
+                  <div>
+                    <label className="block mb-1 text-sm font-medium text-gray-700">
+                      Student Number <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      className="block w-full py-2 pl-3 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-2 focus:ring-red-800 focus:border-red-800 sm:text-sm"
+                      placeholder="e.g., 2024-12345"
+                      value={newAccount.studentNumber}
+                      onChange={(e) =>
+                        setNewAccount({
+                          ...newAccount,
+                          studentNumber: e.target.value,
+                        })
+                      }
+                    />
+                    <p className="mt-1 text-xs text-gray-500">
+                      Required for student accounts
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block mb-1 text-sm font-medium text-gray-700">
+                      Department <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      className="block w-full py-2 pl-3 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-2 focus:ring-red-800 focus:border-red-800 sm:text-sm hover:cursor-pointer"
+                      value={newAccount.course}
+                      onChange={(e) =>
+                        setNewAccount({ ...newAccount, course: e.target.value })
+                      }
+                    >
+                      {AVAILABLE_COURSES.map((course) => (
+                        <option key={course} value={course}>
+                          {course}
+                        </option>
+                      ))}
+                    </select>
+                    <p className="mt-1 text-xs text-gray-500">
+                      Required for student accounts
+                    </p>
+                  </div>
+                </>
               )}
 
               <div>
@@ -662,6 +731,7 @@ export default function Accounts() {
                     passwordConfirm: "",
                     role: "student",
                     course: "BSCS",
+                    studentNumber: "",
                   });
                 }}
                 className="px-4 py-2 font-bold border rounded-full text-red-primary hover:bg-red-100 border-red-primary hover:cursor-pointer transition"
@@ -721,23 +791,54 @@ export default function Accounts() {
 
       {isDeactivatedModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-4xl p-4 mx-4 overflow-y-auto bg-white rounded-lg sm:p-6 max-h-[90vh]">
+          <div className="w-full max-w-5xl p-4 mx-4 overflow-y-auto bg-white rounded-lg sm:p-6 max-h-[90vh]">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold sm:text-xl text-red-primary">
-                Deactivated Accounts
+                Deactivated Accounts ({baseDeactivatedUsers.length})
               </h2>
               <button
-                onClick={() => setIsDeactivatedModalOpen(false)}
+                onClick={() => {
+                  setIsDeactivatedModalOpen(false);
+                  setDeactivatedSearchTerm("");
+                  setDeactivatedCourseFilter("");
+                }}
                 className="text-2xl text-gray-500 hover:text-red-800 hover:cursor-pointer"
               >
                 ×
               </button>
             </div>
 
-            {(userRole === "registrar"
-              ? deactivatedUsers.filter((u) => u.role === "student")
-              : deactivatedUsers
-            ).length > 0 ? (
+            <div className="flex flex-col gap-3 mb-4 sm:flex-row">
+              <div className="relative flex-grow">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <Search className="w-4 h-4 text-gray-400" />
+                </div>
+                <input
+                  type="text"
+                  className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
+                  placeholder="Search by name, email, or student number..."
+                  value={deactivatedSearchTerm}
+                  onChange={(e) => setDeactivatedSearchTerm(e.target.value)}
+                />
+              </div>
+
+              <div className="w-full sm:w-48">
+                <select
+                  value={deactivatedCourseFilter}
+                  onChange={(e) => setDeactivatedCourseFilter(e.target.value)}
+                  className="block w-full py-2 pl-3 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm hover:cursor-pointer text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
+                >
+                  <option value="">All Courses</option>
+                  {AVAILABLE_COURSES.map((course) => (
+                    <option key={course} value={course}>
+                      {course}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {filteredDeactivatedAccounts.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
@@ -751,16 +852,19 @@ export default function Accounts() {
                       <th className="px-4 py-2 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                         Role
                       </th>
+                      <th className="hidden px-4 py-2 text-xs font-medium tracking-wider text-left text-gray-500 uppercase md:table-cell">
+                        Department
+                      </th>
+                      <th className="hidden px-4 py-2 text-xs font-medium tracking-wider text-left text-gray-500 uppercase lg:table-cell">
+                        Student ID
+                      </th>
                       <th className="px-4 py-2 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                         Actions
                       </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {(userRole === "registrar"
-                      ? deactivatedUsers.filter((u) => u.role === "student")
-                      : deactivatedUsers
-                    ).map((account) => (
+                    {filteredDeactivatedAccounts.map((account) => (
                       <tr key={account._id} className="hover:bg-gray-50">
                         <td className="px-4 py-2 text-sm font-medium text-gray-900">
                           {account.firstName} {account.lastName}
@@ -768,8 +872,28 @@ export default function Accounts() {
                         <td className="hidden px-4 py-2 text-sm text-gray-500 sm:table-cell">
                           {account.email}
                         </td>
-                        <td className="px-4 py-2 text-sm text-gray-500 capitalize">
-                          {account.role}
+                        <td className="px-4 py-2 text-sm text-gray-500">
+                          <span
+                            className={`px-2 py-1 text-xs font-semibold rounded-full capitalize ${
+                              account.role === "admin"
+                                ? "bg-purple-100 text-purple-800"
+                                : account.role === "teacher"
+                                ? "bg-blue-100 text-blue-800"
+                                : account.role === "registrar"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-gray-100 text-red-800"
+                            }`}
+                          >
+                            {account.role}
+                          </span>
+                        </td>
+                        <td className="hidden px-4 py-2 text-sm text-gray-500 md:table-cell">
+                          {account.course && account.course !== "none"
+                            ? account.course
+                            : "N/A"}
+                        </td>
+                        <td className="hidden px-4 py-2 text-sm text-gray-500 lg:table-cell">
+                          {account.studentNumber || "N/A"}
                         </td>
                         <td className="px-4 py-2 text-sm text-gray-500">
                           <button
@@ -779,7 +903,7 @@ export default function Accounts() {
                                 `${account.firstName} ${account.lastName}`
                               )
                             }
-                            className="px-3 py-1 text-xs font-semibold hover:cursor-pointer text-green-700 bg-green-100 rounded-full hover:bg-green-200"
+                            className="px-3 py-1 text-xs font-semibold hover:cursor-pointer text-green-700 bg-green-100 rounded-full hover:bg-green-200 transition"
                           >
                             Reactivate
                           </button>
@@ -790,9 +914,13 @@ export default function Accounts() {
                 </table>
               </div>
             ) : (
-              <p className="text-center text-gray-500">
-                No deactivated accounts found.
-              </p>
+              <div className="py-8 text-center">
+                <p className="text-gray-500">
+                  {deactivatedSearchTerm || deactivatedCourseFilter
+                    ? "No deactivated accounts match your search."
+                    : "No deactivated accounts found."}
+                </p>
+              </div>
             )}
           </div>
         </div>
