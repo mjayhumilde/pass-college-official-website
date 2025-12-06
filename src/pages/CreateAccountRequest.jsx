@@ -12,6 +12,7 @@ import {
   CheckCircle,
   Clock,
   XCircle,
+  Hash,
 } from "lucide-react";
 import useRequestAccountStore from "../store/useRequestAccountStore";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +24,7 @@ const CreateAccountRequest = () => {
     email: "",
     course: "",
     role: "student",
+    studentNumber: "",
   });
   const [frontImage, setFrontImage] = useState(null);
   const [backImage, setBackImage] = useState(null);
@@ -62,6 +64,13 @@ const CreateAccountRequest = () => {
       ...prev,
       [name]: value,
     }));
+
+    if (name === "role" && value !== "student") {
+      setFormData((prev) => ({
+        ...prev,
+        studentNumber: "",
+      }));
+    }
   };
 
   const handleImageChange = (e, type) => {
@@ -87,12 +96,22 @@ const CreateAccountRequest = () => {
       return;
     }
 
+    if (formData.role === "student" && !formData.studentNumber.trim()) {
+      alert("Student number is required for student accounts");
+      return;
+    }
+
     const submitData = new FormData();
     submitData.append("firstName", formData.firstName);
     submitData.append("lastName", formData.lastName);
     submitData.append("email", formData.email);
     submitData.append("course", formData.course);
     submitData.append("role", formData.role);
+
+    if (formData.role === "student") {
+      submitData.append("studentNumber", formData.studentNumber);
+    }
+
     submitData.append("front", frontImage);
     submitData.append("back", backImage);
 
@@ -108,6 +127,7 @@ const CreateAccountRequest = () => {
         email: "",
         course: "",
         role: "student",
+        studentNumber: "",
       });
 
       setFrontImage(null);
@@ -422,36 +442,6 @@ const CreateAccountRequest = () => {
 
             <div>
               <label
-                htmlFor="course"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Department
-              </label>
-              <div className="mt-1">
-                <select
-                  id="course"
-                  name="course"
-                  value={formData.course}
-                  onChange={handleInputChange}
-                  className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm bg-white"
-                >
-                  <option value="none" disabled>
-                    Select your course
-                  </option>
-                  <option value="none">NOT STUDENT</option>
-                  <option value="BSCS">BSCS</option>
-                  <option value="BSA">BSA</option>
-                  <option value="BSBA">BSBA</option>
-                  <option value="BSHM">BSHM</option>
-                  <option value="BSTM">BSTM</option>
-                  <option value="BSCRIM">BSCRIM</option>
-                  <option value="BEED">BEED</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label
                 htmlFor="role"
                 className="block text-sm font-medium text-gray-700"
               >
@@ -469,6 +459,62 @@ const CreateAccountRequest = () => {
                   <option value="teacher">Teacher</option>
                   <option value="registrar">Registrar</option>
                   <option value="admin">Admin</option>
+                </select>
+              </div>
+            </div>
+
+            {formData.role === "student" && (
+              <div>
+                <label
+                  htmlFor="studentNumber"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Student Number <span className="text-red-500">*</span>
+                </label>
+                <div className="relative mt-1 rounded-md shadow-sm">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <Hash className="w-5 h-5 text-gray-400" />
+                  </div>
+                  <input
+                    id="studentNumber"
+                    name="studentNumber"
+                    type="text"
+                    required
+                    value={formData.studentNumber}
+                    onChange={handleInputChange}
+                    className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
+                    placeholder="e.g., 2024-1234"
+                  />
+                </div>
+              </div>
+            )}
+
+            <div>
+              <label
+                htmlFor="course"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Department
+              </label>
+              <div className="mt-1">
+                <select
+                  id="course"
+                  name="course"
+                  value={formData.course}
+                  onChange={handleInputChange}
+                  className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm bg-white"
+                >
+                  <option value="none" disabled>
+                    Select your course
+                  </option>
+                  {/* <option value="none">NOT STUDENT</option> */}
+                  <option value="BSCS">BSCS</option>
+                  <option value="BSA">BSA</option>
+                  <option value="BSBA">BSBA</option>
+                  <option value="BSHM">BSHM</option>
+                  <option value="BSTM">BSTM</option>
+                  <option value="BSCRIM">BSCRIM</option>
+                  <option value="BEED">BEED</option>
                 </select>
               </div>
             </div>
@@ -503,7 +549,7 @@ const CreateAccountRequest = () => {
                             onClick={() => {
                               setFrontImage(null);
                               setFrontPreview(null);
-                              document.getElementById("frontInput").value = ""; // ✅ clear file input
+                              document.getElementById("frontInput").value = "";
                             }}
                             className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 z-10 hover:cursor-pointer"
                           >

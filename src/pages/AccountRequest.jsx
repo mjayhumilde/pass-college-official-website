@@ -53,7 +53,8 @@ const AccountRequest = () => {
       request.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       request.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       request.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      request.course?.toLowerCase().includes(searchTerm.toLowerCase());
+      request.course?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.studentNumber?.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesStatus =
       statusFilter === "all" || request.status === statusFilter;
@@ -167,7 +168,7 @@ const AccountRequest = () => {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <input
                   type="text"
-                  placeholder="Search by name, email, or course..."
+                  placeholder="Search by name, email, course, or student number..."
                   className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -221,6 +222,9 @@ const AccountRequest = () => {
                       Student
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Student Number
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Course & Role
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -245,6 +249,13 @@ const AccountRequest = () => {
                           <div className="text-sm text-gray-500">
                             {request.email}
                           </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="text-sm text-gray-900">
+                          {request.studentNumber || (
+                            <span className="text-gray-400 italic">N/A</span>
+                          )}
                         </div>
                       </td>
                       <td className="px-6 py-4">
@@ -404,6 +415,16 @@ const AccountRequest = () => {
                       Email
                     </label>
                     <p className="text-gray-900">{selectedRequest.email}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Student Number
+                    </label>
+                    <p className="text-gray-900">
+                      {selectedRequest.studentNumber || (
+                        <span className="text-gray-400 italic">N/A</span>
+                      )}
+                    </p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
