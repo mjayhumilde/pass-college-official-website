@@ -9,9 +9,12 @@ import {
   CheckCircle,
   XCircle,
   Package,
+  Shield,
+  Info,
 } from "lucide-react";
 import useAuthStore from "../store/useAuthStore";
 import useDocumentStore from "../store/useDocumentStore";
+import useAvailableDocumentStore from "../store/useAvailableDocumentStore";
 
 const ReqDocs = () => {
   const {
@@ -19,10 +22,12 @@ const ReqDocs = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
   } = useForm();
 
   const [deleteLoading, setDeleteLoading] = useState(null);
   const [submitLoading, setSubmitLoading] = useState(false);
+  const selectedDocId = watch("documentType");
 
   const {
     myDocuments,
@@ -33,18 +38,34 @@ const ReqDocs = () => {
     deleteMyDocument,
   } = useDocumentStore();
 
+  const {
+    availableDocuments,
+    loading: availableDocsLoading,
+    error: availableDocsError,
+    fetchAvailableDocuments,
+  } = useAvailableDocumentStore();
+
   const { user } = useAuthStore();
 
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchMyDocuments();
-  }, [fetchMyDocuments]);
+    fetchAvailableDocuments();
+  }, [fetchMyDocuments, fetchAvailableDocuments]);
+
+  const selectedDocument = availableDocuments.find(
+    (doc) => doc._id === selectedDocId
+  );
 
   const onSubmitForm = async (formData) => {
     setSubmitLoading(true);
     try {
+      const selectedDoc = availableDocuments.find(
+        (doc) => doc._id === formData.documentType
+      );
+
       const payload = {
-        documentType: formData.documentType,
+        documentType: selectedDoc.name,
       };
 
       await createDocument(payload);
@@ -118,10 +139,13 @@ const ReqDocs = () => {
   };
 
   const formatDocumentType = (type) => {
-    return type
-      .split("-")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
+    if (type.includes("-")) {
+      return type
+        .split("-")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+    }
+    return type;
   };
 
   const getStatusTimeline = (status) => {
@@ -148,7 +172,7 @@ const ReqDocs = () => {
 
           {/* Request Form Card */}
           <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 max-w-2xl mx-auto">
-            {error && (
+            {(error || availableDocsError) && (
               <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg flex items-start gap-2 sm:gap-3">
                 <AlertCircle
                   size={18}
@@ -158,7 +182,9 @@ const ReqDocs = () => {
                   <p className="font-semibold text-red-800 text-sm sm:text-base">
                     Error
                   </p>
-                  <p className="text-red-700 text-xs sm:text-sm">{error}</p>
+                  <p className="text-red-700 text-xs sm:text-sm">
+                    {error || availableDocsError}
+                  </p>
                 </div>
               </div>
             )}
@@ -176,49 +202,37 @@ const ReqDocs = () => {
                     {...register("documentType", {
                       required: "Please select a document type",
                     })}
-                    className="block w-full py-2.5 sm:py-3 px-3 sm:px-4 pr-10 bg-gray-50 border-2 border-gray-200 rounded-xl text-sm sm:text-base text-gray-700 focus:outline-none focus:border-red-primary focus:bg-white transition-all duration-200 hover:border-gray-300 cursor-pointer appearance-none"
+                    disabled={availableDocsLoading}
+                    className="block w-full py-2.5 sm:py-3 px-3 sm:px-4 pr-10 bg-gray-50 border-2 border-gray-200 rounded-xl text-sm sm:text-base text-gray-700 focus:outline-none focus:border-red-primary focus:bg-white transition-all duration-200 hover:border-gray-300 cursor-pointer appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <option value="">Choose a document...</option>
-                    <option value="transcript">📄 Transcript</option>
-                    <option value="recommendation-letter">
-                      ✉️ Recommendation Letter
+                    <option value="">
+                      {availableDocsLoading
+                        ? "Loading documents..."
+                        : "Choose a document..."}
                     </option>
-                    <option value="certificate-of-enrollment">
-                      📋 Certificate of Enrollment
-                    </option>
-                    <option value="diploma-copy">🎓 Diploma Copy</option>
-                    <option value="graduation-certificate">
-                      🏆 Graduation Certificate
-                    </option>
-                    <option value="transfer-credit-evaluation">
-                      📊 Transfer Credit Evaluation
-                    </option>
-                    <option value="fee-structure">💰 Fee Structure</option>
-                    <option value="assessment-report">
-                      📈 Assessment Report
-                    </option>
-                    <option value="attendance-record">
-                      📅 Attendance Record
-                    </option>
-                    <option value="true-copy-of-grades">
-                      📝 True Copy of Grades
-                    </option>
-                    <option value="memorandum-of-agreement">
-                      📑 Memorandum of Agreement
-                    </option>
+                    {availableDocuments.map((doc) => (
+                      <option key={doc._id} value={doc._id}>
+                        {doc.name}
+                        {doc.requiresClearance && " (Clearance Required)"}
+                      </option>
+                    ))}
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 sm:px-3 text-gray-400">
-                    <svg
-                      className="w-4 h-4 sm:w-5 sm:h-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
+                    {availableDocsLoading ? (
+                      <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                    ) : (
+                      <svg
+                        className="w-4 h-4 sm:w-5 sm:h-5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    )}
                   </div>
                 </div>
                 {errors.documentType && (
@@ -227,11 +241,73 @@ const ReqDocs = () => {
                     {errors.documentType.message}
                   </p>
                 )}
+                {availableDocuments.length === 0 && !availableDocsLoading && (
+                  <p className="mt-2 text-xs sm:text-sm text-yellow-600 flex items-center gap-1">
+                    <AlertCircle size={12} className="sm:w-3.5 sm:h-3.5" />
+                    No documents are currently available for request
+                  </p>
+                )}
               </div>
+
+              {/* Document Info Card - Shows when document is selected */}
+              {selectedDocument && (
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-4 sm:p-5 space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                      <Info className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-bold text-gray-900 text-sm sm:text-base mb-2">
+                        Document Information
+                      </h3>
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-xs sm:text-sm">
+                          <span className="font-semibold text-gray-700">
+                            {selectedDocument.name}
+                          </span>
+                        </div>
+
+                        {selectedDocument.requiresClearance ? (
+                          <div className="bg-amber-50 border-2 border-amber-200 rounded-lg p-3 space-y-2">
+                            <div className="flex items-center gap-2">
+                              <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 flex-shrink-0" />
+                              <span className="font-bold text-amber-900 text-xs sm:text-sm">
+                                Requires Clearance Approval
+                              </span>
+                            </div>
+                            <p className="text-xs sm:text-sm text-amber-800 leading-relaxed">
+                              This document requires clearance from your
+                              assigned teacher before processing. You'll be
+                              notified once the clearance is approved.
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="bg-green-50 border-2 border-green-200 rounded-lg p-3">
+                            <div className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 flex-shrink-0" />
+                              <span className="font-bold text-green-900 text-xs sm:text-sm">
+                                No Clearance Required
+                              </span>
+                            </div>
+                            <p className="text-xs sm:text-sm text-green-800 mt-1 leading-relaxed">
+                              This document will be processed immediately after
+                              submission.
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <button
                 type="submit"
-                disabled={submitLoading}
+                disabled={
+                  submitLoading ||
+                  availableDocsLoading ||
+                  availableDocuments.length === 0
+                }
                 className="w-full py-3 sm:py-4 px-4 sm:px-6 bg-red-primary text-white font-bold text-sm sm:text-base rounded-xl hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 {submitLoading ? (
@@ -324,9 +400,20 @@ const ReqDocs = () => {
                               <FileText className="text-red-primary group-hover:text-white w-5 h-5 sm:w-6 sm:h-6" />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <h4 className="text-base sm:text-xl font-bold text-gray-900 mb-1 break-words">
-                                {formatDocumentType(doc.documentType)}
-                              </h4>
+                              <div className="flex flex-wrap items-center gap-2 mb-1">
+                                <h4 className="text-base sm:text-xl font-bold text-gray-900 break-words">
+                                  {formatDocumentType(doc.documentType)}
+                                </h4>
+                                {doc.requiresClearance && (
+                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full text-[10px] sm:text-xs font-bold border border-amber-300">
+                                    <Shield
+                                      size={10}
+                                      className="sm:w-3 sm:h-3"
+                                    />
+                                    <span>Clearance Required</span>
+                                  </span>
+                                )}
+                              </div>
                               <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600">
                                 <Clock
                                   size={12}
@@ -338,6 +425,41 @@ const ReqDocs = () => {
                               </div>
                             </div>
                           </div>
+
+                          {/* Clearance Status Badge */}
+                          {doc.requiresClearance && doc.clearanceStatus && (
+                            <div className="ml-0 sm:ml-16">
+                              {doc.clearanceStatus === "awaiting" && (
+                                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg text-xs sm:text-sm font-semibold">
+                                  <Clock
+                                    size={12}
+                                    className="sm:w-3.5 sm:h-3.5"
+                                  />
+                                  <span>
+                                    Awaiting Clearance Meeting Schedule
+                                  </span>
+                                </div>
+                              )}
+                              {doc.clearanceStatus === "approved" && (
+                                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-50 text-green-700 border border-green-200 rounded-lg text-xs sm:text-sm font-semibold">
+                                  <CheckCircle
+                                    size={12}
+                                    className="sm:w-3.5 sm:h-3.5"
+                                  />
+                                  <span>Clearance Approved</span>
+                                </div>
+                              )}
+                              {doc.clearanceStatus === "rejected" && (
+                                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-50 text-red-700 border border-red-200 rounded-lg text-xs sm:text-sm font-semibold">
+                                  <XCircle
+                                    size={12}
+                                    className="sm:w-3.5 sm:h-3.5"
+                                  />
+                                  <span>Clearance Rejected</span>
+                                </div>
+                              )}
+                            </div>
+                          )}
 
                           {/* Status Timeline only show if not cancelled */}
                           {doc.documentStatus !== "cancelled" && (
@@ -435,7 +557,7 @@ const ReqDocs = () => {
                             <button
                               onClick={() => handleDelete(doc._id)}
                               disabled={deleteLoading === doc._id}
-                              className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-bold text-red-600 border-2 border-red-200 rounded-full hover:bg-red-50 hover:border-red-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                              className="inline-flex hover:cursor-pointer items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-bold text-red-600 border-2 border-red-200 rounded-full hover:bg-red-50 hover:border-red-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                             >
                               {deleteLoading === doc._id ? (
                                 <>
