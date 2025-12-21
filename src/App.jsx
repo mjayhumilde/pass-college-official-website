@@ -20,6 +20,7 @@ import AccountRequest from "./pages/AccountRequest";
 import CreateAccountRequest from "./pages/CreateAccountRequest";
 import KnowledgeManagement from "./pages/AiKnowledge";
 import ResetPassword from "./pages/ResetPassword";
+import ClearanceMeeting from "./pages/ClearanceMeeting";
 
 const App = () => {
   return (
@@ -51,6 +52,7 @@ const App = () => {
           <Route path="request" element={<Request />} />
           <Route path="transaction-report" element={<TransactionReport />} />
           <Route path="account-request" element={<AccountRequest />} />
+          <Route path="clearance-meeting" element={<ClearanceMeeting />} />
 
           {/* <Route path="/profile" element={}/>
         <Route path="/signup" element={}/>

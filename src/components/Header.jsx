@@ -92,12 +92,16 @@ const Header = () => {
       return ["Home", "About", "News & Events", "Careers"].includes(itemName);
     }
 
-    // REGISTRAR
+    if (itemName === "Clearance Schedule" && userRole !== "teacher") {
+      return false;
+    }
+
+    // 3. REGISTRAR
     if (userRole === "registrar") {
       return !["ReqDocs", "Transaction Report"].includes(itemName);
     }
 
-    // STUDENT
+    // 4. STUDENT
     if (userRole === "student") {
       return ![
         "Accounts",
@@ -105,13 +109,14 @@ const Header = () => {
         "Transaction Report",
         "Account Request",
         "AI Knowledge",
+        "Clearance Schedule",
       ].includes(itemName);
     }
 
-    // TEACHER same as student, but hide ReqDocs
+    // 5. TEACHER
     if (userRole === "teacher") {
       return ![
-        "ReqDocs", // teacher should NOT see this
+        "ReqDocs",
         "Accounts",
         "Document Request",
         "Transaction Report",
@@ -120,9 +125,11 @@ const Header = () => {
       ].includes(itemName);
     }
 
-    // ADMIN
+    // 6. ADMIN
     if (userRole === "admin") {
-      return !["ReqDocs", "Document Request"].includes(itemName);
+      return !["ReqDocs", "Document Request", "Clearance Schedule"].includes(
+        itemName
+      );
     }
 
     return true;
@@ -149,6 +156,7 @@ const Header = () => {
     { name: "Transaction Report", link: "/transaction-report" },
     { name: "Account Request", link: "/account-request" },
     { name: "AI Knowledge", link: "/ai-knowledge" },
+    { name: "Clearance Schedule", link: "/clearance-meeting" },
   ];
 
   // Filter menu items based on authentication and user role
