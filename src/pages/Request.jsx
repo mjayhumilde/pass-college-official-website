@@ -198,7 +198,11 @@ export default function Request() {
     return statusFlow[currentStatus];
   };
 
-  const canAdvanceStatus = (status) => {
+  const canAdvanceStatus = (status, requiresClearance, clearanceStatus) => {
+    // Can't advance if clearance is required but not completed
+    if (requiresClearance && clearanceStatus !== "completed") {
+      return false;
+    }
     return ["pending", "processing", "ready-to-pickup"].includes(status);
   };
 
@@ -611,6 +615,33 @@ export default function Request() {
                                   </p>
                                 </div>
                               )}
+
+                              {/* Clearance Blocking Message */}
+                              {request.requiresClearance &&
+                                request.clearanceStatus !== "completed" &&
+                                request.documentStatus !== "cancelled" &&
+                                request.documentStatus !== "completed" && (
+                                  <div className="ml-16 p-4 bg-amber-50 border-l-4 border-amber-400 rounded-r-lg">
+                                    <div className="flex items-start gap-2">
+                                      <AlertCircle
+                                        size={16}
+                                        className="text-amber-700 mt-0.5 flex-shrink-0"
+                                      />
+                                      <div>
+                                        <p className="text-sm font-semibold text-amber-900 mb-1">
+                                          Clearance Required
+                                        </p>
+                                        <p className="text-sm text-amber-700">
+                                          This document requires teacher
+                                          clearance before it can be processed.
+                                          Status can only be updated after the
+                                          assigned teacher completes the
+                                          clearance.
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
                             </div>
 
                             {/* Status & Actions */}
