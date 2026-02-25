@@ -172,9 +172,9 @@ export default function Login() {
               <div className="mt-6 text-center">
                 <p
                   onClick={() => navigate("create-account-request")}
-                  className="text-sm font-medium text-red-950 hover:underline hover:cursor-pointer"
+                  className="text-sm font-medium text-red-950 underline hover:cursor-pointer hover:text-red-800"
                 >
-                  request for an account creation
+                  REQUEST FOR AN ACCOUNT CREATION
                 </p>
               </div>
             </div>
