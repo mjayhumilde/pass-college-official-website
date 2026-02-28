@@ -1,7 +1,7 @@
 import useAuthStore from "../store/useAuthStore";
 import { useEffect, useState } from "react";
 import { Eye, EyeOff, Mail, Lock, AlertTriangle } from "lucide-react";
-import logo from "../assets/images/pass_log-removebg-preview.png";
+import logo from "../assets/images/logo/pass_logo.png";
 import { useNavigate } from "react-router-dom";
 import ForgotPasswordModal from "../components/ForgotPasswordModal";
 
