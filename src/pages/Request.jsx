@@ -66,22 +66,18 @@ export default function Request() {
   }, [fetchDocuments, fetchAvailableDocuments]);
 
   const filteredRequests = documents.filter((request) => {
-    const studentName = `${request.requestedBy?.firstName || ""} ${
-      request.requestedBy?.lastName || ""
-    }`.toLowerCase();
+    const studentName =
+      `${request.requestedBy?.firstName || ""} ${request.requestedBy?.lastName || ""}`.toLowerCase();
     const email = (request.requestedBy?.email || "").toLowerCase();
     const course = (request.requestedBy?.course || "").toLowerCase();
     const documentType = (request.documentType || "").toLowerCase();
-
     const matchesSearch =
       studentName.includes(searchTerm.toLowerCase()) ||
       email.includes(searchTerm.toLowerCase()) ||
       course.includes(searchTerm.toLowerCase()) ||
       documentType.includes(searchTerm.toLowerCase());
-
     const matchesStatus =
       statusFilter === "all" || request.documentStatus === statusFilter;
-
     return matchesSearch && matchesStatus;
   });
 
@@ -89,13 +85,12 @@ export default function Request() {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredRequests.slice(
     indexOfFirstItem,
-    indexOfLastItem
+    indexOfLastItem,
   );
   const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
+    return new Date(dateString).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
@@ -145,8 +140,7 @@ export default function Request() {
   const handleStatusChange = async (requestId, currentStatus, newStatus) => {
     setStatusLoading(requestId);
     try {
-      const payload = { status: newStatus };
-      await updateDocumentStatus(requestId, payload);
+      await updateDocumentStatus(requestId, { status: newStatus });
       alert(`Status updated to ${newStatus.replace("-", " ")} successfully!`);
     } catch (err) {
       alert(err.response?.data?.message || "Failed to update status");
@@ -160,7 +154,6 @@ export default function Request() {
     setShowCancelModal(true);
     setCancelReason("");
   };
-
   const closeCancelModal = () => {
     setShowCancelModal(false);
     setSelectedRequest(null);
@@ -175,11 +168,10 @@ export default function Request() {
 
     setStatusLoading(selectedRequest._id);
     try {
-      const payload = {
+      await updateDocumentStatus(selectedRequest._id, {
         status: "cancelled",
         cancelReason: cancelReason.trim(),
-      };
-      await updateDocumentStatus(selectedRequest._id, payload);
+      });
       alert("Request cancelled successfully!");
       closeCancelModal();
     } catch (err) {
@@ -190,12 +182,11 @@ export default function Request() {
   };
 
   const getNextStatus = (currentStatus) => {
-    const statusFlow = {
+    return {
       pending: "processing",
       processing: "ready-to-pickup",
       "ready-to-pickup": "completed",
-    };
-    return statusFlow[currentStatus];
+    }[currentStatus];
   };
 
   const canAdvanceStatus = (status, requiresClearance, clearanceStatus) => {
@@ -206,9 +197,8 @@ export default function Request() {
     return ["pending", "processing", "ready-to-pickup"].includes(status);
   };
 
-  const canCancelStatus = (status) => {
-    return ["pending", "processing"].includes(status);
-  };
+  const canCancelStatus = (status) =>
+    ["pending", "processing"].includes(status);
 
   const changePage = (pageNumber) => {
     if (pageNumber > 0 && pageNumber <= totalPages) {
@@ -216,41 +206,28 @@ export default function Request() {
     }
   };
 
-  const getStatusCounts = () => {
-    return {
-      all: documents.length,
-      pending: documents.filter((d) => d.documentStatus === "pending").length,
-      processing: documents.filter((d) => d.documentStatus === "processing")
-        .length,
-      "ready-to-pickup": documents.filter(
-        (d) => d.documentStatus === "ready-to-pickup"
-      ).length,
-      completed: documents.filter((d) => d.documentStatus === "completed")
-        .length,
-      cancelled: documents.filter((d) => d.documentStatus === "cancelled")
-        .length,
-    };
-  };
+  const getStatusCounts = () => ({
+    all: documents.length,
+    pending: documents.filter((d) => d.documentStatus === "pending").length,
+    processing: documents.filter((d) => d.documentStatus === "processing")
+      .length,
+    "ready-to-pickup": documents.filter(
+      (d) => d.documentStatus === "ready-to-pickup",
+    ).length,
+    completed: documents.filter((d) => d.documentStatus === "completed").length,
+    cancelled: documents.filter((d) => d.documentStatus === "cancelled").length,
+  });
 
   const statusCounts = getStatusCounts();
 
   // Available Documents Handlers
   const openCreateModal = () => {
-    setFormData({
-      name: "",
-      requiresClearance: false,
-      assignedTeacher: "",
-    });
+    setFormData({ name: "", requiresClearance: false, assignedTeacher: "" });
     setShowCreateModal(true);
   };
-
   const closeCreateModal = () => {
     setShowCreateModal(false);
-    setFormData({
-      name: "",
-      requiresClearance: false,
-      assignedTeacher: "",
-    });
+    setFormData({ name: "", requiresClearance: false, assignedTeacher: "" });
   };
 
   const handleCreateDocument = async () => {
@@ -307,6 +284,14 @@ export default function Request() {
     }
   };
 
+  const getTeacherName = (assignedTeacher) => {
+    if (!assignedTeacher) return "assigned teacher";
+    if (typeof assignedTeacher === "object" && assignedTeacher.firstName) {
+      return `${assignedTeacher.firstName} ${assignedTeacher.lastName}`;
+    }
+    return "assigned teacher";
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Hero Header */}
@@ -330,22 +315,14 @@ export default function Request() {
           <div className="flex gap-2 mt-8">
             <button
               onClick={() => setActiveTab("requests")}
-              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all hover:cursor-pointer ${
-                activeTab === "requests"
-                  ? "bg-white text-red-primary shadow-lg"
-                  : "bg-white bg-opacity-20 text-red-primary hover:bg-opacity-30"
-              }`}
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all hover:cursor-pointer ${activeTab === "requests" ? "bg-white text-red-primary shadow-lg" : "bg-white bg-opacity-20 text-red-primary hover:bg-opacity-30"}`}
             >
               <List size={20} />
               Document Requests
             </button>
             <button
               onClick={() => setActiveTab("available")}
-              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all hover:cursor-pointer ${
-                activeTab === "available"
-                  ? "bg-white text-red-primary shadow-lg"
-                  : "bg-white bg-opacity-20 text-red-primary hover:bg-opacity-30"
-              }`}
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all hover:cursor-pointer ${activeTab === "available" ? "bg-white text-red-primary shadow-lg" : "bg-white bg-opacity-20 text-red-primary hover:bg-opacity-30"}`}
             >
               <Settings size={20} />
               Available Documents
@@ -533,7 +510,7 @@ export default function Request() {
                 <div className="space-y-4 mb-6">
                   {currentItems.map((request) => {
                     const statusConfig = getStatusConfig(
-                      request.documentStatus
+                      request.documentStatus,
                     );
                     const StatusIcon = statusConfig.icon;
 
@@ -544,23 +521,18 @@ export default function Request() {
                       >
                         <div className="p-6">
                           <div className="flex flex-col lg:flex-row lg:items-start gap-6">
-                            {/* Student Info */}
                             <div className="flex-1 space-y-4">
+                              {/* Student Info */}
                               <div className="flex items-start gap-4">
                                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-600 to-red-600 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                                  {request.photo ? (
-                                    <img
-                                      src={request.photo}
-                                      alt={request.firstName}
-                                      className="w-full h-full object-cover"
-                                    />
-                                  ) : (
-                                    <img
-                                      src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
-                                      alt=""
-                                      className="w-full h-full object-cover"
-                                    />
-                                  )}
+                                  <img
+                                    src={
+                                      request.requestedBy?.photo ||
+                                      "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
+                                    }
+                                    alt=""
+                                    className="w-full h-full object-cover"
+                                  />
                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <h3 className="text-xl font-bold text-gray-900 mb-1">
@@ -616,30 +588,83 @@ export default function Request() {
                                 </div>
                               )}
 
-                              {/* Clearance Blocking Message */}
+                              {/* Clearnce status card*/}
                               {request.requiresClearance &&
-                                request.clearanceStatus !== "completed" &&
-                                request.documentStatus !== "cancelled" &&
-                                request.documentStatus !== "completed" && (
-                                  <div className="ml-16 p-4 bg-amber-50 border-l-4 border-amber-400 rounded-r-lg">
-                                    <div className="flex items-start gap-2">
-                                      <AlertCircle
-                                        size={16}
-                                        className="text-amber-700 mt-0.5 flex-shrink-0"
-                                      />
-                                      <div>
-                                        <p className="text-sm font-semibold text-amber-900 mb-1">
-                                          Clearance Required
-                                        </p>
-                                        <p className="text-sm text-amber-700">
-                                          This document requires teacher
-                                          clearance before it can be processed.
-                                          Status can only be updated after the
-                                          assigned teacher completes the
-                                          clearance.
-                                        </p>
+                                request.documentStatus !== "cancelled" && (
+                                  <div className="ml-16">
+                                    {request.clearanceStatus === "awaiting" && (
+                                      <div className="flex items-start gap-2.5 p-3 bg-amber-50 border-l-4 border-amber-400 rounded-r-lg">
+                                        <AlertCircle
+                                          size={15}
+                                          className="text-amber-600 mt-0.5 flex-shrink-0"
+                                        />
+                                        <div>
+                                          <p className="text-xs font-bold text-amber-900 mb-0.5">
+                                            Clearance Required — Awaiting
+                                            Schedule
+                                          </p>
+                                          <p className="text-xs text-amber-700">
+                                            Waiting for{" "}
+                                            <span className="font-semibold">
+                                              {getTeacherName(
+                                                request.assignedTeacher,
+                                              )}
+                                            </span>{" "}
+                                            to schedule a clearance meeting.
+                                            Status cannot be advanced yet.
+                                          </p>
+                                        </div>
                                       </div>
-                                    </div>
+                                    )}
+
+                                    {request.clearanceStatus ===
+                                      "scheduled" && (
+                                      <div className="flex items-start gap-2.5 p-3 bg-blue-50 border-l-4 border-blue-400 rounded-r-lg">
+                                        <Clock
+                                          size={15}
+                                          className="text-blue-600 mt-0.5 flex-shrink-0"
+                                        />
+                                        <div>
+                                          <p className="text-xs font-bold text-blue-900 mb-0.5">
+                                            Clearance Meeting Scheduled
+                                          </p>
+                                          <p className="text-xs text-blue-700">
+                                            Meeting set by{" "}
+                                            <span className="font-semibold">
+                                              {getTeacherName(
+                                                request.assignedTeacher,
+                                              )}
+                                            </span>
+                                            . Waiting for teacher to mark it as
+                                            completed.
+                                          </p>
+                                        </div>
+                                      </div>
+                                    )}
+
+                                    {request.clearanceStatus ===
+                                      "completed" && (
+                                      <div className="flex items-start gap-2.5 p-3 bg-green-50 border-l-4 border-green-500 rounded-r-lg">
+                                        <CheckCircle
+                                          size={15}
+                                          className="text-green-600 mt-0.5 flex-shrink-0"
+                                        />
+                                        <div>
+                                          <p className="text-xs font-bold text-green-900 mb-0.5">
+                                            Clearance Approved ✓
+                                          </p>
+                                          <p className="text-xs text-green-700">
+                                            Cleared by{" "}
+                                            <span className="font-semibold">
+                                              {getTeacherName(
+                                                request.assignedTeacher,
+                                              )}
+                                            </span>
+                                            . Document can now be processed.
+                                          </p>
+                                        </div>
+                                      </div>
+                                    )}
                                   </div>
                                 )}
                             </div>
@@ -654,22 +679,21 @@ export default function Request() {
                               </div>
 
                               <div className="flex gap-2">
-                                {canAdvanceStatus(request.documentStatus) && (
+                                {canAdvanceStatus(
+                                  request.documentStatus,
+                                  request.requiresClearance,
+                                  request.clearanceStatus,
+                                ) && (
                                   <button
                                     onClick={() =>
                                       handleStatusChange(
                                         request._id,
                                         request.documentStatus,
-                                        getNextStatus(request.documentStatus)
+                                        getNextStatus(request.documentStatus),
                                       )
                                     }
                                     disabled={statusLoading === request._id}
                                     className="px-4 py-2 rounded-full hover:cursor-pointer bg-green-600 text-white font-semibold hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-all shadow-md hover:shadow-lg"
-                                    title={`Mark as ${getNextStatus(
-                                      request.documentStatus
-                                    )
-                                      .replace("-", " ")
-                                      .toUpperCase()}`}
                                   >
                                     {statusLoading === request._id ? (
                                       <Loader2
@@ -679,7 +703,7 @@ export default function Request() {
                                     ) : (
                                       <Check size={16} />
                                     )}
-                                    <span className="hidden sm:inline ">
+                                    <span className="hidden sm:inline">
                                       Advance
                                     </span>
                                   </button>
@@ -690,16 +714,19 @@ export default function Request() {
                                     onClick={() => openCancelModal(request)}
                                     disabled={statusLoading === request._id}
                                     className="px-4 py-2 hover:cursor-pointer rounded-full bg-red-600 text-white font-semibold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-all shadow-md hover:shadow-lg"
-                                    title="Cancel Request"
                                   >
                                     <XCircle size={16} />
-                                    <span className="hidden sm:inline ">
+                                    <span className="hidden sm:inline">
                                       Cancel
                                     </span>
                                   </button>
                                 )}
 
-                                {!canAdvanceStatus(request.documentStatus) &&
+                                {!canAdvanceStatus(
+                                  request.documentStatus,
+                                  request.requiresClearance,
+                                  request.clearanceStatus,
+                                ) &&
                                   !canCancelStatus(request.documentStatus) && (
                                     <span className="text-sm text-gray-500 px-4 py-2 bg-gray-100 rounded-full font-medium">
                                       No actions available
@@ -736,11 +763,7 @@ export default function Request() {
                       <button
                         onClick={() => changePage(currentPage - 1)}
                         disabled={currentPage === 1}
-                        className={`p-3 rounded-full transition-all ${
-                          currentPage === 1
-                            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                            : "bg-red-600 text-white hover:bg-red-700 shadow-md hover:shadow-lg"
-                        }`}
+                        className={`p-3 rounded-full transition-all ${currentPage === 1 ? "bg-gray-100 text-gray-400 cursor-not-allowed" : "bg-red-600 text-white hover:bg-red-700 shadow-md hover:shadow-lg"}`}
                       >
                         <ChevronLeft size={18} />
                       </button>
@@ -750,7 +773,8 @@ export default function Request() {
                           (page) =>
                             page === 1 ||
                             page === totalPages ||
-                            (page >= currentPage - 1 && page <= currentPage + 1)
+                            (page >= currentPage - 1 &&
+                              page <= currentPage + 1),
                         )
                         .map((page, index, array) => {
                           if (index > 0 && page > array[index - 1] + 1) {
@@ -763,16 +787,11 @@ export default function Request() {
                               </span>
                             );
                           }
-
                           return (
                             <button
                               key={page}
                               onClick={() => changePage(page)}
-                              className={`px-4 py-2 rounded-full font-bold transition-all ${
-                                currentPage === page
-                                  ? "bg-red-600 text-white shadow-md"
-                                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                              }`}
+                              className={`px-4 py-2 rounded-full font-bold transition-all ${currentPage === page ? "bg-red-600 text-white shadow-md" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
                             >
                               {page}
                             </button>
@@ -784,11 +803,7 @@ export default function Request() {
                         disabled={
                           currentPage === totalPages || totalPages === 0
                         }
-                        className={`p-3 rounded-full transition-all ${
-                          currentPage === totalPages || totalPages === 0
-                            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                            : "bg-red-600 text-white hover:bg-red-700 shadow-md hover:shadow-lg"
-                        }`}
+                        className={`p-3 rounded-full transition-all ${currentPage === totalPages || totalPages === 0 ? "bg-gray-100 text-gray-400 cursor-not-allowed" : "bg-red-600 text-white hover:bg-red-700 shadow-md hover:shadow-lg"}`}
                       >
                         <ChevronRight size={18} />
                       </button>
@@ -921,11 +936,11 @@ export default function Request() {
 
       {/* Cancel Request Modal */}
       {showCancelModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 animate-fade-in">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden animate-scale-in">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
             <div className="bg-gradient-to-r from-red-600 to-red-700 p-6">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-white bg-opacity-20 backdrop-blur-sm flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-white bg-opacity-20 flex items-center justify-center">
                   <XCircle className="text-white" size={24} />
                 </div>
                 <h3 className="text-2xl font-bold text-white">
@@ -990,11 +1005,11 @@ export default function Request() {
 
       {/* Create Available Document Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 animate-fade-in">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden animate-scale-in">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden">
             <div className="bg-gradient-to-r from-red-600 to-red-700 p-6">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-white bg-opacity-20 backdrop-blur-sm flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-white bg-opacity-20 flex items-center justify-center">
                   <Plus className="text-red-primary" size={24} />
                 </div>
                 <h3 className="text-2xl font-bold text-white">
@@ -1106,11 +1121,11 @@ export default function Request() {
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && selectedDocument && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 animate-fade-in">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden animate-scale-in">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
             <div className="bg-gradient-to-r from-red-600 to-red-700 p-6">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-white bg-opacity-20 backdrop-blur-sm flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-white bg-opacity-20 flex items-center justify-center">
                   <Trash2 className="text-white" size={24} />
                 </div>
                 <h3 className="text-2xl font-bold text-white">

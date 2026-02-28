@@ -1,9 +1,13 @@
 import { create } from "zustand";
 import api from "./api";
 
-const useClearanceStore = create((set) => ({
+const useClearanceStore = create((set, get) => ({
   pendingClearances: [],
   myClearanceMeetings: null,
+  // Map of document (for student card display)
+  meetingsByDocumentId: {},
+  loadingIds: {},
+  fetchedIds: {},
   loading: false,
   error: null,
 
@@ -35,7 +39,7 @@ const useClearanceStore = create((set) => ({
                 clearanceStatus: "scheduled",
                 clearanceMeeting: res.data.data.meeting,
               }
-            : doc
+            : doc,
         ),
       }));
       return res.data.data.meeting;
@@ -52,14 +56,14 @@ const useClearanceStore = create((set) => ({
     try {
       const res = await api.patch(
         `/api/v1/clearance/${documentId}/reschedule`,
-        payload
+        payload,
       );
       // Update the local state with rescheduled meeting
       set((state) => ({
         pendingClearances: state.pendingClearances.map((doc) =>
           doc._id === documentId
             ? { ...doc, clearanceMeeting: res.data.data.meeting }
-            : doc
+            : doc,
         ),
       }));
       return res.data.data.meeting;
@@ -78,7 +82,7 @@ const useClearanceStore = create((set) => ({
       // Remove from pending list or update status
       set((state) => ({
         pendingClearances: state.pendingClearances.filter(
-          (doc) => doc._id !== documentId
+          (doc) => doc._id !== documentId,
         ),
       }));
       return res.data;
@@ -102,6 +106,50 @@ const useClearanceStore = create((set) => ({
         loading: false,
       });
     }
+  },
+
+  // Fetch meeting for a specific document (student card display)
+  fetchMeetingForDocument: async (documentId) => {
+    const { fetchedIds, loadingIds } = get();
+
+    if (fetchedIds[documentId] || loadingIds[documentId]) return;
+
+    set((state) => ({
+      loadingIds: { ...state.loadingIds, [documentId]: true },
+    }));
+
+    try {
+      const res = await api.get(
+        `/api/v1/clearance/my-meeting?documentId=${documentId}`,
+      );
+      const meeting = res.data.data.meeting;
+
+      set((state) => ({
+        meetingsByDocumentId: {
+          ...state.meetingsByDocumentId,
+          [documentId]: meeting,
+        },
+        loadingIds: { ...state.loadingIds, [documentId]: false },
+        fetchedIds: { ...state.fetchedIds, [documentId]: true },
+      }));
+    } catch {
+      set((state) => ({
+        meetingsByDocumentId: {
+          ...state.meetingsByDocumentId,
+          [documentId]: null,
+        },
+        loadingIds: { ...state.loadingIds, [documentId]: false },
+        fetchedIds: { ...state.fetchedIds, [documentId]: true },
+      }));
+    }
+  },
+
+  getMeetingForDocument: (documentId) => {
+    return get().meetingsByDocumentId[documentId] ?? null;
+  },
+
+  isLoadingForDocument: (documentId) => {
+    return get().loadingIds[documentId] ?? false;
   },
 }));
 

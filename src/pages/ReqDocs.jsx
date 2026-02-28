@@ -15,6 +15,7 @@ import {
 import useAuthStore from "../store/useAuthStore";
 import useDocumentStore from "../store/useDocumentStore";
 import useAvailableDocumentStore from "../store/useAvailableDocumentStore";
+import ClearanceMeetingCard from "../components/ClearanceMeetingCard";
 
 const ReqDocs = () => {
   const {
@@ -54,14 +55,14 @@ const ReqDocs = () => {
   }, [fetchMyDocuments, fetchAvailableDocuments]);
 
   const selectedDocument = availableDocuments.find(
-    (doc) => doc._id === selectedDocId
+    (doc) => doc._id === selectedDocId,
   );
 
   const onSubmitForm = async (formData) => {
     setSubmitLoading(true);
     try {
       const selectedDoc = availableDocuments.find(
-        (doc) => doc._id === formData.documentType
+        (doc) => doc._id === formData.documentType,
       );
 
       const payload = {
@@ -385,7 +386,7 @@ const ReqDocs = () => {
                   const statusConfig = getStatusConfig(doc.documentStatus);
                   const StatusIcon = statusConfig.icon;
                   const { statuses, currentIndex } = getStatusTimeline(
-                    doc.documentStatus
+                    doc.documentStatus,
                   );
 
                   return (
@@ -428,7 +429,7 @@ const ReqDocs = () => {
 
                           {/* Clearance Status Badge */}
                           {doc.requiresClearance && doc.clearanceStatus && (
-                            <div className="ml-0 sm:ml-16">
+                            <div className="ml-0 sm:ml-16 space-y-3">
                               {doc.clearanceStatus === "awaiting" && (
                                 <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg text-xs sm:text-sm font-semibold">
                                   <Clock
@@ -440,23 +441,14 @@ const ReqDocs = () => {
                                   </span>
                                 </div>
                               )}
-                              {doc.clearanceStatus === "approved" && (
-                                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-50 text-green-700 border border-green-200 rounded-lg text-xs sm:text-sm font-semibold">
-                                  <CheckCircle
-                                    size={12}
-                                    className="sm:w-3.5 sm:h-3.5"
-                                  />
-                                  <span>Clearance Approved</span>
-                                </div>
-                              )}
-                              {doc.clearanceStatus === "rejected" && (
-                                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-50 text-red-700 border border-red-200 rounded-lg text-xs sm:text-sm font-semibold">
-                                  <XCircle
-                                    size={12}
-                                    className="sm:w-3.5 sm:h-3.5"
-                                  />
-                                  <span>Clearance Rejected</span>
-                                </div>
+
+                              {/* MEETING DETAILS | shown when scheduled or completed */}
+                              {(doc.clearanceStatus === "scheduled" ||
+                                doc.clearanceStatus === "completed") && (
+                                <ClearanceMeetingCard
+                                  documentId={doc._id}
+                                  clearanceStatus={doc.clearanceStatus}
+                                />
                               )}
                             </div>
                           )}

@@ -113,7 +113,7 @@ export default function ClearanceMeeting() {
     }
 
     const meetingDateTime = new Date(
-      `${formData.meetingDate}T${formData.meetingTime}`
+      `${formData.meetingDate}T${formData.meetingTime}`,
     );
 
     if (meetingDateTime < new Date()) {
@@ -148,7 +148,7 @@ export default function ClearanceMeeting() {
   const handleCompleteClearance = async (documentId) => {
     if (
       !window.confirm(
-        "Are you sure you want to mark this clearance as completed? This action cannot be undone."
+        "Are you sure you want to mark this clearance as completed? This action cannot be undone.",
       )
     ) {
       return;
@@ -166,9 +166,8 @@ export default function ClearanceMeeting() {
   };
 
   const filteredRequests = pendingClearances.filter((request) => {
-    const studentName = `${request.requestedBy?.firstName || ""} ${
-      request.requestedBy?.lastName || ""
-    }`.toLowerCase();
+    const studentName =
+      `${request.requestedBy?.firstName || ""} ${request.requestedBy?.lastName || ""}`.toLowerCase();
     const email = (request.requestedBy?.email || "").toLowerCase();
     const course = (request.requestedBy?.course || "").toLowerCase();
     const documentType = (request.documentType || "").toLowerCase();
@@ -181,15 +180,11 @@ export default function ClearanceMeeting() {
     );
   });
 
-  const getTodayDate = () => {
-    return new Date().toISOString().split("T")[0];
-  };
+  const getTodayDate = () => new Date().toISOString().split("T")[0];
 
   const canCompleteClearance = (meeting) => {
     if (!meeting) return false;
-    const meetingTime = new Date(meeting.meetingDate).getTime();
-    const now = Date.now();
-    return now >= meetingTime;
+    return Date.now() >= new Date(meeting.meetingDate).getTime();
   };
 
   const getStatusBadge = (clearanceStatus) => {
@@ -202,7 +197,7 @@ export default function ClearanceMeeting() {
       );
     } else if (clearanceStatus === "scheduled") {
       return (
-        <div className="inline-flex items-center gap-1 px-3 py-1 bg-red-50 text-red-700 rounded-full text-xs font-semibold border border-red-200">
+        <div className="inline-flex items-center gap-1 px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-semibold border border-blue-200">
           <Calendar size={12} />
           Meeting Scheduled
         </div>
@@ -230,7 +225,6 @@ export default function ClearanceMeeting() {
             </div>
           </div>
 
-          {/* Stats Card */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
             <div className="bg-amber-800 bg-opacity-20 backdrop-blur-sm rounded-xl p-4 text-white">
               <p className="text-sm font-medium opacity-90">
@@ -247,7 +241,7 @@ export default function ClearanceMeeting() {
               <p className="text-3xl font-bold mt-1">
                 {
                   pendingClearances.filter(
-                    (r) => r.clearanceStatus === "awaiting"
+                    (r) => r.clearanceStatus === "awaiting",
                   ).length
                 }
               </p>
@@ -257,7 +251,7 @@ export default function ClearanceMeeting() {
               <p className="text-3xl font-bold mt-1">
                 {
                   pendingClearances.filter(
-                    (r) => r.clearanceStatus === "scheduled"
+                    (r) => r.clearanceStatus === "scheduled",
                   ).length
                 }
               </p>
@@ -267,7 +261,6 @@ export default function ClearanceMeeting() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Error Display */}
         {error && (
           <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-xl flex items-start gap-3 shadow-md">
             <AlertCircle
@@ -296,8 +289,7 @@ export default function ClearanceMeeting() {
                 <input
                   type="text"
                   placeholder="Search by student name, email, course, or document type..."
-                  className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-black focus:outline-none focus:ring-red-800 focus:border-red-primary
-                   sm:text-sm"
+                  className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-black focus:outline-none focus:ring-red-800 focus:border-red-primary sm:text-sm"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -335,147 +327,203 @@ export default function ClearanceMeeting() {
           </div>
         ) : (
           <div className="space-y-4">
-            {filteredRequests.map((request) => (
-              <div
-                key={request._id}
-                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border-2 border-gray-100 hover:border-red-600"
-              >
-                <div className="p-6">
-                  <div className="flex flex-col lg:flex-row lg:items-start gap-6">
-                    {/* Student Info */}
-                    <div className="flex-1 space-y-4">
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-primary to-red-700 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                          {request.requestedBy?.photo ? (
-                            <img
-                              src={request.requestedBy.photo}
-                              alt={request.requestedBy.firstName}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <User className="text-white" size={24} />
-                          )}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="text-xl font-bold text-gray-900 mb-1">
-                            {request.requestedBy?.firstName}{" "}
-                            {request.requestedBy?.lastName}
-                          </h3>
-                          <div className="flex flex-wrap gap-4 text-sm text-gray-600">
-                            <div className="flex items-center gap-1">
-                              <Mail size={14} />
-                              <span>{request.requestedBy?.email}</span>
-                            </div>
-                            {request.requestedBy?.course && (
-                              <div className="flex items-center gap-1">
-                                <BookOpen size={14} />
-                                <span>{request.requestedBy.course}</span>
-                              </div>
+            {filteredRequests.map((request) => {
+              const meetingReady = canCompleteClearance(
+                request.clearanceMeeting,
+              );
+
+              return (
+                <div
+                  key={request._id}
+                  className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border-2 border-gray-100 hover:border-red-600"
+                >
+                  <div className="p-6">
+                    <div className="flex flex-col lg:flex-row lg:items-start gap-6">
+                      {/* Student Info */}
+                      <div className="flex-1 space-y-4">
+                        <div className="flex items-start gap-4">
+                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-primary to-red-700 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                            {request.requestedBy?.photo ? (
+                              <img
+                                src={request.requestedBy.photo}
+                                alt={request.requestedBy.firstName}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <User className="text-white" size={24} />
                             )}
                           </div>
-                        </div>
-                      </div>
-
-                      {/* Document Info */}
-                      <div className="ml-16 space-y-2">
-                        <div className="flex items-center gap-2">
-                          <FileText size={16} className="text-red-600" />
-                          <span className="font-semibold text-gray-900">
-                            {formatDocumentType(request.documentType)}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                          <Clock size={14} />
-                          <span>
-                            Requested on {formatDate(request.createdAt)}
-                          </span>
-                        </div>
-
-                        {/* Clearance Status */}
-                        {getStatusBadge(request.clearanceStatus)}
-                      </div>
-
-                      {/* Meeting Info if scheduled */}
-                      {request.clearanceStatus === "scheduled" &&
-                        request.clearanceMeeting && (
-                          <div className="ml-16 p-4 bg-green-50 border-l-4 border-green-400 rounded-r-lg">
-                            <p className="text-sm font-semibold text-green-900 mb-2">
-                              Meeting Scheduled
-                            </p>
-                            <div className="space-y-1 text-sm text-green-700">
-                              <div className="flex items-center gap-2">
-                                <Calendar size={14} />
-                                <span>
-                                  {formatDate(
-                                    request.clearanceMeeting.meetingDate
-                                  )}
-                                </span>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-xl font-bold text-gray-900 mb-1">
+                              {request.requestedBy?.firstName}{" "}
+                              {request.requestedBy?.lastName}
+                            </h3>
+                            <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+                              <div className="flex items-center gap-1">
+                                <Mail size={14} />
+                                <span>{request.requestedBy?.email}</span>
                               </div>
-                              <div className="flex items-center gap-2">
-                                <MapPin size={14} />
-                                <span>
-                                  Room: {request.clearanceMeeting.room}
-                                </span>
-                              </div>
-                              {request.clearanceMeeting.description && (
-                                <p className="mt-2">
-                                  {request.clearanceMeeting.description}
-                                </p>
+                              {request.requestedBy?.course && (
+                                <div className="flex items-center gap-1">
+                                  <BookOpen size={14} />
+                                  <span>{request.requestedBy.course}</span>
+                                </div>
                               )}
                             </div>
                           </div>
+                        </div>
+
+                        {/* Document Info */}
+                        <div className="ml-16 space-y-2">
+                          <div className="flex items-center gap-2">
+                            <FileText size={16} className="text-red-600" />
+                            <span className="font-semibold text-gray-900">
+                              {formatDocumentType(request.documentType)}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm text-gray-600">
+                            <Clock size={14} />
+                            <span>
+                              Requested on {formatDate(request.createdAt)}
+                            </span>
+                          </div>
+                          {getStatusBadge(request.clearanceStatus)}
+                        </div>
+
+                        {/* MEETING DETAILS CARD */}
+                        {request.clearanceStatus === "scheduled" &&
+                          request.clearanceMeeting && (
+                            <div className="ml-16 rounded-xl border-2 border-blue-200 overflow-hidden">
+                              {/* Card header */}
+                              <div className="bg-blue-50 border-b border-blue-200 px-4 py-2.5 flex items-center gap-2">
+                                <Calendar
+                                  size={14}
+                                  className="text-blue-600 flex-shrink-0"
+                                />
+                                <span className="text-sm font-bold text-blue-800">
+                                  Scheduled Meeting Details
+                                </span>
+                                <span
+                                  className={`ml-auto inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold border ${
+                                    meetingReady
+                                      ? "bg-green-100 text-green-700 border-green-200"
+                                      : "bg-amber-100 text-amber-700 border-amber-200"
+                                  }`}
+                                >
+                                  {meetingReady ? (
+                                    <CheckCircle size={10} />
+                                  ) : (
+                                    <Clock size={10} />
+                                  )}
+                                  {meetingReady
+                                    ? "Ready to Complete"
+                                    : "Upcoming"}
+                                </span>
+                              </div>
+                              {/* Card body */}
+                              <div className="bg-white px-4 py-3 space-y-2.5">
+                                <div className="flex items-center gap-2.5 text-sm text-gray-700">
+                                  <Calendar
+                                    size={14}
+                                    className="text-blue-500 flex-shrink-0"
+                                  />
+                                  <span className="font-medium">
+                                    {formatDate(
+                                      request.clearanceMeeting.meetingDate,
+                                    )}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-2.5 text-sm text-gray-700">
+                                  <MapPin
+                                    size={14}
+                                    className="text-blue-500 flex-shrink-0"
+                                  />
+                                  <span>
+                                    Room:{" "}
+                                    <span className="font-medium">
+                                      {request.clearanceMeeting.room}
+                                    </span>
+                                  </span>
+                                </div>
+                                {request.clearanceMeeting.description && (
+                                  <div className="flex items-start gap-2.5 text-sm text-gray-600">
+                                    <FileText
+                                      size={14}
+                                      className="text-blue-500 flex-shrink-0 mt-0.5"
+                                    />
+                                    <span>
+                                      {request.clearanceMeeting.description}
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                      </div>
+
+                      {/* Actions */}
+                      <div className="flex flex-col items-end gap-3 lg:min-w-[220px]">
+                        {request.clearanceStatus === "awaiting" && (
+                          <button
+                            onClick={() => openScheduleModal(request, false)}
+                            className="flex items-center gap-2 px-6 py-3 bg-red-primary text-white rounded-xl font-bold hover:bg-red-700 transition-all shadow-md hover:shadow-lg hover:cursor-pointer w-full justify-center"
+                          >
+                            <Calendar size={20} />
+                            Schedule Meeting
+                          </button>
                         )}
-                    </div>
 
-                    {/* Actions */}
-                    <div className="flex flex-col items-end gap-3 lg:min-w-[220px]">
-                      {request.clearanceStatus === "awaiting" && (
-                        <button
-                          onClick={() => openScheduleModal(request, false)}
-                          className="flex items-center gap-2 px-6 py-3 bg-red-primary text-white rounded-xl font-bold hover:bg-red-700 transition-all shadow-md hover:shadow-lg hover:cursor-pointer w-full justify-center"
-                        >
-                          <Calendar size={20} />
-                          Schedule Meeting
-                        </button>
-                      )}
+                        {request.clearanceStatus === "scheduled" && (
+                          <>
+                            <button
+                              onClick={() => openScheduleModal(request, true)}
+                              className="flex items-center gap-2 px-6 py-3 bg-red-primary text-white rounded-xl font-bold hover:bg-red-700 transition-all shadow-md hover:shadow-lg hover:cursor-pointer w-full justify-center"
+                            >
+                              <RefreshCw size={20} />
+                              Reschedule
+                            </button>
 
-                      {request.clearanceStatus === "scheduled" && (
-                        <>
-                          <button
-                            onClick={() => openScheduleModal(request, true)}
-                            className="flex items-center gap-2 px-6 py-3 bg-red-primary text-white rounded-xl font-bold hover:bg-amber-700 transition-all shadow-md hover:shadow-lg hover:cursor-pointer w-full justify-center"
-                          >
-                            <RefreshCw size={20} />
-                            Reschedule
-                          </button>
+                            <button
+                              onClick={() =>
+                                handleCompleteClearance(request._id)
+                              }
+                              disabled={
+                                !meetingReady || completeLoading === request._id
+                              }
+                              className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg hover:cursor-pointer w-full justify-center"
+                            >
+                              {completeLoading === request._id ? (
+                                <Loader2 className="animate-spin" size={20} />
+                              ) : (
+                                <Check size={20} />
+                              )}
+                              Complete
+                            </button>
 
-                          <button
-                            onClick={() => handleCompleteClearance(request._id)}
-                            disabled={
-                              !canCompleteClearance(request.clearanceMeeting) ||
-                              completeLoading === request._id
-                            }
-                            className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg hover:cursor-pointer w-full justify-center"
-                            title={
-                              !canCompleteClearance(request.clearanceMeeting)
-                                ? "Can only complete after meeting time"
-                                : "Mark clearance as completed"
-                            }
-                          >
-                            {completeLoading === request._id ? (
-                              <Loader2 className="animate-spin" size={20} />
-                            ) : (
-                              <Check size={20} />
+                            {/* Hint text when complete is disabled */}
+                            {!meetingReady && request.clearanceMeeting && (
+                              <p className="text-xs text-gray-400 text-center w-full flex items-center justify-center gap-1">
+                                <Clock size={11} />
+                                Available after{" "}
+                                {new Date(
+                                  request.clearanceMeeting.meetingDate,
+                                ).toLocaleDateString("en-US", {
+                                  month: "short",
+                                  day: "numeric",
+                                  year: "numeric",
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })}
+                              </p>
                             )}
-                            Complete
-                          </button>
-                        </>
-                      )}
+                          </>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
@@ -506,7 +554,6 @@ export default function ClearanceMeeting() {
             </div>
 
             <div className="p-6 space-y-4">
-              {/* Student Info Summary */}
               <div className="p-4 bg-red-50 rounded-xl border border-red-100">
                 <p className="text-sm font-semibold text-red-primary mb-2">
                   Document Request
@@ -514,11 +561,11 @@ export default function ClearanceMeeting() {
                 <p className="text-red-primary font-medium">
                   {formatDocumentType(selectedDocument.documentType)}
                 </p>
-                <p className="text-sm red text-red-primary mt-1">
+                <p className="text-sm text-red-primary mt-1">
                   {selectedDocument.requestedBy?.email}
                 </p>
                 {selectedDocument.requestedBy?.course && (
-                  <p className="text-sm red text-red-primary">
+                  <p className="text-sm text-red-primary">
                     {selectedDocument.requestedBy.course}
                   </p>
                 )}
