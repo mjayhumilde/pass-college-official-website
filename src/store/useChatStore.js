@@ -43,6 +43,9 @@ const useChatStore = create((set, get) => ({
 
   // Initialize Socket
   initializeSocket: (user, token) => {
+    const { socket } = get();
+    if (socket?.connected) return;
+
     const apiUrl =
       import.meta.env.VITE_APP_ENV === "production"
         ? import.meta.env.VITE_API_URL_PROD
@@ -55,42 +58,31 @@ const useChatStore = create((set, get) => ({
     });
 
     newSocket.on("connect", () => {
-      console.log("Socket connected");
+      console.log("Socket connected:", newSocket.id);
       newSocket.emit("join", user._id);
     });
 
+    // adds incoming message
     newSocket.on("new_message", (message) => {
       const { selectedChat, messages } = get();
 
-      // Add message if chat is open with this user
-      if (
-        selectedChat &&
-        (message.sender === selectedChat._id ||
-          message.receiver === selectedChat._id)
-      ) {
-        set({ messages: [...messages, message] });
+      if (selectedChat && message.sender === selectedChat._id) {
+        const alreadyExists = messages.some((m) => m._id === message._id);
+        if (!alreadyExists) {
+          set({ messages: [...messages, message] });
+        }
       }
 
-      // Increment unread if not from current chat
       if (!selectedChat || message.sender !== selectedChat._id) {
         get().incrementUnread();
       }
 
-      // Refresh conversations
       get().fetchConversations();
-    });
-
-    newSocket.on("message_sent", (message) => {
-      const { selectedChat, messages } = get();
-      if (selectedChat && message.receiver === selectedChat._id) {
-        set({ messages: [...messages, message] });
-      }
     });
 
     set({ socket: newSocket });
   },
 
-  // Disconnect Socket
   disconnectSocket: () => {
     const { socket } = get();
     if (socket) {
@@ -99,22 +91,17 @@ const useChatStore = create((set, get) => ({
     }
   },
 
-  // Fetch Conversations
   fetchConversations: async () => {
     try {
-      set({ loading: true });
       const response = await api.get("/api/v1/messages/conversations");
       set({ conversations: response.data.data || [] });
 
       // Calculate unread count ||  For now just keep the existing unread count
     } catch (error) {
       console.error("Error fetching conversations:", error);
-    } finally {
-      set({ loading: false });
     }
   },
 
-  // Fetch Messages
   fetchMessages: async (userId) => {
     try {
       set({ loading: true });
@@ -125,10 +112,10 @@ const useChatStore = create((set, get) => ({
       // Mark unread messages as read
       const user = JSON.parse(localStorage.getItem("user") || "{}");
       const unreadMessages = messagesData.filter(
-        (msg) => msg.receiver === user._id && !msg.read
+        (msg) => msg.receiver === user._id && !msg.read,
       );
 
-      // Mark each as read
+      // Mark each as rea
       unreadMessages.forEach((msg) => {
         api.patch(`/api/v1/messages/read/${msg._id}`).catch(console.error);
       });
@@ -146,7 +133,6 @@ const useChatStore = create((set, get) => ({
     }
   },
 
-  // Search Users
   searchUsers: async (query) => {
     if (!query.trim()) {
       set({ searchResults: [] });
@@ -165,33 +151,35 @@ const useChatStore = create((set, get) => ({
     }
   },
 
-  // Send Message
   sendMessage: async (receiverId, message, user) => {
-    if (!message.trim() || !receiverId) return;
+    if (!message.trim() || !receiverId) return false;
 
     try {
+      // 1. Save message via REST API
       const response = await api.post("/api/v1/messages/send", {
         receiverId,
         message: message.trim(),
       });
 
-      // Emit via socket for real-time delivery
+      const newMsg = response.data.data;
+
+      // 2. Add to local state immediately from REST response
+      const { messages } = get();
+      const alreadyExists = messages.some((m) => m._id === newMsg._id);
+      if (!alreadyExists) {
+        set({ messages: [...messages, newMsg] });
+      }
+
+      // 3. Notify the RECEIVER via socket (for real-time delivery)
       const { socket } = get();
       if (socket) {
-        socket.emit("private_message", {
-          senderId: user._id,
+        socket.emit("notify_receiver", {
           receiverId,
-          message: message.trim(),
+          message: newMsg, // pass full saved object
         });
       }
 
-      // Add message to local state
-      const { messages } = get();
-      set({ messages: [...messages, response.data.data] });
-
-      // Refresh conversations
       get().fetchConversations();
-
       return true;
     } catch (error) {
       console.error("Error sending message:", error);
