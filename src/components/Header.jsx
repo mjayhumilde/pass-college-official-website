@@ -18,6 +18,7 @@ import PopUpAnimation from "./PopUpAnimation";
 import LeftAnimation from "./LeftAnimation";
 import OpacityAnimation from "./OpacityAnimation";
 import ChatModal from "./ChatModal";
+import useChatStore from "../store/useChatStore";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -29,6 +30,11 @@ const Header = () => {
 
   const { isAuthenticated, userRole, user } = useAuthStore();
   const { notifications, fetchNotifications } = useNotificationStore();
+  const {
+    unreadCount: chatUnreadCount,
+    initializeSocket,
+    fetchUnreadCount,
+  } = useChatStore();
 
   //  scroll event listener
   useEffect(() => {
@@ -45,8 +51,17 @@ const Header = () => {
     fetchNotifications();
   }, [fetchNotifications]);
 
+  // Initialize socket on mount so unread counts update even when chat is closed
+  const { token } = useAuthStore();
+  useEffect(() => {
+    if (isAuthenticated && user && token) {
+      initializeSocket(user, token);
+      fetchUnreadCount(user._id);
+    }
+  }, [isAuthenticated, user, token]);
+
   const unreadCount = notifications.filter(
-    (n) => n.notifStatus === "unread"
+    (n) => n.notifStatus === "unread",
   ).length;
 
   // Prevent body scroll when mobile menu is open
@@ -79,7 +94,7 @@ const Header = () => {
 
     if (item.hasDropdown && item.name === "About") {
       return item.dropdownItems.some(
-        (dropdownItem) => location.pathname === dropdownItem.link
+        (dropdownItem) => location.pathname === dropdownItem.link,
       );
     }
 
@@ -128,7 +143,7 @@ const Header = () => {
     // 6. ADMIN
     if (userRole === "admin") {
       return !["ReqDocs", "Document Request", "Clearance Schedule"].includes(
-        itemName
+        itemName,
       );
     }
 
@@ -161,7 +176,7 @@ const Header = () => {
 
   // Filter menu items based on authentication and user role
   const filteredMenuItems = menuItems.filter((item) =>
-    shouldShowMenuItem(item.name)
+    shouldShowMenuItem(item.name),
   );
 
   return (
@@ -207,10 +222,10 @@ const Header = () => {
                       {userRole === "admin"
                         ? "ADMIN"
                         : userRole === "teacher"
-                        ? "TEACHER"
-                        : userRole === "registrar"
-                        ? "REGISTRAR"
-                        : "OFFICIAL WEBSITE"}
+                          ? "TEACHER"
+                          : userRole === "registrar"
+                            ? "REGISTRAR"
+                            : "OFFICIAL WEBSITE"}
                     </span>
                   </div>
                 </LeftAnimation>
@@ -228,6 +243,14 @@ const Header = () => {
                     <PopUpAnimation>
                       <MessageCircle className="text-red-primary" size={30} />
                     </PopUpAnimation>
+                    {/* Unread chat badge */}
+                    {chatUnreadCount > 0 && (
+                      <OpacityAnimation>
+                        <div className="bg-red-primary px-2 -top-2 absolute -right-3 rounded-full text-red-50 text-[15px] font-bold">
+                          {chatUnreadCount}
+                        </div>
+                      </OpacityAnimation>
+                    )}
                   </div>
 
                   {/* Notification Icon */}
@@ -286,6 +309,14 @@ const Header = () => {
                   <PopUpAnimation>
                     <MessageCircle className="text-red-50" size={24} />
                   </PopUpAnimation>
+                  {/* Mobile unread chat badge */}
+                  {chatUnreadCount > 0 && (
+                    <OpacityAnimation>
+                      <div className="bg-white px-1 sm:px-2 -top-2 -right-1 sm:-top-3 absolute sm:-right-3 rounded-full text-red-primary text-[11px] sm:text-[15px] font-bold">
+                        {chatUnreadCount}
+                      </div>
+                    </OpacityAnimation>
+                  )}
                 </div>
               )}
 
@@ -373,7 +404,7 @@ const Header = () => {
                                       {dropdownItem.name}
                                     </Link>
                                   </li>
-                                )
+                                ),
                               )}
                             </ul>
                           </div>
@@ -443,7 +474,7 @@ const Header = () => {
                                       {dropdownItem.name}
                                     </Link>
                                   </li>
-                                )
+                                ),
                               )}
                             </ul>
                           )}

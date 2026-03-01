@@ -26,6 +26,7 @@ const ChatModal = ({ isOpen, onClose }) => {
     clearSelectedChat,
     searchUsers,
     sendMessage,
+    resetUnread,
   } = useChatStore();
 
   const [newMessage, setNewMessage] = useState("");
@@ -37,6 +38,8 @@ const ChatModal = ({ isOpen, onClose }) => {
     if (isOpen && user && token) {
       initializeSocket(user, token);
       fetchConversations();
+      // Reset unread badge when chat is opened
+      resetUnread();
     }
 
     return () => {
@@ -98,6 +101,21 @@ const ChatModal = ({ isOpen, onClose }) => {
       return `${userData.firstName} ${userData.lastName}`;
     }
     return userData?.name || userData?.email || "Unknown User";
+  };
+
+  // A conversation has unread messages if lastMessage exists and the
+  // current user is not the sender (we use lastMessage as a proxy since
+  // we don't store per-convo unread counts yet)
+  const hasUnread = (conv) => {
+    if (!conv.lastMessage) return false;
+    const otherUser = getOtherUser(conv.participants);
+    // If the other user sent the last message and chat isn't currently open with them
+    return (
+      otherUser &&
+      conv.lastSenderId &&
+      conv.lastSenderId.toString() !== user._id &&
+      (!selectedChat || selectedChat._id !== otherUser._id)
+    );
   };
 
   return (
@@ -222,37 +240,50 @@ const ChatModal = ({ isOpen, onClose }) => {
                     ) : (
                       conversations.map((conv) => {
                         const otherUser = getOtherUser(conv.participants);
+                        const isUnread = hasUnread(conv);
                         return (
                           <div
                             key={conv._id}
                             onClick={() => handleSelectChat(otherUser)}
                             className="p-4 hover:bg-gray-50 cursor-pointer border-b flex items-center gap-3 transition-colors"
                           >
-                            <div className="w-12 h-12 bg-red-primary rounded-full flex items-center justify-center text-white font-semibold text-lg overflow-hidden">
-                              {otherUser?.photo ? (
-                                <img
-                                  src={otherUser.photo}
-                                  alt={getUserDisplayName(otherUser)}
-                                  className="w-full h-full object-cover"
-                                />
-                              ) : (
-                                getUserDisplayName(otherUser)
-                                  .charAt(0)
-                                  .toUpperCase()
+                            {/* Avatar */}
+                            <div className="relative flex-shrink-0">
+                              <div className="w-12 h-12 bg-red-primary rounded-full flex items-center justify-center text-white font-semibold text-lg overflow-hidden">
+                                {otherUser?.photo ? (
+                                  <img
+                                    src={otherUser.photo}
+                                    alt={getUserDisplayName(otherUser)}
+                                    className="w-full h-full object-cover"
+                                  />
+                                ) : (
+                                  getUserDisplayName(otherUser)
+                                    .charAt(0)
+                                    .toUpperCase()
+                                )}
+                              </div>
+                              {/* Green online-style dot for unread */}
+                              {isUnread && (
+                                <span className="absolute bottom-0 right-0 w-3 h-3 bg-red-primary border-2 border-white rounded-full" />
                               )}
                             </div>
+
                             <div className="flex-1 min-w-0">
                               <div className="flex justify-between items-start mb-1">
-                                <div className="font-medium truncate">
+                                <div
+                                  className={`truncate ${isUnread ? "font-bold text-gray-900" : "font-medium"}`}
+                                >
                                   {getUserDisplayName(otherUser)}
                                 </div>
-                                <div className="text-xs text-gray-500 ml-2">
+                                <div className="text-xs text-gray-500 ml-2 flex-shrink-0">
                                   {new Date(
-                                    conv.lastMessageAt
+                                    conv.lastMessageAt,
                                   ).toLocaleDateString()}
                                 </div>
                               </div>
-                              <div className="text-sm text-gray-500 truncate">
+                              <div
+                                className={`text-sm truncate ${isUnread ? "font-semibold text-gray-800" : "text-gray-500"}`}
+                              >
                                 {conv.lastMessage || "No messages yet"}
                               </div>
                             </div>

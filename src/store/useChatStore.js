@@ -94,11 +94,29 @@ const useChatStore = create((set, get) => ({
   fetchConversations: async () => {
     try {
       const response = await api.get("/api/v1/messages/conversations");
-      set({ conversations: response.data.data || [] });
+      const convos = response.data.data || [];
+      set({ conversations: convos });
 
       // Calculate unread count ||  For now just keep the existing unread count
     } catch (error) {
       console.error("Error fetching conversations:", error);
+    }
+  },
+
+  // Counts conversations
+  fetchUnreadCount: async (currentUserId) => {
+    try {
+      const response = await api.get("/api/v1/messages/conversations");
+      const convos = response.data.data || [];
+      const count = convos.filter(
+        (c) =>
+          c.lastSenderId &&
+          c.lastSenderId.toString() !== currentUserId &&
+          c.lastMessage,
+      ).length;
+      set({ conversations: convos, unreadCount: count });
+    } catch (error) {
+      console.error("Error fetching unread count:", error);
     }
   },
 
@@ -115,7 +133,7 @@ const useChatStore = create((set, get) => ({
         (msg) => msg.receiver === user._id && !msg.read,
       );
 
-      // Mark each as rea
+      // Mark each as read
       unreadMessages.forEach((msg) => {
         api.patch(`/api/v1/messages/read/${msg._id}`).catch(console.error);
       });
@@ -126,6 +144,19 @@ const useChatStore = create((set, get) => ({
           unreadCount: Math.max(0, state.unreadCount - unreadMessages.length),
         }));
       }
+
+      // Clear the bold/unread | updating lastSenderId locally
+      set((state) => ({
+        conversations: state.conversations.map((c) => {
+          const isThisConvo = c.participants.some(
+            (p) => (p._id || p).toString() === userId,
+          );
+          if (isThisConvo) {
+            return { ...c, lastSenderId: user._id }; // pretend current user sent last
+          }
+          return c;
+        }),
+      }));
     } catch (error) {
       console.error("Error fetching messages:", error);
     } finally {
