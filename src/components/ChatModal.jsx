@@ -40,6 +40,8 @@ const ChatModal = ({ isOpen, onClose }) => {
       fetchConversations();
       // Reset unread badge when chat is opened
       resetUnread();
+      // Always start at the conversations list, never jump into a chat
+      clearSelectedChat();
     }
 
     return () => {
