@@ -18,6 +18,7 @@ import {
   BookOpen,
   CalendarCheck,
   ChevronRight,
+  Mail,
 } from "lucide-react";
 import passLogo from "../assets/images/logo/pass_logo.png";
 import BtnPriRed from "./BtnPriRed";
@@ -39,6 +40,7 @@ const SIDEBAR_ITEMS = [
     link: "/clearance-meeting",
     icon: CalendarCheck,
   },
+  { name: "Newsletter", link: "/newsletter", icon: Mail },
 ];
 
 // Roles that get the sidebar panel
@@ -156,6 +158,8 @@ const Header = () => {
 
   // Filter sidebar items by what each role should actually see
   const visibleSidebarItems = SIDEBAR_ITEMS.filter((item) => {
+    if (item.name === "Newsletter")
+      return ["admin", "registrar"].includes(userRole);
     if (item.name === "Clearance Schedule") return userRole === "teacher";
     if (userRole === "registrar")
       return !["Transaction Report"].includes(item.name);
