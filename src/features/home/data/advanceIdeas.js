@@ -1,25 +1,25 @@
-import advanceIdeas1 from "../../assets/images/home/advanceIdeas/advanceIdeas1.jpg";
-import advanceIdeas2 from "../../assets/images/home/advanceIdeas/advanceIdeas2.jpg";
-import advanceIdeas3 from "../../assets/images/home/advanceIdeas/advanceIdeas3.jpg";
+import advanceIdeas1 from "../../../assets/images/home/advanceIdeas/advanceIdeas1.jpg";
+import advanceIdeas2 from "../../../assets/images/home/advanceIdeas/advanceIdeas2.jpg";
+import advanceIdeas3 from "../../../assets/images/home/advanceIdeas/advanceIdeas3.jpg";
 
-export let advIdeas = [
+export const advanceIdeas = [
   {
     id: 1,
-    img: `${advanceIdeas1}`,
+    image: advanceIdeas1,
     title: "Lorem ipsum dolor sit ame Lorelit. Fugiat porro ae",
     description:
       "Faculty have a free and challenging environment in which to pursue the most original research.",
   },
   {
     id: 2,
-    img: `${advanceIdeas2}`,
+    image: advanceIdeas2,
     title: "Lorem ipsum dolor sit ame Lorelit. Fugiat porro ae",
     description:
       "As a community partner, we invest in such areas as health, education, economic growth, and the arts.",
   },
   {
     id: 3,
-    img: `${advanceIdeas3}`,
+    image: advanceIdeas3,
     title: "Lorem ipsum dolor sit ame Lorelit. Fugiat porro ae",
     description:
       "We are an international community of scholars working to solve the world's most pressing issues, with initiatives and programs on all seven continents.",
