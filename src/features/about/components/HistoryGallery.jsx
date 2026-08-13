@@ -1,7 +1,7 @@
-import { motion, useInView } from "framer-motion";
+import { motion as Motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
-const GalleryLayout = () => {
+const HistoryGallery = () => {
   const ref1 = useRef(null);
   const ref2 = useRef(null);
   const ref3 = useRef(null);
@@ -85,7 +85,7 @@ const GalleryLayout = () => {
       <div className="">
         <div className="grid grid-cols-1 gap-4 px-6 py-10 md:grid-cols-12 lg:grid-cols-17 md:gap-2 2xl:p-10 2xl:px-20">
           {/* Large left image - spans 6 columns and full height */}
-          <motion.div
+          <Motion.div
             ref={ref1}
             variants={variants1}
             initial="hidden"
@@ -101,10 +101,10 @@ const GalleryLayout = () => {
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia,
               sequi, dolores numquam odit doloremque rep
             </div>
-          </motion.div>
+          </Motion.div>
 
           {/* Top right images - each spans 3 columns */}
-          <motion.div
+          <Motion.div
             ref={ref2}
             variants={variants2}
             initial="hidden"
@@ -120,9 +120,9 @@ const GalleryLayout = () => {
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia,
               sequi, dolores numquam odit doloremque rep
             </div>
-          </motion.div>
+          </Motion.div>
 
-          <motion.div
+          <Motion.div
             ref={ref3}
             variants={variants3}
             initial="hidden"
@@ -138,10 +138,10 @@ const GalleryLayout = () => {
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia,
               sequi, dolores numquam odit doloremque rep
             </div>
-          </motion.div>
+          </Motion.div>
 
           {/* Bottom right images - one spans 6 and one spans 3 columns */}
-          <motion.div
+          <Motion.div
             ref={ref4}
             variants={variants4}
             initial="hidden"
@@ -157,9 +157,9 @@ const GalleryLayout = () => {
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia,
               sequi, dolores numquam odit doloremque rep
             </div>
-          </motion.div>
+          </Motion.div>
 
-          <motion.div
+          <Motion.div
             ref={ref5}
             variants={variants5}
             initial="hidden"
@@ -175,11 +175,11 @@ const GalleryLayout = () => {
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia,
               sequi, dolores numquam odit doloremque rep
             </div>
-          </motion.div>
+          </Motion.div>
         </div>
       </div>
     </section>
   );
 };
 
-export default GalleryLayout;
+export default HistoryGallery;

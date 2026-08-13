@@ -1,11 +1,3 @@
-import { Outlet } from "react-router-dom";
+import AboutLayout from "../../features/about/layouts/AboutLayout";
 
-const About = () => {
-  return (
-    <main>
-      <Outlet />
-    </main>
-  );
-};
-
-export default About;
+export default AboutLayout;
