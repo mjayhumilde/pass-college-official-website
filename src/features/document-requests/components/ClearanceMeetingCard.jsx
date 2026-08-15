@@ -8,7 +8,8 @@ import {
   CheckCircle,
   FileText,
 } from "lucide-react";
-import useClearanceStore from "../store/useClearanceStore";
+import useClearanceStore from "../../../store/useClearanceStore";
+
 const ClearanceMeetingCard = ({ documentId, clearanceStatus }) => {
   const {
     fetchMeetingForDocument,
@@ -88,9 +89,9 @@ const ClearanceMeetingCard = ({ documentId, clearanceStatus }) => {
           }`}
         >
           {clearanceStatus === "completed"
-            ? "Clearance Meeting — Completed"
+            ? "Clearance Meeting â€” Completed"
             : isPast
-              ? "Clearance Meeting — Awaiting Completion"
+              ? "Clearance Meeting â€” Awaiting Completion"
               : "Clearance Meeting Scheduled"}
         </span>
       </div>
