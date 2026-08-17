@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import api from "./api";
+import api from "../../../store/api";
 
 const useKnowledgeStore = create(
   persist(

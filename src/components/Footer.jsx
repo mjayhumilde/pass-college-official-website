@@ -1,6 +1,6 @@
 import { Facebook, Mail, MapPin, Phone } from "lucide-react";
 import passLogo from "../assets/images/logo/pass_logo.png";
-import FloatingChatbot from "./FloatingChatbot";
+import FloatingChatbot from "../features/chatbot/components/FloatingChatbot";
 
 const Footer = () => {
   return (
