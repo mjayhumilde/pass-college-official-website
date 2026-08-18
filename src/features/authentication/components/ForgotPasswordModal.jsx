@@ -1,16 +1,17 @@
 import { useState } from "react";
-import { X, Mail, AlertTriangle, CheckCircle } from "lucide-react";
-import useAuthStore from "../store/useAuthStore";
+import { Mail, X } from "lucide-react";
+import useAuthStore from "../../../store/useAuthStore";
+import AuthFeedbackMessage from "./AuthFeedbackMessage";
 
 export default function ForgotPasswordModal({ isOpen, onClose }) {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const forgotPassword = useAuthStore((state) => state.forgotPassword);
 
-  const { forgotPassword } = useAuthStore();
-
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     setError("");
     setIsLoading(true);
 
@@ -18,19 +19,20 @@ export default function ForgotPasswordModal({ isOpen, onClose }) {
       const result = await forgotPassword(email);
 
       if (result.success) {
-        setSuccess(true);
+        setIsSuccess(true);
         setEmail("");
 
-        // Auto close after 3 seconds on success
         setTimeout(() => {
           onClose();
-          setSuccess(false);
+          setIsSuccess(false);
         }, 3000);
       } else {
         setError(result.error || "Failed to send reset email");
       }
-    } catch (err) {
-      setError(err.message || "Something went wrong. Please try again.");
+    } catch (submitError) {
+      setError(
+        submitError.message || "Something went wrong. Please try again.",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -39,71 +41,52 @@ export default function ForgotPasswordModal({ isOpen, onClose }) {
   const handleClose = () => {
     setEmail("");
     setError("");
-    setSuccess(false);
+    setIsSuccess(false);
     onClose();
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter" && email && !isLoading && !success) {
-      handleSubmit();
-    }
-  };
-
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="relative w-full max-w-md p-6 mx-4 bg-white rounded-lg shadow-xl">
-        {/* Close Button */}
         <button
+          type="button"
           onClick={handleClose}
           className="hover:cursor-pointer absolute text-gray-400 top-4 right-4 hover:text-red-primary"
+          aria-label="Close forgot password form"
+          title="Close"
         >
           <X className="w-6 h-6" />
         </button>
 
-        {/* Modal Content */}
         <div className="mt-2">
           <h2 className="text-2xl font-bold text-red-primary">
             Forgot Password?
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Enter your email address and we'll send you a link to reset your
-            password.
+            Enter your email address and we&apos;ll send you a link to reset
+            your password.
           </p>
 
-          {/* Success Message */}
-          {success && (
-            <div className="p-4 mt-4 border-l-4 border-green-500 bg-green-50">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm text-green-800">
-                    Password reset link sent! Check your email.
-                  </p>
-                </div>
-              </div>
-            </div>
+          {isSuccess && (
+            <AuthFeedbackMessage
+              type="success"
+              message="Password reset link sent! Check your email."
+              className="mt-4"
+            />
           )}
-
-          {/* Error Message */}
           {error && (
-            <div className="p-4 mt-4 border-l-4 border-red-800 bg-red-50">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <AlertTriangle className="w-5 h-5 text-red-800" />
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm text-red-800">{error}</p>
-                </div>
-              </div>
-            </div>
+            <AuthFeedbackMessage
+              type="error"
+              message={error}
+              className="mt-4"
+            />
           )}
 
-          {/* Input Field */}
-          <div className="mt-6 space-y-4">
+          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
             <div>
               <label
                 htmlFor="forgot-email"
@@ -120,11 +103,10 @@ export default function ForgotPasswordModal({ isOpen, onClose }) {
                   name="email"
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  onKeyPress={handleKeyPress}
+                  onChange={(event) => setEmail(event.target.value)}
                   className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm text-red-primary focus:outline-none focus:ring-red-800 focus:border-red-800 sm:text-sm"
                   placeholder="you@school_gmail.com"
-                  disabled={isLoading || success}
+                  disabled={isLoading || isSuccess}
                 />
               </div>
             </div>
@@ -139,23 +121,22 @@ export default function ForgotPasswordModal({ isOpen, onClose }) {
                 Cancel
               </button>
               <button
-                type="button"
-                onClick={handleSubmit}
-                disabled={isLoading || success || !email}
+                type="submit"
+                disabled={isLoading || isSuccess || !email}
                 className={`flex-1 flex justify-center py-2 px-4 border border-transparent rounded-full shadow-sm text-sm font-bold text-white bg-red-800 hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-800 ${
-                  isLoading || success || !email
+                  isLoading || isSuccess || !email
                     ? "opacity-70 cursor-not-allowed"
                     : ""
                 }`}
               >
                 {isLoading
                   ? "Sending..."
-                  : success
-                  ? "Sent!"
-                  : "Send Reset Link"}
+                  : isSuccess
+                    ? "Sent!"
+                    : "Send Reset Link"}
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
