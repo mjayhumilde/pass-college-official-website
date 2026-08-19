@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import api from "./api";
+import api from "../../../store/api";
 
 const useRequestAccountStore = create((set, get) => ({
   requests: [],
