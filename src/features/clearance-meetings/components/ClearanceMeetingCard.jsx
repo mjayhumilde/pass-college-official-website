@@ -8,7 +8,7 @@ import {
   CheckCircle,
   FileText,
 } from "lucide-react";
-import useClearanceStore from "../../../store/useClearanceStore";
+import useClearanceStore from "../store/useClearanceStore";
 
 const ClearanceMeetingCard = ({ documentId, clearanceStatus }) => {
   const {

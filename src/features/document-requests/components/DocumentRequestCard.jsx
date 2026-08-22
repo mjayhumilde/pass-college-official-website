@@ -1,5 +1,5 @@
 import { Clock, FileText, Loader2, Shield, Trash2 } from "lucide-react";
-import ClearanceMeetingCard from "./ClearanceMeetingCard";
+import { ClearanceMeetingCard } from "../../clearance-meetings";
 import DocumentStatusTimeline from "./DocumentStatusTimeline";
 import {
   formatDate,
