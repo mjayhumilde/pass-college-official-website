@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AlertCircle, FileText, Loader2 } from "lucide-react";
-import useAvailableDocumentStore from "../../../store/useAvailableDocumentStore";
-import useDocumentStore from "../../../store/useDocumentStore";
+import useAvailableDocumentStore from "../store/useAvailableDocumentStore";
+import useDocumentStore from "../store/useDocumentStore";
 import SelectedDocumentInfo from "./SelectedDocumentInfo";
 
 export default function DocumentRequestForm() {

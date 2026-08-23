@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FileText, Loader2 } from "lucide-react";
-import useDocumentStore from "../../../store/useDocumentStore";
+import useDocumentStore from "../store/useDocumentStore";
 import DocumentRequestCard from "./DocumentRequestCard";
 
 export default function MyDocumentRequests() {
