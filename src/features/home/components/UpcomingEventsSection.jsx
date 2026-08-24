@@ -1,5 +1,5 @@
 import SectionAnimator from "../../../components/SectionAnimator";
-import SectionEventLayout from "../../../components/SectionEventLayout";
+import { SectionEventLayout } from "../../news-events";
 
 export default function UpcomingEventsSection({ events }) {
   return (

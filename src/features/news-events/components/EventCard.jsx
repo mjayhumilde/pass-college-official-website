@@ -1,6 +1,6 @@
-import useAuthStore from "../store/useAuthStore";
-import DeleteIcon from "./DeleteIcon";
-import EditComponent from "./EditIcon";
+import useAuthStore from "../../../store/useAuthStore";
+import DeleteIcon from "../../../components/DeleteIcon";
+import EditComponent from "../../../components/EditIcon";
 
 const EventCard = ({ event }) => {
   const userRole = useAuthStore((s) => s.userRole);
