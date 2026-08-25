@@ -1,4 +1,4 @@
-import SectionAnimator from "../../../components/SectionAnimator";
+import { SectionAnimator } from "../../../shared/components/motion";
 
 export default function AboutIntroduction({ children, title, className = "" }) {
   return (

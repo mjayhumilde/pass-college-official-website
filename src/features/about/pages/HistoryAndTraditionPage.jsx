@@ -1,5 +1,5 @@
-import HeroBgSection from "../../../components/HeroBgSection";
-import PopUpAnimation from "../../../components/PopUpAnimation";
+import { HeroBgSection } from "../../../shared/components";
+import { PopUpAnimation } from "../../../shared/components/motion";
 import historyBackground from "../../../assets/images/about/historyTradition/bg-history.jpg";
 import AboutIntroduction from "../components/AboutIntroduction";
 import AboutStatementSection from "../components/AboutStatementSection";

@@ -1,4 +1,4 @@
-import PopUpAnimation from "../../../components/PopUpAnimation";
+import { PopUpAnimation } from "../../../shared/components/motion";
 
 export default function VisionMissionSection() {
   return (

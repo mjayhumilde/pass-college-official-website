@@ -1,6 +1,8 @@
-import LeftAnimation from "../../../components/LeftAnimation";
-import PopUpAnimation from "../../../components/PopUpAnimation";
-import SectionAnimator from "../../../components/SectionAnimator";
+import {
+  LeftAnimation,
+  PopUpAnimation,
+  SectionAnimator,
+} from "../../../shared/components/motion";
 
 export default function PresidentQuoteSection() {
   return (

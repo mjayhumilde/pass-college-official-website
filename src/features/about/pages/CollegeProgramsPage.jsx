@@ -1,5 +1,5 @@
-import HeroBgSection from "../../../components/HeroBgSection";
-import SectionAnimator from "../../../components/SectionAnimator";
+import { HeroBgSection } from "../../../shared/components";
+import { SectionAnimator } from "../../../shared/components/motion";
 import useAuthStore from "../../../store/useAuthStore";
 import collegeProgramsBackground from "../../../assets/images/about/collegePrograms/alterSection/coverbanner.jpg";
 import AboutStatementSection from "../components/AboutStatementSection";

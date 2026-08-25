@@ -1,6 +1,8 @@
-import OpacityAnimation from "../../../components/OpacityAnimation";
-import PopUpAnimation from "../../../components/PopUpAnimation";
-import SectionAnimator from "../../../components/SectionAnimator";
+import {
+  OpacityAnimation,
+  PopUpAnimation,
+  SectionAnimator,
+} from "../../../shared/components/motion";
 import { traditions } from "../data/historyTradition";
 import AboutSectionHeading from "./AboutSectionHeading";
 

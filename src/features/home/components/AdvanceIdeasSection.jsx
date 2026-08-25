@@ -1,5 +1,5 @@
 import { motion as Motion } from "framer-motion";
-import SectionAnimator from "../../../components/SectionAnimator";
+import { SectionAnimator } from "../../../shared/components/motion";
 import { advanceIdeas } from "../data/advanceIdeas";
 import { newsItemPopVariants } from "../constants/animations";
 

@@ -1,6 +1,8 @@
-import LeftAnimation from "../../../components/LeftAnimation";
-import OpacityAnimation from "../../../components/OpacityAnimation";
-import RightAnimation from "../../../components/RightAnimation";
+import {
+  LeftAnimation,
+  OpacityAnimation,
+  RightAnimation,
+} from "../../../shared/components/motion";
 
 const backgroundClasses = {
   gray: "bg-gray-secondary-opacity",

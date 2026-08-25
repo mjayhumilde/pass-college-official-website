@@ -1,5 +1,5 @@
-import BtnPriWhite from "../../../components/BtnPriWhite";
-import PopUpAnimation from "../../../components/PopUpAnimation";
+import BtnPriWhite from "./BtnPriWhite";
+import { PopUpAnimation } from "../../../shared/components/motion";
 import adsVideo from "../../../assets/videos/pass_ads_video.mp4";
 
 export default function HomeHeroSection() {

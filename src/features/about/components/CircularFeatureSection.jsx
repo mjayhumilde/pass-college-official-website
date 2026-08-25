@@ -1,5 +1,7 @@
-import PopUpAnimation from "../../../components/PopUpAnimation";
-import SectionAnimator from "../../../components/SectionAnimator";
+import {
+  PopUpAnimation,
+  SectionAnimator,
+} from "../../../shared/components/motion";
 import AboutSectionHeading from "./AboutSectionHeading";
 
 export default function CircularFeatureSection({

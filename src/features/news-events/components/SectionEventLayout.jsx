@@ -1,7 +1,7 @@
 import { CalendarOff } from "lucide-react";
 import EventCard from "./EventCard";
 import { useNavigate } from "react-router-dom";
-import EmptySection from "../../../components/EmptySection";
+import { EmptySection } from "../../../shared/components";
 
 const SectionEventLayout = ({ data, label }) => {
   const navigate = useNavigate();

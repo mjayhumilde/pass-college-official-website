@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { useScrollToPost } from "../../../hook/useScrollPost";
+import { useScrollToPost } from "../../../shared/hooks";
 import useAuthStore from "../../../store/useAuthStore";
 import usePostStore from "../../../store/usePostStore";
 import NewsEventsHero from "../components/NewsEventsHero";

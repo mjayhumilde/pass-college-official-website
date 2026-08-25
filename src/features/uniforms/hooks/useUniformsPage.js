@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useScrollToPost } from "../../../hook/useScrollPost";
+import { useScrollToPost } from "../../../shared/hooks";
 import useAuthStore from "../../../store/useAuthStore";
 import usePostStore from "../../../store/usePostStore";
 

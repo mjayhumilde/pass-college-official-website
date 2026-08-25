@@ -1,8 +1,8 @@
 import { useRef } from "react";
 import { motion as Motion, useInView } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import CardSlider from "../../../components/CardSlider-choosePass";
-import SectionAnimator from "../../../components/SectionAnimator";
+import { CardSlider } from "../../../shared/components";
+import { SectionAnimator } from "../../../shared/components/motion";
 import { cards } from "../../../data/home/choose";
 import { slideInFromLeftVariants } from "../constants/animations";
 

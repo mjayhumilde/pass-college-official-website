@@ -1,9 +1,11 @@
 import { ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import OpacityAnimation from "../../../components/OpacityAnimation";
-import PopUpAnimation from "../../../components/PopUpAnimation";
-import RightAnimation from "../../../components/RightAnimation";
-import SectionAnimator from "../../../components/SectionAnimator";
+import {
+  OpacityAnimation,
+  PopUpAnimation,
+  RightAnimation,
+  SectionAnimator,
+} from "../../../shared/components/motion";
 import { legacyLearningItems } from "../data/whoWeAre";
 import AboutSectionHeading from "./AboutSectionHeading";
 

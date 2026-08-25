@@ -1,6 +1,8 @@
-import CardSlider from "../../../components/CardSlider-choosePass";
-import LeftAnimation from "../../../components/LeftAnimation";
-import SectionAnimator from "../../../components/SectionAnimator";
+import { CardSlider } from "../../../shared/components";
+import {
+  LeftAnimation,
+  SectionAnimator,
+} from "../../../shared/components/motion";
 import { cards } from "../../../data/home/choose";
 import AboutStatementSection from "./AboutStatementSection";
 

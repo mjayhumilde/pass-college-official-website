@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import PopUpAnimation from "../../../components/PopUpAnimation";
-import SectionAnimator from "../../../components/SectionAnimator";
+import {
+  PopUpAnimation,
+  SectionAnimator,
+} from "../../../shared/components/motion";
 import welcomeImage from "../../../assets/images/home/weWelcomeAll/weWelcomeAll.jpg";
 
 export default function WelcomeSection() {

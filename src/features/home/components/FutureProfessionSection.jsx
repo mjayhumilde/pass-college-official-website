@@ -1,4 +1,4 @@
-import SectionAnimator from "../../../components/SectionAnimator";
+import { SectionAnimator } from "../../../shared/components/motion";
 import shapeYourFuture from "../../../assets/images/home/shapeYourFuture/shapeYourFuture.jpg";
 
 export default function FutureProfessionSection() {

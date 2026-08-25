@@ -2,8 +2,8 @@ import { useRef } from "react";
 import { motion as Motion, useInView } from "framer-motion";
 import { ExternalLink, MegaphoneOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import EmptySection from "../../../components/EmptySection";
-import SectionAnimator from "../../../components/SectionAnimator";
+import { EmptySection } from "../../../shared/components";
+import { SectionAnimator } from "../../../shared/components/motion";
 import {
   newsContainerVariants,
   newsItemPopVariants,

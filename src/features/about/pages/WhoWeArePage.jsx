@@ -1,6 +1,8 @@
-import HeroBgSection from "../../../components/HeroBgSection";
-import PopUpAnimation from "../../../components/PopUpAnimation";
-import SectionAnimator from "../../../components/SectionAnimator";
+import { HeroBgSection } from "../../../shared/components";
+import {
+  PopUpAnimation,
+  SectionAnimator,
+} from "../../../shared/components/motion";
 import whoWeAreBackground from "../../../assets/images/about/whoWeAre/bg-whoWeAre.jpg";
 import AboutIntroduction from "../components/AboutIntroduction";
 import AboutStatementSection from "../components/AboutStatementSection";

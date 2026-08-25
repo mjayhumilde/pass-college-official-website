@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import CardSlider from "../../../components/CardSlider-choosePass";
-import RightAnimation from "../../../components/RightAnimation";
-import SectionAnimator from "../../../components/SectionAnimator";
+import { CardSlider } from "../../../shared/components";
+import {
+  RightAnimation,
+  SectionAnimator,
+} from "../../../shared/components/motion";
 import { campusLifeCards } from "../data/campusLife";
 
 export default function CampusHomeSection() {

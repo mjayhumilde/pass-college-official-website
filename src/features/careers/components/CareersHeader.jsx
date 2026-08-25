@@ -1,4 +1,4 @@
-import HeroBgSection from "../../../components/HeroBgSection";
+import { HeroBgSection } from "../../../shared/components";
 
 const CAREERS_HERO_IMAGE =
   "https://t4.ftcdn.net/jpg/09/02/53/81/360_F_902538150_JCEcejSQkRHHR7d5jE1nbmfhXHdcd9E3.jpg";

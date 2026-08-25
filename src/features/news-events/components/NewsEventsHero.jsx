@@ -1,4 +1,4 @@
-import HeroBgSection from "../../../components/HeroBgSection";
+import { HeroBgSection } from "../../../shared/components";
 
 const NEWS_EVENTS_HERO_IMAGE =
   "https://img.freepik.com/premium-photo/global-technology-background_13339-284304.jpg?semt=ais_hybrid";

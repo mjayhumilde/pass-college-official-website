@@ -1,4 +1,4 @@
-import HeroBgSection from "../../../components/HeroBgSection";
+import { HeroBgSection } from "../../../shared/components";
 
 const UNIFORMS_HERO_IMAGE =
   "https://media.istockphoto.com/id/911026578/photo/walking-to-class.jpg?s=612x612&w=0&k=20&c=0zYehlzABctgFBr_QFjkqqfNcU4Gmf-lj92bXrhQ2IY=";

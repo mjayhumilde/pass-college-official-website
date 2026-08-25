@@ -1,4 +1,4 @@
-import SectionAnimator from "../../../components/SectionAnimator";
+import { SectionAnimator } from "../../../shared/components/motion";
 import { SectionEventLayout } from "../../news-events";
 
 export default function UpcomingEventsSection({ events }) {
