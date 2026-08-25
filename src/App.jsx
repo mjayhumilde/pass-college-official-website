@@ -6,7 +6,7 @@ import Events from "./pages/Events";
 import Uniform from "./pages/Uniform";
 import ReqDocs from "./pages/ReqDocs";
 import Careers from "./pages/Careers";
-import Layout from "./components/Layout";
+import Layout from "./app/layout/Layout";
 import WhoWeAre from "./pages/AboutPages/WhoWeAre";
 import HistoryAndTradition from "./pages/AboutPages/HistoryAndTradition";
 import CollegePrograms from "./pages/AboutPages/CollegePrograms";

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import useAuthStore from "../store/useAuthStore";
-import useNotificationStore from "../store/useNotificationStore";
+import useAuthStore from "../../store/useAuthStore";
+import useNotificationStore from "../../store/useNotificationStore";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
@@ -20,13 +20,15 @@ import {
   ChevronRight,
   Mail,
 } from "lucide-react";
-import passLogo from "../assets/images/logo/pass_logo.png";
+import passLogo from "../../assets/images/logo/pass_logo.png";
 import BtnPriRed from "./BtnPriRed";
-import PopUpAnimation from "./PopUpAnimation";
-import LeftAnimation from "./LeftAnimation";
-import OpacityAnimation from "./OpacityAnimation";
-import ChatModal from "./ChatModal";
-import useChatStore from "../store/useChatStore";
+import {
+  LeftAnimation,
+  OpacityAnimation,
+  PopUpAnimation,
+} from "../../shared/components/motion";
+import { ChatModal } from "../../features/chat";
+import useChatStore from "../../store/useChatStore";
 
 // Items moved into the sidebar panel
 const SIDEBAR_ITEMS = [
