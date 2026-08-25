@@ -182,7 +182,7 @@ const useChatStore = create((set, get) => ({
     }
   },
 
-  sendMessage: async (receiverId, message, user) => {
+  sendMessage: async (receiverId, message) => {
     if (!message.trim() || !receiverId) return false;
 
     try {

@@ -70,7 +70,7 @@ const ChatModal = ({ isOpen, onClose }) => {
   const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedChat) return;
 
-    const success = await sendMessage(selectedChat._id, newMessage, user);
+    const success = await sendMessage(selectedChat._id, newMessage);
     if (success) {
       setNewMessage("");
     }
