@@ -1,4 +1,4 @@
-import NewsletterSubscription from "../../../components/NewsLetterSubscription";
+import { NewsletterSubscription } from "../../newsletter";
 
 export default function NewsEventsNewsletterSection() {
   return (
