@@ -1,4 +1,4 @@
-import usePostStore from "../store/usePostStore";
+import usePostStore from "../../../store/usePostStore";
 import { useEffect, useMemo, useState } from "react";
 import {
   Edit as EditIcon,

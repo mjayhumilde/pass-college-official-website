@@ -1,4 +1,4 @@
-import CreatePostPopup from "../../../components/CreatePostPopup";
+import { CreatePostPopup } from "../../posts";
 
 export default function CareerManagementActions({ canManageCareers }) {
   if (!canManageCareers) {

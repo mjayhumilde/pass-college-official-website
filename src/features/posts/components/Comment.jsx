@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Reply, Edit3, Trash2, Check, X } from "lucide-react";
-import useCommentStore from "../store/useCommentStore";
-import useAuthStore from "../store/useAuthStore";
+import useCommentStore from "../../../store/useCommentStore";
+import useAuthStore from "../../../store/useAuthStore";
 
 const Comment = ({ comment, depth = 0, onReply }) => {
   const [showReply, setShowReply] = useState(false);

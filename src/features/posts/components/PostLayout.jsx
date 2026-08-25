@@ -1,8 +1,8 @@
 import Pagination from "./Pagination";
-import useAuthStore from "../store/useAuthStore";
-import ImageCarousel from "./ImageCorousel";
+import useAuthStore from "../../../store/useAuthStore";
+import ImageCarousel from "./ImageCarousel";
 import { useState } from "react";
-import EmptySection from "./EmptySection";
+import { EmptySection } from "../../../shared/components";
 import { CircleOff } from "lucide-react";
 import PostItem from "./PostItem";
 

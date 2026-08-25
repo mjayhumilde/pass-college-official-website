@@ -1,6 +1,5 @@
 import useAuthStore from "../../../store/useAuthStore";
-import DeleteIcon from "../../../components/DeleteIcon";
-import EditComponent from "../../../components/EditIcon";
+import { DeletePostAction, EditPostAction } from "../../posts";
 
 const EventCard = ({ event }) => {
   const userRole = useAuthStore((s) => s.userRole);
@@ -50,8 +49,8 @@ const EventCard = ({ event }) => {
             {(userRole === "admin" || userRole === "registrar") &&
               isAuthenticated && (
                 <div className="flex items-center justify-end p-1 gap-1">
-                  <EditComponent post={event} />
-                  <DeleteIcon id={event._id} />
+                  <EditPostAction post={event} />
+                  <DeletePostAction id={event._id} />
                 </div>
               )}
           </div>

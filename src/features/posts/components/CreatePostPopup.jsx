@@ -8,8 +8,8 @@ import {
   FileText,
 } from "lucide-react";
 
-import usePostStore from "../store/usePostStore";
-import useNotificationStore from "../store/useNotificationStore";
+import usePostStore from "../../../store/usePostStore";
+import useNotificationStore from "../../../store/useNotificationStore";
 
 export default function CreatePostPopup() {
   const [isOpen, setIsOpen] = useState(false);

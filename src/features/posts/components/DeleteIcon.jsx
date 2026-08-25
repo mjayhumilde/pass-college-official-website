@@ -1,4 +1,4 @@
-import usePostStore from "../store/usePostStore";
+import usePostStore from "../../../store/usePostStore";
 
 import { useState } from "react";
 import { Trash2 } from "lucide-react";

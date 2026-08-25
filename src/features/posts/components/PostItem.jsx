@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { Heart } from "lucide-react";
 import DeleteIcon from "./DeleteIcon";
 import EditComponent from "./EditIcon";
-import useCommentStore from "../store/useCommentStore";
-import useAuthStore from "../store/useAuthStore";
-import useLikeStore from "../store/useLikeStore";
+import useCommentStore from "../../../store/useCommentStore";
+import useAuthStore from "../../../store/useAuthStore";
+import useLikeStore from "../../../store/useLikeStore";
 import Comment from "./Comment";
 
 const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {

@@ -1,7 +1,6 @@
 import { MegaphoneOff } from "lucide-react";
-import CreatePostPopup from "../../../components/CreatePostPopup";
-import EmptySection from "../../../components/EmptySection";
-import PostLayout from "../../../components/PostLayout";
+import { EmptySection } from "../../../shared/components";
+import { CreatePostPopup, PostLayout } from "../../posts";
 
 export default function NewsSection({ canManagePosts, news }) {
   return (
