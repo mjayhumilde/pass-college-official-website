@@ -29,24 +29,84 @@ import {
 } from "../../shared/components/motion";
 import { ChatModal } from "../../features/chat";
 import useChatStore from "../../store/useChatStore";
+import { getRoleLabel, hasPermission, PERMISSIONS } from "../auth/accessPolicy";
 
 // Items moved into the sidebar panel
-const SIDEBAR_ITEMS = [
-  { name: "Accounts", link: "/accounts", icon: Users },
-  { name: "Document Request", link: "/request", icon: FileText },
-  { name: "Transaction Report", link: "/transaction-report", icon: BarChart2 },
-  { name: "Account Request", link: "/account-request", icon: UserCheck },
-  { name: "AI Knowledge", link: "/ai-knowledge", icon: BookOpen },
+const MANAGEMENT_ITEMS = [
+  {
+    name: "Accounts",
+    link: "/accounts",
+    icon: Users,
+    permission: PERMISSIONS.MANAGE_ACCOUNTS,
+  },
+  {
+    name: "Document Request",
+    link: "/request",
+    icon: FileText,
+    permission: PERMISSIONS.MANAGE_DOCUMENTS,
+  },
+  {
+    name: "Transaction Report",
+    link: "/transaction-report",
+    icon: BarChart2,
+    permission: PERMISSIONS.VIEW_TRANSACTION_REPORTS,
+  },
+  {
+    name: "Account Request",
+    link: "/account-request",
+    icon: UserCheck,
+    permission: PERMISSIONS.MANAGE_ACCOUNT_REQUESTS,
+  },
+  {
+    name: "AI Knowledge",
+    link: "/ai-knowledge",
+    icon: BookOpen,
+    permission: PERMISSIONS.MANAGE_AI_KNOWLEDGE,
+  },
   {
     name: "Clearance Schedule",
     link: "/clearance-meeting",
     icon: CalendarCheck,
+    permission: PERMISSIONS.MANAGE_CLEARANCE_MEETINGS,
   },
-  { name: "Newsletter", link: "/newsletter", icon: Mail },
+  {
+    name: "Newsletter",
+    link: "/newsletter",
+    icon: Mail,
+    permission: PERMISSIONS.MANAGE_NEWSLETTER,
+  },
 ];
 
-// Roles that get the sidebar panel
-const SIDEBAR_ROLES = ["admin", "registrar", "teacher"];
+const PRIMARY_NAV_ITEMS = [
+  { name: "Home", link: "/", isPublic: true },
+  {
+    name: "About",
+    isPublic: true,
+    hasDropdown: true,
+    dropdownItems: [
+      { name: "About PASSIAN Education", link: "/about/who-we-are" },
+      { name: "Our History & Tradition", link: "/about/history-tradition" },
+      { name: "Our College Programs", link: "/about/college-programs" },
+    ],
+  },
+  {
+    name: "Announcements",
+    link: "/announcements",
+    permission: PERMISSIONS.VIEW_MEMBER_CONTENT,
+  },
+  { name: "News & Events", link: "/news-events", isPublic: true },
+  {
+    name: "Uniforms",
+    link: "/uniforms",
+    permission: PERMISSIONS.VIEW_MEMBER_CONTENT,
+  },
+  {
+    name: "ReqDocs",
+    link: "/reqdocs",
+    permission: PERMISSIONS.REQUEST_DOCUMENTS,
+  },
+  { name: "Careers", link: "/careers", isPublic: true },
+];
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -76,9 +136,16 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const canViewNotifications = hasPermission(
+    userRole,
+    PERMISSIONS.VIEW_NOTIFICATIONS,
+  );
+
   useEffect(() => {
-    fetchNotifications();
-  }, [fetchNotifications]);
+    if (isAuthenticated && canViewNotifications) {
+      fetchNotifications();
+    }
+  }, [canViewNotifications, fetchNotifications, isAuthenticated]);
 
   // Initialize socket on mount so unread counts update even when chat is closed
   const { token } = useAuthStore();
@@ -87,7 +154,7 @@ const Header = () => {
       initializeSocket(user, token);
       fetchUnreadCount(user._id);
     }
-  }, [isAuthenticated]);
+  }, [fetchUnreadCount, initializeSocket, isAuthenticated, token, user]);
 
   const unreadCount = notifications.filter(
     (n) => n.notifStatus === "unread",
@@ -104,7 +171,10 @@ const Header = () => {
     };
   }, [isMenuOpen, isSidebarOpen]);
 
-  const showSidebar = isAuthenticated && SIDEBAR_ROLES.includes(userRole);
+  const visibleSidebarItems = MANAGEMENT_ITEMS.filter((item) =>
+    hasPermission(userRole, item.permission),
+  );
+  const showSidebar = isAuthenticated && visibleSidebarItems.length > 0;
 
   const isActive = (item) => {
     if (item.link) {
@@ -117,87 +187,10 @@ const Header = () => {
     return false;
   };
 
-  const shouldShowMenuItem = (itemName) => {
-    // Sidebar remove from main top nav
-    const sidebarNames = SIDEBAR_ITEMS.map((i) => i.name);
-    if (sidebarNames.includes(itemName) && showSidebar) return false;
-
-    if (!isAuthenticated || !userRole) {
-      return ["Home", "About", "News & Events", "Careers"].includes(itemName);
-    }
-
-    if (itemName === "Clearance Schedule" && userRole !== "teacher")
-      return false;
-    if (userRole === "registrar")
-      return !["ReqDocs", "Transaction Report"].includes(itemName);
-    if (userRole === "student") {
-      return ![
-        "Accounts",
-        "Document Request",
-        "Transaction Report",
-        "Account Request",
-        "AI Knowledge",
-        "Clearance Schedule",
-      ].includes(itemName);
-    }
-    if (userRole === "teacher") {
-      return ![
-        "ReqDocs",
-        "Accounts",
-        "Document Request",
-        "Transaction Report",
-        "Account Request",
-        "AI Knowledge",
-      ].includes(itemName);
-    }
-    if (userRole === "admin") {
-      return !["ReqDocs", "Document Request", "Clearance Schedule"].includes(
-        itemName,
-      );
-    }
-    return true;
-  };
-
-  // Filter sidebar items by what each role should actually see
-  const visibleSidebarItems = SIDEBAR_ITEMS.filter((item) => {
-    if (item.name === "Newsletter")
-      return ["admin", "registrar"].includes(userRole);
-    if (item.name === "Clearance Schedule") return userRole === "teacher";
-    if (userRole === "registrar")
-      return !["Transaction Report"].includes(item.name);
-    if (userRole === "teacher") return false;
-    if (userRole === "admin")
-      return !["Clearance Schedule"].includes(item.name);
-    return true;
-  });
-
-  const menuItems = [
-    { name: "Home", link: "/" },
-    {
-      name: "About",
-      hasDropdown: true,
-      dropdownItems: [
-        { name: "About PASSIAN Education", link: "/about/who-we-are" },
-        { name: "Our History & Tradition", link: "/about/history-tradition" },
-        { name: "Our College Programs", link: "/about/college-programs" },
-      ],
-    },
-    { name: "Announcements", link: "/announcements" },
-    { name: "News & Events", link: "/news-events" },
-    { name: "Uniforms", link: "/uniforms" },
-    { name: "ReqDocs", link: "/reqdocs" },
-    { name: "Careers", link: "/careers" },
-    { name: "Accounts", link: "/accounts" },
-    { name: "Document Request", link: "/request" },
-    { name: "Transaction Report", link: "/transaction-report" },
-    { name: "Account Request", link: "/account-request" },
-    { name: "AI Knowledge", link: "/ai-knowledge" },
-    { name: "Clearance Schedule", link: "/clearance-meeting" },
-  ];
-
-  // Filter menu items based on authentication and user role
-  const filteredMenuItems = menuItems.filter((item) =>
-    shouldShowMenuItem(item.name),
+  const filteredMenuItems = PRIMARY_NAV_ITEMS.filter(
+    (item) =>
+      item.isPublic ||
+      (isAuthenticated && hasPermission(userRole, item.permission)),
   );
 
   return (
@@ -229,13 +222,9 @@ const Header = () => {
                     <span
                       className={`font-bold text-red-50 md:text-red-primary -bottom-3 transition-all duration-300 ${isScrolled ? "text-xs" : "text-sm"}`}
                     >
-                      {userRole === "admin"
-                        ? "ADMIN"
-                        : userRole === "teacher"
-                          ? "TEACHER"
-                          : userRole === "registrar"
-                            ? "REGISTRAR"
-                            : "OFFICIAL WEBSITE"}
+                      {isAuthenticated
+                        ? getRoleLabel(userRole).toUpperCase()
+                        : "OFFICIAL WEBSITE"}
                     </span>
                   </div>
                 </LeftAnimation>
@@ -265,10 +254,10 @@ const Header = () => {
                   </div>
 
                   {/* Notification Icon */}
-                  {userRole !== "admin" && (
+                  {canViewNotifications && (
                     <div
                       className="relative hover:cursor-pointer"
-                      onClick={() => navigate("notifications")}
+                      onClick={() => navigate("/notifications")}
                     >
                       <PopUpAnimation>
                         <Bell className="text-red-primary" size={30} />
@@ -341,11 +330,11 @@ const Header = () => {
               )}
 
               {/* Mobile Notification Icon */}
-              {userRole !== "admin" && isAuthenticated && (
+              {canViewNotifications && (
                 <div
                   className="relative hover:cursor-pointer"
                   onClick={() => {
-                    navigate("notifications");
+                    navigate("/notifications");
                     setIsMenuOpen(false);
                   }}
                 >
@@ -556,7 +545,7 @@ const Header = () => {
                 <div className="py-6">
                   <button
                     onClick={() => {
-                      navigate("login");
+                      navigate("/login");
                       setIsMenuOpen(false);
                     }}
                     className="w-full px-6 py-2 font-bold transition-colors duration-300 border rounded-full border-white text-white hover:bg-red-primary hover:text-white"
@@ -604,12 +593,7 @@ const Header = () => {
         {/* Role badge */}
         <div className="px-5 py-3 bg-red-50 border-b border-red-100 flex-shrink-0">
           <span className="text-xs font-semibold uppercase tracking-widest text-red-primary opacity-70">
-            {userRole === "admin"
-              ? "Administrator"
-              : userRole === "registrar"
-                ? "Registrar"
-                : "Teacher"}{" "}
-            Panel
+            {getRoleLabel(userRole)} Panel
           </span>
         </div>
 

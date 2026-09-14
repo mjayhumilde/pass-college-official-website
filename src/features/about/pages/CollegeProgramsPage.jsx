@@ -10,21 +10,17 @@ import useScrollToTop from "../hooks/useScrollToTop";
 
 export default function CollegeProgramsPage() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const userRole = useAuthStore((state) => state.userRole);
   useScrollToTop();
 
   return (
     <div className="relative">
-      {(!isAuthenticated || userRole === "user") && (
+      {!isAuthenticated && (
         <div className="fixed z-60 right-2 top-15 sm:top-20 md:top-30 md:right-10">
           <CourseRecommendationQuiz />
         </div>
       )}
 
-      <HeroBgSection
-        img={collegeProgramsBackground}
-        label="College programs"
-      />
+      <HeroBgSection img={collegeProgramsBackground} label="College programs" />
 
       <SectionAnimator>
         <AboutStatementSection
