@@ -2,11 +2,9 @@ import { useEffect } from "react";
 import { useScrollToPost } from "../../../shared/hooks";
 import useAuthStore from "../../../store/useAuthStore";
 import usePostStore from "../../../store/usePostStore";
-
-const CAREER_MANAGER_ROLES = ["admin", "registrar"];
+import { hasPermission, PERMISSIONS } from "../../../app/auth/accessPolicy";
 
 export default function useCareersPage() {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const userRole = useAuthStore((state) => state.userRole);
   const careers = usePostStore((state) => state.careers);
   const getAllPost = usePostStore((state) => state.getAllPost);
@@ -23,7 +21,6 @@ export default function useCareersPage() {
 
   return {
     careers,
-    canManageCareers:
-      isAuthenticated && CAREER_MANAGER_ROLES.includes(userRole),
+    canManageCareers: hasPermission(userRole, PERMISSIONS.MANAGE_POSTS),
   };
 }

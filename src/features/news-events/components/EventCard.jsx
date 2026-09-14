@@ -1,9 +1,10 @@
 import useAuthStore from "../../../store/useAuthStore";
 import { DeletePostAction, EditPostAction } from "../../posts";
+import { hasPermission, PERMISSIONS } from "../../../app/auth/accessPolicy";
 
 const EventCard = ({ event }) => {
   const userRole = useAuthStore((s) => s.userRole);
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const canManagePosts = hasPermission(userRole, PERMISSIONS.MANAGE_POSTS);
 
   // Get cover image
   const cover = event?.images?.[0] || null;
@@ -46,13 +47,12 @@ const EventCard = ({ event }) => {
 
           {/* Admin / Teacher Controls */}
           <div className="absolute bottom-0 right-2">
-            {(userRole === "admin" || userRole === "registrar") &&
-              isAuthenticated && (
-                <div className="flex items-center justify-end p-1 gap-1">
-                  <EditPostAction post={event} />
-                  <DeletePostAction id={event._id} />
-                </div>
-              )}
+            {canManagePosts && (
+              <div className="flex items-center justify-end p-1 gap-1">
+                <EditPostAction post={event} />
+                <DeletePostAction id={event._id} />
+              </div>
+            )}
           </div>
         </div>
       </div>

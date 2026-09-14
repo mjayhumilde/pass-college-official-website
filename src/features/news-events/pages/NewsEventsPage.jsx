@@ -3,22 +3,19 @@ import { useLocation } from "react-router-dom";
 import { useScrollToPost } from "../../../shared/hooks";
 import useAuthStore from "../../../store/useAuthStore";
 import usePostStore from "../../../store/usePostStore";
+import { hasPermission, PERMISSIONS } from "../../../app/auth/accessPolicy";
 import NewsEventsHero from "../components/NewsEventsHero";
 import NewsEventsNewsletterSection from "../components/NewsEventsNewsletterSection";
 import NewsSection from "../components/NewsSection";
 import SectionEventLayout from "../components/SectionEventLayout";
 
-const NEWS_EVENTS_MANAGER_ROLES = ["admin", "registrar"];
-
 export default function NewsEventsPage() {
   const location = useLocation();
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const userRole = useAuthStore((state) => state.userRole);
   const news = usePostStore((state) => state.news);
   const events = usePostStore((state) => state.events);
   const getAllPost = usePostStore((state) => state.getAllPost);
-  const canManagePosts =
-    isAuthenticated && NEWS_EVENTS_MANAGER_ROLES.includes(userRole);
+  const canManagePosts = hasPermission(userRole, PERMISSIONS.MANAGE_POSTS);
 
   useScrollToPost();
 

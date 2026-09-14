@@ -7,7 +7,7 @@ import useAuthStore from "../../../store/useAuthStore";
 import useLikeStore from "../../../store/useLikeStore";
 import Comment from "./Comment";
 
-const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
+const PostItem = ({ post, label, openCarousel, canManagePosts }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [newComment, setNewComment] = useState("");
 
@@ -35,7 +35,7 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
   }, [post._id, fetchLikes]);
 
   const userLike = likes.find(
-    (like) => like.user === currentUserId || like.user?._id === currentUserId
+    (like) => like.user === currentUserId || like.user?._id === currentUserId,
   );
   const isLiked = !!userLike;
 
@@ -75,13 +75,12 @@ const PostItem = ({ post, label, openCarousel, userRole, isAuthenticated }) => {
       className="overflow-hidden rounded-lg shadow-lg bg-red-primary my-5 scroll-mt-20"
     >
       <div className="bg-gray">
-        {isAuthenticated &&
-          (userRole === "admin" || userRole === "registrar") && (
-            <div className="flex items-center justify-end p-1 gap-1">
-              <EditComponent post={post} itemType={label} />
-              <DeleteIcon id={post._id} itemType={label} />
-            </div>
-          )}
+        {canManagePosts && (
+          <div className="flex items-center justify-end p-1 gap-1">
+            <EditComponent post={post} itemType={label} />
+            <DeleteIcon id={post._id} itemType={label} />
+          </div>
+        )}
         <div className="flex justify-between p-2 py-2 md:px-10">
           <h4 className="font-bold text-red-primary">{label}</h4>
           <p className="font-semibold text-red-primary">

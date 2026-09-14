@@ -5,10 +5,11 @@ import { useState } from "react";
 import { EmptySection } from "../../../shared/components";
 import { CircleOff } from "lucide-react";
 import PostItem from "./PostItem";
+import { hasPermission, PERMISSIONS } from "../../../app/auth/accessPolicy";
 
 const PostLayout = ({ data, label }) => {
   const userRole = useAuthStore((state) => state.userRole);
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const canManagePosts = hasPermission(userRole, PERMISSIONS.MANAGE_POSTS);
   const [carouselOpen, setCarouselOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
   const [initialIndex, setInitialIndex] = useState(0);
@@ -47,8 +48,7 @@ const PostLayout = ({ data, label }) => {
               post={post}
               label={label}
               openCarousel={openCarousel}
-              userRole={userRole}
-              isAuthenticated={isAuthenticated}
+              canManagePosts={canManagePosts}
             />
           ))
         ) : (
