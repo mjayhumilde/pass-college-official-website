@@ -1,4 +1,5 @@
 import { Hash, Mail, User } from "lucide-react";
+import { ROLES } from "../../../app/auth/accessPolicy";
 import {
   ACCOUNT_REQUEST_COURSES,
   ACCOUNT_REQUEST_ROLES,
@@ -106,7 +107,7 @@ export default function AccountRequestFormFields({ formData, onChange }) {
         </select>
       </div>
 
-      {formData.role === "student" && (
+      {formData.role === ROLES.STUDENT && (
         <div>
           <label
             htmlFor="studentNumber"

@@ -1,3 +1,5 @@
+import { ROLES } from "../../../app/auth/accessPolicy";
+
 const matchesSearch = (account, searchTerm) => {
   const normalizedSearch = searchTerm.toLowerCase();
   const fullName = `${account.firstName} ${account.lastName}`.toLowerCase();
@@ -13,13 +15,13 @@ const matchesSearch = (account, searchTerm) => {
 
 export const filterActiveAccounts = ({
   accounts,
-  userRole,
+  canManageAllAccounts,
   searchTerm,
   courseFilter,
   roleFilter,
 }) =>
   accounts
-    .filter((account) => userRole !== "registrar" || account.role === "student")
+    .filter((account) => canManageAllAccounts || account.role === ROLES.STUDENT)
     .filter(
       (account) =>
         matchesSearch(account, searchTerm) &&

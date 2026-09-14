@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ROLES } from "../../../app/auth/accessPolicy";
 import useRequestAccountStore from "../store/useRequestAccountStore";
 import AccountRequestFeedback from "./AccountRequestFeedback";
 import AccountRequestFormFields from "./AccountRequestFormFields";
@@ -9,7 +10,7 @@ const createEmptyFormData = () => ({
   lastName: "",
   email: "",
   course: "",
-  role: "student",
+  role: ROLES.STUDENT,
   studentNumber: "",
 });
 
@@ -30,7 +31,9 @@ export default function AccountRequestSubmission({
     setFormData((currentFormData) => ({
       ...currentFormData,
       [name]: value,
-      ...(name === "role" && value !== "student" ? { studentNumber: "" } : {}),
+      ...(name === "role" && value !== ROLES.STUDENT
+        ? { studentNumber: "" }
+        : {}),
     }));
   };
 
@@ -84,7 +87,7 @@ export default function AccountRequestSubmission({
       return;
     }
 
-    if (formData.role === "student" && !formData.studentNumber.trim()) {
+    if (formData.role === ROLES.STUDENT && !formData.studentNumber.trim()) {
       window.alert("Student number is required for student accounts");
       return;
     }
@@ -96,7 +99,7 @@ export default function AccountRequestSubmission({
     submitData.append("course", formData.course);
     submitData.append("role", formData.role);
 
-    if (formData.role === "student") {
+    if (formData.role === ROLES.STUDENT) {
       submitData.append("studentNumber", formData.studentNumber);
     }
 

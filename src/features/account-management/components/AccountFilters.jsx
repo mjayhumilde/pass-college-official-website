@@ -8,7 +8,7 @@ export default function AccountFilters({
   searchTerm,
   courseFilter,
   roleFilter,
-  userRole,
+  canManageAllAccounts,
   isLoading,
   onSearchChange,
   onCourseFilterChange,
@@ -45,7 +45,7 @@ export default function AccountFilters({
           ))}
         </select>
 
-        {userRole === "admin" && (
+        {canManageAllAccounts && (
           <select
             value={roleFilter}
             onChange={(event) => onRoleFilterChange(event.target.value)}

@@ -11,9 +11,18 @@ import AccountsTable from "../components/AccountsTable";
 import CreateAccountModal from "../components/CreateAccountModal";
 import DeactivateAccountModal from "../components/DeactivateAccountModal";
 import DeactivatedAccountsModal from "../components/DeactivatedAccountsModal";
+import {
+  hasPermission,
+  PERMISSIONS,
+  ROLES,
+} from "../../../app/auth/accessPolicy";
 
 export default function AccountsPage() {
   const userRole = useAuthStore((state) => state.userRole);
+  const canManageAllAccounts = hasPermission(
+    userRole,
+    PERMISSIONS.MANAGE_ALL_ACCOUNTS,
+  );
   const {
     users,
     deactivatedUsers,
@@ -41,15 +50,14 @@ export default function AccountsPage() {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, courseFilter, roleFilter, users, userRole]);
+  }, [canManageAllAccounts, searchTerm, courseFilter, roleFilter, users]);
 
-  const visibleDeactivatedAccounts =
-    userRole === "registrar"
-      ? deactivatedUsers.filter((account) => account.role === "student")
-      : deactivatedUsers;
+  const visibleDeactivatedAccounts = canManageAllAccounts
+    ? deactivatedUsers
+    : deactivatedUsers.filter((account) => account.role === ROLES.STUDENT);
   const filteredAccounts = filterActiveAccounts({
     accounts: users,
-    userRole,
+    canManageAllAccounts,
     searchTerm,
     courseFilter,
     roleFilter,
@@ -99,7 +107,7 @@ export default function AccountsPage() {
         searchTerm={searchTerm}
         courseFilter={courseFilter}
         roleFilter={roleFilter}
-        userRole={userRole}
+        canManageAllAccounts={canManageAllAccounts}
         isLoading={loading}
         onSearchChange={setSearchTerm}
         onCourseFilterChange={setCourseFilter}
@@ -125,7 +133,7 @@ export default function AccountsPage() {
 
       <CreateAccountModal
         isOpen={isCreateModalOpen}
-        userRole={userRole}
+        canManageAllAccounts={canManageAllAccounts}
         onClose={() => setIsCreateModalOpen(false)}
         onCreated={() =>
           showSuccessMessage(

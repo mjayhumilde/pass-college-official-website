@@ -1,8 +1,10 @@
+import { ROLES } from "../../../app/auth/accessPolicy";
+
 export const ACCOUNT_REQUEST_ROLES = [
-  { value: "student", label: "Student" },
-  { value: "teacher", label: "Teacher" },
-  { value: "registrar", label: "Registrar" },
-  { value: "admin", label: "Admin" },
+  { value: ROLES.STUDENT, label: "Student" },
+  { value: ROLES.TEACHER, label: "Teacher" },
+  { value: ROLES.REGISTRAR, label: "Registrar" },
+  { value: ROLES.ADMIN, label: "Admin" },
 ];
 
 export const ACCOUNT_REQUEST_COURSES = [

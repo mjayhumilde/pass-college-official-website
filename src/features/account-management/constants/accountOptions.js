@@ -1,3 +1,5 @@
+import { ROLES } from "../../../app/auth/accessPolicy";
+
 export const AVAILABLE_COURSES = [
   "BSCS",
   "BSA",
@@ -8,7 +10,12 @@ export const AVAILABLE_COURSES = [
   "BEED",
 ];
 
-export const AVAILABLE_ROLES = ["student", "teacher", "admin", "registrar"];
+export const AVAILABLE_ROLES = [
+  ROLES.STUDENT,
+  ROLES.TEACHER,
+  ROLES.ADMIN,
+  ROLES.REGISTRAR,
+];
 
 export const ACCOUNTS_PER_PAGE = 5;
 
@@ -18,7 +25,7 @@ export const createEmptyAccount = () => ({
   email: "",
   password: "",
   passwordConfirm: "",
-  role: "student",
+  role: ROLES.STUDENT,
   course: "BSCS",
   studentNumber: "",
 });

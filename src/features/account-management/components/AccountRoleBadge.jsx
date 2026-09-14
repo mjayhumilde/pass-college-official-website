@@ -1,10 +1,12 @@
+import { ROLES } from "../../../app/auth/accessPolicy";
+
 const getRoleClasses = (role) => {
   switch (role) {
-    case "admin":
+    case ROLES.ADMIN:
       return "bg-purple-100 text-purple-800";
-    case "teacher":
+    case ROLES.TEACHER:
       return "bg-blue-100 text-blue-800";
-    case "registrar":
+    case ROLES.REGISTRAR:
       return "bg-green-100 text-green-800";
     default:
       return "bg-gray-100 text-red-800";

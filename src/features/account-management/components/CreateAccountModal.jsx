@@ -5,6 +5,7 @@ import {
   createEmptyAccount,
 } from "../constants/accountOptions";
 import { useUserStore } from "../store/useUserStore";
+import { ROLES } from "../../../app/auth/accessPolicy";
 
 const validateAccount = (account) => {
   if (!account.firstName.trim()) return "First name is required";
@@ -13,10 +14,10 @@ const validateAccount = (account) => {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(account.email)) {
     return "Please provide a valid email address";
   }
-  if (account.role === "student" && !account.studentNumber.trim()) {
+  if (account.role === ROLES.STUDENT && !account.studentNumber.trim()) {
     return "Student Number is required for students";
   }
-  if (account.role === "student" && !account.course) {
+  if (account.role === ROLES.STUDENT && !account.course) {
     return "Course is required for students";
   }
   if (!account.password) return "Password is required";
@@ -33,7 +34,7 @@ const validateAccount = (account) => {
 
 export default function CreateAccountModal({
   isOpen,
-  userRole,
+  canManageAllAccounts,
   onClose,
   onCreated,
 }) {
@@ -56,8 +57,8 @@ export default function CreateAccountModal({
     setAccount((currentAccount) => ({
       ...currentAccount,
       role,
-      course: role === "student" ? "BSCS" : "",
-      studentNumber: role === "student" ? currentAccount.studentNumber : "",
+      course: role === ROLES.STUDENT ? "BSCS" : "",
+      studentNumber: role === ROLES.STUDENT ? currentAccount.studentNumber : "",
     }));
   };
 
@@ -85,7 +86,7 @@ export default function CreateAccountModal({
       role: account.role,
     };
 
-    if (account.role === "student") {
+    if (account.role === ROLES.STUDENT) {
       userData.course = account.course;
       userData.studentNumber = account.studentNumber.trim();
     }
@@ -170,21 +171,21 @@ export default function CreateAccountModal({
               value={account.role}
               onChange={(event) => handleRoleChange(event.target.value)}
             >
-              {userRole === "registrar" && (
-                <option value="student">Student</option>
+              {!canManageAllAccounts && (
+                <option value={ROLES.STUDENT}>Student</option>
               )}
-              {userRole === "admin" && (
+              {canManageAllAccounts && (
                 <>
-                  <option value="student">Student</option>
-                  <option value="teacher">Teacher</option>
-                  <option value="registrar">Registrar</option>
-                  <option value="admin">Admin</option>
+                  <option value={ROLES.STUDENT}>Student</option>
+                  <option value={ROLES.TEACHER}>Teacher</option>
+                  <option value={ROLES.REGISTRAR}>Registrar</option>
+                  <option value={ROLES.ADMIN}>Admin</option>
                 </>
               )}
             </select>
           </div>
 
-          {account.role === "student" && (
+          {account.role === ROLES.STUDENT && (
             <>
               <div>
                 <label className="block mb-1 text-sm font-medium text-gray-700">
