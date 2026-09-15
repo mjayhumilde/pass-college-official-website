@@ -109,7 +109,7 @@ export default function LoginForm({ onForgotPassword }) {
         <div className="mt-6 text-center">
           <button
             type="button"
-            onClick={() => navigate("create-account-request")}
+            onClick={() => navigate("/login/create-account-request")}
             className="text-sm font-medium text-red-950 underline hover:cursor-pointer hover:text-red-800"
           >
             REQUEST FOR AN ACCOUNT CREATION
